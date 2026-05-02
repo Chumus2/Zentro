@@ -14,7 +14,7 @@
             {% endfor %}
         {% endif %}
 
-        <form action="" method="post">
+        <form action="{% url 'SignUp' %}" method="post">
             {% csrf_token %}
 
             <div>
@@ -40,6 +40,10 @@
             <button type="submit">Confirm</button>
 
         </form>
+
+        <p>
+            Already have an account? <a href="{% url 'SignIn' %}" target="_self">Sign in</a>
+        </p>
 
     </div>
 

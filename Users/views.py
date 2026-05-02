@@ -34,3 +34,22 @@ class SignUpView(View):
 
             return redirect("/")
         
+
+class SignInView(View):
+
+    def get(self, request):
+        return render(request, "Users/SignIn.html")
+    
+    def post(self, request):
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect("/")
+        
+        else:
+            messages.error(request, "Invalid email or password")
+            return redirect("SignIn")

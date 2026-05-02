@@ -1,0 +1,40 @@
+{% extends 'Base/Base.html' %}
+
+{% block title %}Zentro - Sign in{% endblock %}
+
+{% block content %}
+
+    <div>
+
+        <h1>Login Form</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'SignIn' %}" method="post">
+            {% csrf_token %}
+
+            <div>
+                <p>Email</p>
+                <input type="email" name="email" placeholder="Write email here">
+            </div>
+
+            <div>
+                <p>Password</p>
+                <input type="password" name="password" placeholder="Write password here">
+            </div>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <p>
+            Don't have any account? <a href="{% url 'SignUp' %}" target="_self">Sign up</a>
+        </p>
+
+    </div>
+
+{% endblock %}
