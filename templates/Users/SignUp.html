@@ -1,0 +1,40 @@
+{% extends 'Base/Base.html' %}
+
+{% block title %}Zentro - Sign up{% endblock %}
+
+{% block content %}
+
+    <div>
+
+        <h1>Registration Form</h1>
+
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <div>
+                <p>Your username</p>
+                <input type="text" placeholder="Write your username here">
+            </div>
+
+            <div>
+                <p>Your email</p>
+                <input type="email" placeholder="Write your email here">
+            </div>
+
+            <div>
+                <p>Your password</p>
+                <input type="password" placeholder="Write your password here">
+            </div>
+
+            <div>
+                <p>Confirm your password</p>
+                <input type="password" placeholder="Confirm your password here">
+            </div>
+
+            <button type="submit">Confirm</button>
+
+        </form>
+
+    </div>
+
+{% endblock %}

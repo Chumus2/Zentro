@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 
 
-class SignUpView(View):
+class HomePageView(View):
 
     def get(self, request):
-        return render(request, "Users/SignUp.html")
+        return render(request, "HomePage/HomePage.html")
