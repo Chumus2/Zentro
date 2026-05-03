@@ -7,22 +7,20 @@ from .models import Chat, Message
 
 
 class MainView(LoginRequiredMixin, View):
-    login_url = "SignIn"
+    login_url = "HomePage"
 
     def get(self, request):
-        chats = (
-            Chat.objects
-            .filter(participants=request.user)
-            .prefetch_related(
-                Prefetch(
-                    "messages",
-                    queryset=Message.objects.order_by("created_at"),
-                )
-            )
-            .distinct()
-        )
+        search = request.GET.get("search_text", "").strip()
+        chats = (Chat.objects.filter(participants=request.user).prefetch_related(Prefetch("messages", queryset=Message.objects.order_by("created_at"))))
 
-        context = {"chats": chats}
+        if search:
+            chats = chats.filter(title__icontains=search)
+        
+        chats = chats.distinct()
+        context = {
+            "chats": chats,
+            "search": search
+        }
 
         return render(request, "Main/Main.html", context)
     
@@ -32,7 +30,7 @@ class MainView(LoginRequiredMixin, View):
     
 
 class ChatDetailView(LoginRequiredMixin, View):
-    login_url = "SignIn"
+    login_url = "HomePage"
 
     def get(self, request, chat_id):
         chats = Chat.objects.filter(participants=request.user).distinct()
