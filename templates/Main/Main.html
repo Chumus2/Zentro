@@ -1,4 +1,5 @@
 {% extends 'Base/Base.html' %}
+{% load static %}
 
 {% block title %}Zentro{% endblock %}
 
@@ -6,7 +7,55 @@
 
     <div>
 
-        <h1>Hi</h1>
+        <aside>
+
+            {% if chats %}
+
+                {% for chat in chats %}
+
+                    <a href="{% url 'ChatDetail' chat.id %}" target="_self">
+
+                        <div>
+                            <img src="{{ chat.icon.url }}" loading="lazy" width="75" height="75">
+                            <h3>{{ chat.title }}</h3>
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            {% endif %}
+
+        </aside>
+
+        <div>
+
+            {% if active_chat %}
+
+                <div>
+                    <img src="{{ active_chat.icon.url }}" loading="lazy" width="75" height="75">
+                    <h2>{{ active_chat.title }}</h2>
+                </div>
+
+                <div>
+
+                    {% for message in messages %}
+
+                        <div>
+
+                            <strong>{{ message.sender.name }}</strong>
+                            <p>{{ message.text }}</p>
+                            <small>{{ message.created_at|timesince }}</small>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
 
     </div>
 

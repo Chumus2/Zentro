@@ -3,8 +3,8 @@ from django.conf import settings
 
 
 class Chat(models.Model):
-    icon = models.ImageField(upload_to="chat_icons/")
-    title = models.CharField(max_length=50)
+    icon = models.ImageField(upload_to="chat_icons/", blank=True, null=True)
+    title = models.CharField(max_length=50, default="Chat")
     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="chats")
     created_at = models.DateTimeField(auto_now_add=True)
 
