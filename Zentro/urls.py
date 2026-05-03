@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
@@ -9,3 +11,6 @@ urlpatterns = [
     path("homepage/", include("HomePage.urls")),
     path("users/", include("Users.urls"))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_ROOT, document_root=settings.MEDIA_ROOT)
