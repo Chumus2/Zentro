@@ -1,40 +1,76 @@
 {% extends 'Base/Base.html' %}
+{% load static %}
 
 {% block title %}Zentro - Sign in{% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Users/SignIn.css' %}">
+{% endblock %}
+
 {% block content %}
 
-    <div>
+    <section class="Auth_Page">
+        <div class="Auth_Backdrop"></div>
 
-        <h1>Login Form</h1>
+        <div class="Auth_Shell">
+            <div class="Auth_Copy">
+                <span class="Auth_Badge">Zentro access</span>
+                <h1>Welcome back.</h1>
+                <p>
+                    Sign in to continue your conversations, manage your workspace,
+                    and jump back into the flow without losing context.
+                </p>
 
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-
-        <form action="{% url 'SignIn' %}" method="post">
-            {% csrf_token %}
-
-            <div>
-                <p>Email</p>
-                <input type="email" name="email" placeholder="Write email here">
+                <div class="Auth_Hints">
+                    <div class="Hint_Card">
+                        <strong>Focused workspace</strong>
+                        <span>Fast access to your chats in a calm, polished interface.</span>
+                    </div>
+                    <div class="Hint_Card">
+                        <strong>Secure login</strong>
+                        <span>Your account stays protected while your workflow stays simple.</span>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <p>Password</p>
-                <input type="password" name="password" placeholder="Write password here">
+            <div class="Auth_Card_Wrap">
+                <div class="Auth_Card">
+                    <div class="Auth_Card_Header">
+                        <span class="Auth_Eyebrow">Sign in</span>
+                        <h2>Login Form</h2>
+                        <p>Enter your email and password to open Zentro.</p>
+                    </div>
+
+                    {% if messages %}
+                        <div class="Auth_Messages">
+                            {% for message in messages %}
+                                <div class="Auth_Message">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form action="{% url 'SignIn' %}" method="post" class="Auth_Form">
+                        {% csrf_token %}
+
+                        <div class="Auth_Field">
+                            <label for="signin-email">Email</label>
+                            <input id="signin-email" type="email" name="email" placeholder="Write email here" required>
+                        </div>
+
+                        <div class="Auth_Field">
+                            <label for="signin-password">Password</label>
+                            <input id="signin-password" type="password" name="password" placeholder="Write password here" required>
+                        </div>
+
+                        <button type="submit" class="Auth_Button">Login</button>
+                    </form>
+
+                    <p class="Auth_Switch">
+                        Don't have any account? <a href="{% url 'SignUp' %}" target="_self">Sign up</a>
+                    </p>
+                </div>
             </div>
-
-            <button type="submit">Login</button>
-
-        </form>
-
-        <p>
-            Don't have any account? <a href="{% url 'SignUp' %}" target="_self">Sign up</a>
-        </p>
-
-    </div>
+        </div>
+    </section>
 
 {% endblock %}

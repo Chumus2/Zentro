@@ -1,50 +1,86 @@
 {% extends 'Base/Base.html' %}
+{% load static %}
 
 {% block title %}Zentro - Sign up{% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Users/SignUp.css' %}">
+{% endblock %}
+
 {% block content %}
 
-    <div>
+    <section class="Auth_Page">
+        <div class="Auth_Backdrop"></div>
 
-        <h1>Registration Form</h1>
+        <div class="Auth_Shell">
+            <div class="Auth_Copy">
+                <span class="Auth_Badge">Create your space</span>
+                <h1>Start with Zentro.</h1>
+                <p>
+                    Build your account, keep your chats organized, and move into a
+                    cleaner messaging experience designed for focus.
+                </p>
 
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-
-        <form action="{% url 'SignUp' %}" method="post">
-            {% csrf_token %}
-
-            <div>
-                <p>Your name</p>
-                <input type="text" name="name" placeholder="Write your name here">
+                <div class="Auth_Hints">
+                    <div class="Hint_Card">
+                        <strong>Organized from day one</strong>
+                        <span>Create your profile and keep conversations structured and easy to revisit.</span>
+                    </div>
+                    <div class="Hint_Card">
+                        <strong>Designed for flow</strong>
+                        <span>Join a workspace that matches the look and feel of the rest of Zentro.</span>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <p>Your email</p>
-                <input type="email" name="email" placeholder="Write your email here">
+            <div class="Auth_Card_Wrap">
+                <div class="Auth_Card">
+                    <div class="Auth_Card_Header">
+                        <span class="Auth_Eyebrow">Sign up</span>
+                        <h2>Registration Form</h2>
+                        <p>Create your account to enter the platform.</p>
+                    </div>
+
+                    {% if messages %}
+                        <div class="Auth_Messages">
+                            {% for message in messages %}
+                                <div class="Auth_Message">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form action="{% url 'SignUp' %}" method="post" class="Auth_Form">
+                        {% csrf_token %}
+
+                        <div class="Auth_Field">
+                            <label for="signup-name">Your name</label>
+                            <input id="signup-name" type="text" name="name" placeholder="Write your name here" required>
+                        </div>
+
+                        <div class="Auth_Field">
+                            <label for="signup-email">Your email</label>
+                            <input id="signup-email" type="email" name="email" placeholder="Write your email here" required>
+                        </div>
+
+                        <div class="Auth_Field">
+                            <label for="signup-password">Your password</label>
+                            <input id="signup-password" type="password" name="password" placeholder="Write your password here" required>
+                        </div>
+
+                        <div class="Auth_Field">
+                            <label for="signup-password2">Confirm your password</label>
+                            <input id="signup-password2" type="password" name="password2" placeholder="Confirm your password here" required>
+                        </div>
+
+                        <button type="submit" class="Auth_Button">Confirm</button>
+                    </form>
+
+                    <p class="Auth_Switch">
+                        Already have an account? <a href="{% url 'SignIn' %}" target="_self">Sign in</a>
+                    </p>
+                </div>
             </div>
-
-            <div>
-                <p>Your password</p>
-                <input type="password" name="password" placeholder="Write your password here">
-            </div>
-
-            <div>
-                <p>Confirm your password</p>
-                <input type="password" name="password2" placeholder="Confirm your password here">
-            </div>
-
-            <button type="submit">Confirm</button>
-
-        </form>
-
-        <p>
-            Already have an account? <a href="{% url 'SignIn' %}" target="_self">Sign in</a>
-        </p>
-
-    </div>
+        </div>
+    </section>
 
 {% endblock %}

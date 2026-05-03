@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout
 from django.views import View
 from django.db.models import Prefetch
 from .models import Chat, Message
@@ -24,6 +25,10 @@ class MainView(LoginRequiredMixin, View):
         context = {"chats": chats}
 
         return render(request, "Main/Main.html", context)
+    
+    def post(self, request):
+        logout(request)
+        return redirect("HomePage")
     
 
 class ChatDetailView(LoginRequiredMixin, View):

@@ -48,6 +48,11 @@
 
             {% endif %}
 
+            <form action="{% url 'Main' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Log out</button>
+            </form>
+
         </aside>
 
         <section class="Chat_Panel">
@@ -79,17 +84,17 @@
 
                 </div>
 
+                <div class="Message_Form_Wrapper">
+
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="message_text" placeholder="Write your message here">
+                        <button type="submit">Send</button>
+                    </form>
+    
+                </div>
+
             {% endif %}
-
-            <div class="Message_Form_Wrapper">
-
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <input type="text" name="message_text" placeholder="Write your message here">
-                    <button type="submit">Send</button>
-                </form>
-
-            </div>
 
         </section>
 
