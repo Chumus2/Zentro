@@ -11,7 +11,7 @@ from .models import User
 class SignUpView(View):
 
     def get(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return redirect("/")
 
         return render(request, "Users/SignUp.html")
@@ -81,7 +81,7 @@ class SignUpView(View):
 class SignInView(View):
 
     def get(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return redirect("/")
 
         return render(request, "Users/SignIn.html")
