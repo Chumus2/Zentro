@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
-from .models import Chat
+from .models import Chat, Message
 
 
 class MainView(LoginRequiredMixin, View):
@@ -37,3 +37,21 @@ class ChatDetailView(LoginRequiredMixin, View):
         }
 
         return render(request, "Main/Main.html", context)
+    
+    def post(self, request, chat_id):
+        text = request.POST.get("message_text")
+
+        active_chat = get_object_or_404(
+            Chat,
+            id=chat_id,
+            participants=request.user
+        )
+
+        if text:
+            Message.objects.create(
+                chat=active_chat,
+                sender=request.user,
+                text=text
+            )
+
+        return redirect("ChatDetail", chat_id=chat_id)

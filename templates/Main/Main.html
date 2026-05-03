@@ -3,21 +3,33 @@
 
 {% block title %}Zentro{% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Main/Main.css' %}">
+{% endblock %}
+
 {% block content %}
 
-    <div>
+    <div class="Main">
 
-        <aside>
+        <aside class="Chats_Aside">
+            <div class="Aside_Header">
+                <h2>Chats</h2>
+            </div>
 
             {% if chats %}
 
                 {% for chat in chats %}
 
-                    <a href="{% url 'ChatDetail' chat.id %}" target="_self">
+                    <a href="{% url 'ChatDetail' chat.id %}" target="_self" class="ChatBox_Wrapper">
 
-                        <div>
-                            <img src="{{ chat.icon.url }}" loading="lazy" width="75" height="75">
-                            <h3>{{ chat.title }}</h3>
+                        <div class="ChatBox">
+                            {% if chat.icon %}
+                                <img src="{{ chat.icon.url }}" loading="lazy" width="60" height="60">
+                            {% endif %}
+                            
+                            <span class="ChatBox_Content">
+                                <h3>{{ chat.title }}</h3>
+                            </span>
                         </div>
 
                     </a>
@@ -28,20 +40,24 @@
 
         </aside>
 
-        <div>
+        <section class="Chat_Panel">
 
             {% if active_chat %}
 
-                <div>
-                    <img src="{{ active_chat.icon.url }}" loading="lazy" width="75" height="75">
-                    <h2>{{ active_chat.title }}</h2>
+                <div class="ChatCard">
+                    <div class="ChatCard_Info">
+                        {% if active_chat.icon %}
+                            <img src="{{ active_chat.icon.url }}" loading="lazy" width="60" height="60">
+                        {% endif %}
+                        <h2>{{ active_chat.title }}</h2>
+                    </div>
                 </div>
 
-                <div>
+                <div class="Messages_Box">
 
                     {% for message in messages %}
 
-                        <div>
+                        <div class="Message_Item">
 
                             <strong>{{ message.sender.name }}</strong>
                             <p>{{ message.text }}</p>
@@ -55,7 +71,17 @@
 
             {% endif %}
 
-        </div>
+            <div class="Message_Form_Wrapper">
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="message_text" placeholder="Write your message here">
+                    <button type="submit">Send</button>
+                </form>
+
+            </div>
+
+        </section>
 
     </div>
 
