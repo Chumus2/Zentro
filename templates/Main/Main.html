@@ -22,7 +22,7 @@
 
                     <a href="{% url 'ChatDetail' chat.id %}" target="_self" class="ChatBox_Wrapper">
 
-                        <div class="ChatBox">
+                        <div class="ChatBox{% if active_chat and active_chat.id == chat.id %} ChatBox__active{% endif %}">
                             {% if chat.icon %}
                                 <img src="{{ chat.icon.url }}" loading="lazy" width="60" height="60">
                             {% endif %}
@@ -48,11 +48,6 @@
 
             {% endif %}
 
-            <form action="{% url 'Main' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Log out</button>
-            </form>
-
         </aside>
 
         <section class="Chat_Panel">
@@ -64,7 +59,11 @@
                         {% if active_chat.icon %}
                             <img src="{{ active_chat.icon.url }}" loading="lazy" width="60" height="60">
                         {% endif %}
-                        <h2>{{ active_chat.title }}</h2>
+                        
+                        <a href="" target="_self" class="ChatCard_Content">
+                            <h2>{{ active_chat.title }}</h2>
+                            <p>{{ active_chat.participants.count }} participants</p>
+                        </a>
                     </div>
                 </div>
 
