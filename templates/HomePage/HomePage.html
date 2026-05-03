@@ -1,17 +1,82 @@
 {% extends 'Base/Base.html' %}
+{% load static %}
+
+{% block title %}Zentro{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/HomePage/HomePage.css' %}">
+{% endblock %}
 
 {% block content %}
 
-    <div>
+    <section class="Hero">
+        <div class="Hero_Copy">
+            <span class="Hero_Badge">Modern private messaging</span>
 
-        <h1>Welcome to the Zentro!</h1>
-        <h3>Chat, have fun, and share your experiences with friends.</h3>
+            <h1>Talk fast. Stay close. Keep every conversation in one calm place.</h1>
+            <p>
+                Zentro is a clean social messenger for direct chats, shared moments, and easy
+                communication without noisy clutter.
+            </p>
 
-        <div>
-            <a href="{% url 'SignUp' %}" target="_self">Sign up</a>
-            <a href="{% url 'SignIn' %}" target="_self">Sign in</a>
+            <div class="Hero_Actions">
+                <a href="{% url 'SignUp' %}" target="_self" class="Primary_Button">Create account</a>
+                <a href="{% url 'SignIn' %}" target="_self" class="Secondary_Button">Sign in</a>
+            </div>
+
+            <div class="Hero_Stats">
+                <div class="Stat_Card">
+                    <strong>Private chats</strong>
+                    <span>Focused one-to-one conversations built for speed.</span>
+                </div>
+
+                <div class="Stat_Card">
+                    <strong>Instant flow</strong>
+                    <span>Clean message streams, simple navigation, no visual chaos.</span>
+                </div>
+            </div>
         </div>
 
-    </div>
+        <div class="Hero_Preview">
+            <div class="Preview_Window">
+                <div class="Preview_Header">
+                    <span class="Preview_Dot Preview_Dot__red"></span>
+                    <span class="Preview_Dot Preview_Dot__gold"></span>
+                    <span class="Preview_Dot Preview_Dot__green"></span>
+                </div>
+
+                <div class="Preview_Body">
+                    <aside class="Preview_Sidebar">
+                        <div class="Preview_Chat Preview_Chat__active">
+                            <strong>Nora</strong>
+                            <p>See you in 10 minutes.</p>
+                        </div>
+
+                        <div class="Preview_Chat">
+                            <strong>Design Crew</strong>
+                            <p>Shared the latest draft.</p>
+                        </div>
+
+                        <div class="Preview_Chat">
+                            <strong>Alex</strong>
+                            <p>Let's ship it tonight.</p>
+                        </div>
+                    </aside>
+
+                    <div class="Preview_Conversation">
+                        <div class="Bubble Bubble__incoming">
+                            We should make the homepage feel lighter and more premium.
+                        </div>
+                        <div class="Bubble Bubble__outgoing">
+                            Done. I pushed a cleaner layout and a stronger visual hierarchy.
+                        </div>
+                        <div class="Bubble Bubble__incoming">
+                            Perfect. That feels way more like a real product now.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 {% endblock %}

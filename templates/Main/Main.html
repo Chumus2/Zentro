@@ -1,0 +1,98 @@
+{% extends 'Base/Base.html' %}
+{% load static %}
+
+{% block title %}Zentro{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Main/Main.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="Main">
+
+        <aside class="Chats_Aside">
+            <div class="Aside_Header">
+                <h2>Chats</h2>
+            </div>
+
+            {% if chats %}
+
+                {% for chat in chats %}
+
+                    <a href="{% url 'ChatDetail' chat.id %}" target="_self" class="ChatBox_Wrapper">
+
+                        <div class="ChatBox">
+                            {% if chat.icon %}
+                                <img src="{{ chat.icon.url }}" loading="lazy" width="60" height="60">
+                            {% endif %}
+ 
+                            <span class="ChatBox_Content">
+                                <h3>{{ chat.title }}</h3>
+                                
+                                {% with last_message=chat.messages.last %}
+
+                                    {% if last_message %}
+                                        <p>{{ last_message.text|truncatechars:30 }}</p>
+                                    {% endif %}
+
+                                {% endwith %}
+
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            {% endif %}
+
+        </aside>
+
+        <section class="Chat_Panel">
+
+            {% if active_chat %}
+
+                <div class="ChatCard">
+                    <div class="ChatCard_Info">
+                        {% if active_chat.icon %}
+                            <img src="{{ active_chat.icon.url }}" loading="lazy" width="60" height="60">
+                        {% endif %}
+                        <h2>{{ active_chat.title }}</h2>
+                    </div>
+                </div>
+
+                <div class="Messages_Box">
+
+                    {% for message in messages %}
+
+                        <div class="Message_Item">
+
+                            <strong>{{ message.sender.name }}</strong>
+                            <p>{{ message.text }}</p>
+                            <small>{{ message.created_at|timesince }}</small>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+            <div class="Message_Form_Wrapper">
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="message_text" placeholder="Write your message here">
+                    <button type="submit">Send</button>
+                </form>
+
+            </div>
+
+        </section>
+
+    </div>
+
+{% endblock %}

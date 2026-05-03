@@ -11,8 +11,8 @@ from .models import User
 class SignUpView(View):
 
     def get(self, request):
-        if request.user.is_authenticated():
-            return redirect("/")
+        if request.user.is_authenticated:
+            return redirect("Main")
 
         return render(request, "Users/SignUp.html")
     
@@ -75,14 +75,14 @@ class SignUpView(View):
         )
         login(request, user)
 
-        return redirect("/")
+        return redirect("Main")
         
 
 class SignInView(View):
 
     def get(self, request):
-        if request.user.is_authenticated():
-            return redirect("/")
+        if request.user.is_authenticated:
+            return redirect("Main")
 
         return render(request, "Users/SignIn.html")
     
@@ -94,7 +94,7 @@ class SignInView(View):
 
         if user is not None:
             login(request, user)
-            return redirect("/")
+            return redirect("Main")
         
         else:
             messages.error(request, "Invalid email or password")
