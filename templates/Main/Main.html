@@ -26,10 +26,20 @@
                             {% if chat.icon %}
                                 <img src="{{ chat.icon.url }}" loading="lazy" width="60" height="60">
                             {% endif %}
-                            
+ 
                             <span class="ChatBox_Content">
                                 <h3>{{ chat.title }}</h3>
+                                
+                                {% with last_message=chat.messages.last %}
+
+                                    {% if last_message %}
+                                        <p>{{ last_message.text|truncatechars:30 }}</p>
+                                    {% endif %}
+
+                                {% endwith %}
+
                             </span>
+
                         </div>
 
                     </a>

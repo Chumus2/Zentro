@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+from django.db.models import Prefetch
 from .models import Chat, Message
 
 
@@ -8,11 +9,19 @@ class MainView(LoginRequiredMixin, View):
     login_url = "SignIn"
 
     def get(self, request):
-        chats = Chat.objects.filter(participants=request.user).distinct()
+        chats = (
+            Chat.objects
+            .filter(participants=request.user)
+            .prefetch_related(
+                Prefetch(
+                    "messages",
+                    queryset=Message.objects.order_by("created_at"),
+                )
+            )
+            .distinct()
+        )
 
-        context = {
-            "chats": chats
-        }
+        context = {"chats": chats}
 
         return render(request, "Main/Main.html", context)
     
