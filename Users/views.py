@@ -17,47 +17,51 @@ class SignUpView(View):
         return render(request, "Users/SignUp.html")
     
     def post(self, request):
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        password2 = request.POST.get("password2")
+        name = request.POST.get("name", "").strip()
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "")
+        password2 = request.POST.get("password2", "")
 
+        form_data = {
+            "name": name,
+            "email": email,
+        }
 
         # General checks
         if not name or not email or not password or not password2:
             messages.error(request, "All fields are required")
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
         
         if User.objects.filter(email=email).exists():
             messages.error(request, "User with this email already exists")
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
         
         if not re.search(r"\d", name):
             messages.error(request, "Name must contain at least 1 digit.")
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
 
 
         # Name checks
         if len(name) < 4:
             messages.error(request, "Name must be at least 4 characters long")
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
         
         # Email checks
         if password != password2:
             messages.error(request, "Password do not match")
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
         
         if len(password) < 8:
             messages.error(request, "Password must be at least 8 characters long")
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
         
         if not re.search(r"[^\w\s]", password):
             messages.error(request, "Password must contain at least 1 special character")
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
 
         if len(re.findall(r"\d", password)) < 3:
             messages.error(request, "Password must contain at least 3 digits")
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
 
         temp_user = User(email=email)
         try:
@@ -65,7 +69,7 @@ class SignUpView(View):
         except ValidationError as error:
             for message in error.messages:
                 messages.error(request, message)
-            return redirect("SignUp")
+            return render(request, "Users/SignUp.html", {"form_data": form_data})
         
 
         user = User.objects.create_user(
@@ -87,8 +91,16 @@ class SignInView(View):
         return render(request, "Users/SignIn.html")
     
     def post(self, request):
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "")
+
+        form_data = {
+            "email": email,
+        }
+
+        if not email or not password:
+            messages.error(request, "All fields are required")
+            return render(request, "Users/SignIn.html", {"form_data": form_data})
 
         user = authenticate(request, email=email, password=password)
 
@@ -98,4 +110,4 @@ class SignInView(View):
         
         else:
             messages.error(request, "Invalid email or password")
-            return redirect("SignIn")
+            return render(request, "Users/SignIn.html", {"form_data": form_data})

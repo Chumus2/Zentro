@@ -54,7 +54,7 @@
 
                         <div class="Auth_Field">
                             <label for="signin-email">Email</label>
-                            <input id="signin-email" type="email" name="email" placeholder="Write email here" required>
+                            <input id="signin-email" type="email" name="email" placeholder="Write email here" value="{{ form_data.email|default:'' }}" required>
                         </div>
 
                         <div class="Auth_Field">

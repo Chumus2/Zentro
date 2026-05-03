@@ -54,12 +54,12 @@
 
                         <div class="Auth_Field">
                             <label for="signup-name">Your name</label>
-                            <input id="signup-name" type="text" name="name" placeholder="Write your name here" required>
+                            <input id="signup-name" type="text" name="name" placeholder="Write your name here" value="{{ form_data.name|default:'' }}" required>
                         </div>
 
                         <div class="Auth_Field">
                             <label for="signup-email">Your email</label>
-                            <input id="signup-email" type="email" name="email" placeholder="Write your email here" required>
+                            <input id="signup-email" type="email" name="email" placeholder="Write your email here" value="{{ form_data.email|default:'' }}" required>
                         </div>
 
                         <div class="Auth_Field">
