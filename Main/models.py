@@ -27,4 +27,4 @@ class Profile(models.Model):
     icon = models.ImageField(upload_to="profile_icon/", blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.user} - {self.user.name}"
