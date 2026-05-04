@@ -90,6 +90,22 @@
     font-size: 0.82rem;
 }
 
+.EditChat_Messages {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 1.3rem;
+}
+
+.EditChat_Message {
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(248, 113, 113, 0.28);
+    border-radius: 1rem;
+    background: rgba(127, 29, 29, 0.22);
+    color: #fecaca;
+    line-height: 1.55;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
 .EditChat_Form {
     display: grid;
     gap: 1rem;

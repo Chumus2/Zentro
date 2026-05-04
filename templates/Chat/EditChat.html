@@ -30,17 +30,27 @@
                     <p>Make changes below and save when you're ready.</p>
                 </div>
 
+                {% if messages %}
+
+                    <div class="EditChat_Messages">
+                        {% for message in messages %}
+                            <div class="EditChat_Message">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+
                 <form action="{% url 'EditChat' chat.id %}" method="post" class="EditChat_Form">
                     {% csrf_token %}
 
                     <div class="EditChat_Field">
                         <label for="chat-title">Chat's title</label>
-                        <input id="chat-title" type="text" name="chat_title" value="{{ chat.title }}">
+                        <input id="chat-title" type="text" name="chat_title" value="{{ form_data.title|default:chat.title }}">
                     </div>
 
                     <div class="EditChat_Field">
                         <label for="chat-description">Chat's description</label>
-                        <textarea id="chat-description" name="chat_description" placeholder="No description yet">{{ chat.description }}</textarea>
+                        <textarea id="chat-description" name="chat_description" placeholder="No description yet">{{ form_data.description|default:chat.description }}</textarea>
                     </div>
 
                     <div class="EditChat_Actions">
