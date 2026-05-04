@@ -450,8 +450,8 @@
 }
 
 .ChatCard_Dropdown_Icon {
-    width: 6.5rem;
-    height: 6.5rem;
+    width: 9rem;
+    height: 9rem;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid rgba(148, 163, 184, 0.22);
@@ -562,37 +562,45 @@
     display: flex;
     min-height: 0;
     flex-direction: column;
-    gap: 0.85rem;
-    padding: 1.4rem;
+    gap: 1rem;
+    padding: 1.6rem 1.5rem;
     overflow-y: auto;
 }
 
 .Message_Item {
     max-width: min(38rem, 85%);
-    padding: 0.9rem 1rem;
+    padding: 1rem 1.05rem 0.9rem;
     border-radius: 1rem 1rem 1rem 0.35rem;
-    background: rgba(30, 41, 59, 0.9);
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.94) 0%, rgba(15, 23, 42, 0.9) 100%);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.2);
+    backdrop-filter: blur(10px);
 }
 
 .Message_Item__own {
     align-self: flex-end;
     border-radius: 1rem 1rem 0.35rem 1rem;
+    border-color: rgba(125, 211, 252, 0.12);
     background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
     box-shadow: 0 14px 32px rgba(37, 99, 235, 0.24);
 }
 
 .Message_Item strong {
-    display: block;
-    margin-bottom: 0.3rem;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 0.45rem;
     color: #93c5fd;
-    font-size: 0.95rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
 }
 
 .Message_Item p {
-    margin: 0 0 0.4rem;
+    margin: 0;
     color: #e2e8f0;
-    line-height: 1.5;
+    font-size: 0.98rem;
+    line-height: 1.65;
     word-break: break-word;
 }
 
@@ -603,8 +611,11 @@
 }
 
 .Message_Item small {
+    display: block;
+    margin-top: 0.6rem;
     color: #94a3b8;
-    font-size: 0.75rem;
+    font-size: 0.73rem;
+    text-align: right;
 }
 
 .Message_Form_Wrapper {
