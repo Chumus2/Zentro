@@ -10,7 +10,6 @@
 {% block content %}
 
     <div class="Main">
-
         <aside class="Chats_Aside">
             <div class="Aside_Header">
 
@@ -88,19 +87,29 @@
         </aside>
 
         <section class="Chat_Panel">
+            <div class="Chat_Panel_Overlay" id="chat-panel-overlay"></div>
 
             {% if active_chat %}
 
                 <div class="ChatCard">
-                    <div class="ChatCard_Info">
-                        {% if active_chat.icon %}
-                            <img src="{{ active_chat.icon.url }}" loading="lazy" width="60" height="60">
-                        {% endif %}
-                        
-                        <a href="" target="_self" class="ChatCard_Content">
-                            <h2>{{ active_chat.title }}</h2>
-                            <p>{{ active_chat.participants.count }} participants</p>
-                        </a>
+                    <div class="ChatCard_Area">
+                    <form class="ChatCard_Info">
+
+                        <button type="button" class="ChatCard_Button" id="chatcard-toggle" aria-expanded="false" aria-controls="chatcard-dropdown">
+                            {% if active_chat.icon %}
+                                <img src="{{ active_chat.icon.url }}" loading="lazy" width="60" height="60">
+                            {% endif %}
+
+                            <span class="ChatCard_Copy">
+                                <h2>{{ active_chat.title }}</h2>
+                                <p>{{ active_chat.participants.count }} participants</p>
+                            </span>
+                        </button>
+
+                    </form>
+                    <div class="ChatCard_Dropdown" id="chatcard-dropdown">
+
+                    </div>
                     </div>
                 </div>
 
@@ -147,6 +156,24 @@
     <script>
         const menuToggleButton = document.getElementById("menu-toggle");
         const searchDropdown = document.getElementById("search-dropdown");
+        const chatCardToggleButton = document.getElementById("chatcard-toggle");
+        const chatCardDropdown = document.getElementById("chatcard-dropdown");
+        const chatPanelOverlay = document.getElementById("chat-panel-overlay");
+
+        function syncOverlayState() {
+            if (!chatPanelOverlay) {
+                return;
+            }
+
+            const isSearchOpen = searchDropdown && searchDropdown.classList.contains("Search_Dropdown__open");
+            const isChatCardOpen = chatCardDropdown && chatCardDropdown.classList.contains("ChatCard_Dropdown__open");
+
+            if (isSearchOpen || isChatCardOpen) {
+                chatPanelOverlay.classList.add("Chat_Panel_Overlay__visible");
+            } else {
+                chatPanelOverlay.classList.remove("Chat_Panel_Overlay__visible");
+            }
+        }
 
         if (menuToggleButton && searchDropdown) {
             searchDropdown.classList.add("Search_Dropdown__hidden");
@@ -163,6 +190,28 @@
                     searchDropdown.classList.add("Search_Dropdown__open");
                     menuToggleButton.setAttribute("aria-expanded", "true");
                 }
+
+                syncOverlayState();
+            });
+        }
+
+        if (chatCardToggleButton && chatCardDropdown) {
+            chatCardDropdown.classList.add("ChatCard_Dropdown__hidden");
+
+            chatCardToggleButton.addEventListener("click", () => {
+                const isOpen = chatCardDropdown.classList.contains("ChatCard_Dropdown__open");
+
+                if (isOpen) {
+                    chatCardDropdown.classList.remove("ChatCard_Dropdown__open");
+                    chatCardDropdown.classList.add("ChatCard_Dropdown__hidden");
+                    chatCardToggleButton.setAttribute("aria-expanded", "false");
+                } else {
+                    chatCardDropdown.classList.remove("ChatCard_Dropdown__hidden");
+                    chatCardDropdown.classList.add("ChatCard_Dropdown__open");
+                    chatCardToggleButton.setAttribute("aria-expanded", "true");
+                }
+
+                syncOverlayState();
             });
         }
     </script>

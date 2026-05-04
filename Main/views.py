@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.views import View
 from django.db.models import Prefetch
-from .models import Chat, Message
+from .models import *
 
 
 class MainView(LoginRequiredMixin, View):

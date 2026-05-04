@@ -174,7 +174,7 @@
     background: rgba(15, 23, 42, 0.96);
     box-shadow: 0 24px 44px rgba(2, 8, 23, 0.38);
     backdrop-filter: blur(16px);
-    z-index: 20;
+    z-index: 30;
     opacity: 0;
     transform: translateY(-0.6rem) scale(0.98);
     transform-origin: top left;
@@ -328,28 +328,52 @@
 }
 
 .Chat_Panel {
+    position: relative;
     min-height: calc(100vh - 3rem);
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto;
+    justify-items: stretch;
     border: 1px solid rgba(148, 163, 184, 0.16);
     border-radius: 1.5rem;
     background:
-        linear-gradient(180deg, rgba(15, 23, 42, 0.82) 0%, rgba(15, 23, 42, 0.72) 100%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.58) 0%, rgba(15, 23, 42, 0.5) 100%),
         url("../../images/ChatBackground.png") center / cover no-repeat;
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     overflow: hidden;
 }
 
+.Chat_Panel_Overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(15, 23, 42, 0.14);
+    transition: opacity 0.22s ease;
+}
+
+.Chat_Panel_Overlay__visible {
+    opacity: 1;
+}
+
 .ChatCard {
+    position: relative;
+    z-index: 11;
     padding: 1.1rem 1.4rem;
     border-bottom: 1px solid rgba(148, 163, 184, 0.12);
     background: rgba(30, 41, 59, 0.55);
 }
 
+.ChatCard_Area {
+    position: relative;
+}
+
 .ChatCard_Info {
     display: flex;
     align-items: center;
-    gap: 1rem;
 }
 
 .ChatCard_Info h2 {
@@ -359,6 +383,7 @@
     color: #f8fafc;
 }
 
+.ChatCard_Copy,
 .ChatCard_Content {
     display: flex;
     flex-direction: column;
@@ -366,7 +391,64 @@
     gap: 0.5rem;
 }
 
+.ChatCard_Button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid transparent;
+    border-radius: 1.15rem;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.ChatCard_Button:hover {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(96, 165, 250, 0.22);
+    transform: translateY(-1px);
+}
+
+.ChatCard_Button .ChatCard_Copy p {
+    color: #cbd5e1;
+}
+
+.ChatCard_Dropdown {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: 0;
+    width: min(18rem, 100%);
+    min-height: 4rem;
+    padding: 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 1.2rem;
+    background: rgba(15, 23, 42, 0.96);
+    box-shadow: 0 24px 44px rgba(2, 8, 23, 0.38);
+    backdrop-filter: blur(16px);
+    z-index: 30;
+    opacity: 0;
+    transform: translateY(-0.6rem) scale(0.98);
+    transform-origin: top left;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.ChatCard_Dropdown__hidden {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.ChatCard_Dropdown__open {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
 .Messages_Box {
+    position: relative;
+    z-index: 1;
     display: flex;
     min-height: 0;
     flex-direction: column;
@@ -416,6 +498,8 @@
 }
 
 .Message_Form_Wrapper {
+    position: relative;
+    z-index: 1;
     padding: 1rem 1.4rem 1.3rem;
     border-top: 1px solid rgba(148, 163, 184, 0.12);
     background: rgba(15, 23, 42, 0.92);
