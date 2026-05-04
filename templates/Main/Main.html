@@ -107,9 +107,17 @@
                         </button>
 
                     </form>
-                    <div class="ChatCard_Dropdown" id="chatcard-dropdown">
 
+                    <div class="ChatCard_Dropdown" id="chatcard-dropdown">
+                        {% if active_chat.icon %}
+                            <img class="ChatCard_Dropdown_Icon" src="{{ active_chat.icon.url }}" loading="lazy" alt="{{ active_chat.title }}">
+                        {% endif %}
+
+                        <h2 class="ChatCard_Dropdown_Title">{{ active_chat.title }}</h2>
+                        <p class="ChatCard_Dropdown_Description">{{ active_chat.description|default:"No description yet." }}</p>
+                        <small class="ChatCard_Dropdown_Date">{{ active_chat.created_at }}</small>
                     </div>
+
                     </div>
                 </div>
 
