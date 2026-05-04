@@ -2,17 +2,55 @@
 {% load static %}
 
 {% block title %}
-    Edit {{ chat.title }}
+    Edit {{ chat.title }} - Zentro
 {% endblock %}
 
-{% block styles %}{% endblock %}
-
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Chat/EditChat.css' %}">
+{% endblock %}
 {% block content %}
 
-    <div>
+    <section class="EditChat_Page">
+        <div class="EditChat_Backdrop"></div>
 
+        <div class="EditChat_Shell">
+            <div class="EditChat_Copy">
+                <span class="EditChat_Badge">Chat settings</span>
+                <h1>Edit your chat.</h1>
+                <p>
+                    Update the chat title and description so participants always see
+                    a clean, clear space with the right context.
+                </p>
+            </div>
 
+            <div class="EditChat_Card">
+                <div class="EditChat_Card_Header">
+                    <span class="EditChat_Eyebrow">Editing</span>
+                    <h2>{{ chat.title }}</h2>
+                    <p>Make changes below and save when you're ready.</p>
+                </div>
 
-    </div>
+                <form action="{% url 'EditChat' chat.id %}" method="post" class="EditChat_Form">
+                    {% csrf_token %}
+
+                    <div class="EditChat_Field">
+                        <label for="chat-title">Chat's title</label>
+                        <input id="chat-title" type="text" name="chat_title" value="{{ chat.title }}">
+                    </div>
+
+                    <div class="EditChat_Field">
+                        <label for="chat-description">Chat's description</label>
+                        <textarea id="chat-description" name="chat_description" placeholder="No description yet">{{ chat.description }}</textarea>
+                    </div>
+
+                    <div class="EditChat_Actions">
+                        <a href="{% url 'Main' %}" target="_self" class="EditChat_Back_Button">Back</a>
+                        <button type="submit" class="EditChat_Submit_Button">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </section>
 
 {% endblock %}
