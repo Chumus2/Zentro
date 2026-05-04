@@ -11,7 +11,9 @@ class EditChatView(LoginRequiredMixin, View):
     def get(self, request, chat_id):
         chat = get_object_or_404(Chat, id=chat_id)
 
-        if not chat.admins.filter(id=request.user.id).exists() and not chat.participants.filter(id=request.user.id).exists():
+        if not chat.admins.filter(id=request.user.id).exists():
+            return redirect("ChatDetail", chat_id=chat.id)
+        if not chat.participants.filter(id=request.user.id).exists():
             return redirect("Main")
 
         return render(request, "Chat/EditChat.html", {"chat": chat})
@@ -22,7 +24,9 @@ class EditChatView(LoginRequiredMixin, View):
 
         chat = get_object_or_404(Chat, id=chat_id)
 
-        if not chat.admins.filter(id=request.user.id).exists() and not chat.participants.filter(id=request.user.id).exists():
+        if not chat.admins.filter(id=request.user.id).exists():
+            return redirect("ChatDetail", chat_id=chat.id)
+        if not chat.participants.filter(id=request.user.id).exists():
             return redirect("Main")
 
         form_data = {
@@ -50,5 +54,10 @@ class ChatParticipantsView(LoginRequiredMixin, View):
 
     def get(self, request, chat_id):
         chat = get_object_or_404(Chat, id=chat_id)
+
+        if not chat.admins.filter(id=request.user.id).exists():
+            return redirect("ChatDetail", chat_id=chat.id)
+        if not chat.participants.filter(id=request.user.id).exists():
+            return redirect("Main")
 
         return render(request, "Chat/Participants.html", {"chat": chat})
