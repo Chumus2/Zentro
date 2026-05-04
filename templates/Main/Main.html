@@ -111,7 +111,7 @@
                     <div class="ChatCard_Dropdown" id="chatcard-dropdown">
                         
                         {% if is_admin %}
-                            <a href="" target="_self" class="ChatCard_Dropdown_Edit">
+                            <a href="{% url 'EditChat' active_chat.id %}" target="_self" class="ChatCard_Dropdown_Edit">
                                 <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit chat">
                             </a>
                         {% endif %}

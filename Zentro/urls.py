@@ -10,7 +10,7 @@ urlpatterns = [
     path("", include("Main.urls")),
     path("homepage/", include("HomePage.urls")),
     path("users/", include("Users.urls")),
-    path("edit/", include("Chat.urls"))
+    path("chat/", include("Chat.urls"))
 ]
 
 if settings.DEBUG:
