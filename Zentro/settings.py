@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'HomePage',
     'Users',
-    'Main'
+    'Main',
+    'Chat'
 ]
 
 MIDDLEWARE = [
