@@ -49,17 +49,17 @@
                         </div>
                     {% endif %}
 
-                    <form action="{% url 'SignIn' %}" method="post" class="Auth_Form">
+                    <form action="{% url 'SignIn' %}" method="post" class="Auth_Form" autocomplete="off">
                         {% csrf_token %}
 
                         <div class="Auth_Field">
                             <label for="signin-email">Email</label>
-                            <input id="signin-email" type="email" name="email" placeholder="Write email here" value="{{ form_data.email|default:'' }}" required>
+                            <input id="signin-email" type="email" name="email" placeholder="Write email here" value="{{ form_data.email|default:'' }}">
                         </div>
 
                         <div class="Auth_Field">
                             <label for="signin-password">Password</label>
-                            <input id="signin-password" type="password" name="password" placeholder="Write password here" required>
+                            <input id="signin-password" type="password" name="password" placeholder="Write password here">
                         </div>
 
                         <button type="submit" class="Auth_Button">Login</button>

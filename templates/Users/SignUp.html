@@ -49,27 +49,27 @@
                         </div>
                     {% endif %}
 
-                    <form action="{% url 'SignUp' %}" method="post" class="Auth_Form">
+                    <form action="{% url 'SignUp' %}" method="post" class="Auth_Form" autocomplete="off">
                         {% csrf_token %}
 
                         <div class="Auth_Field">
                             <label for="signup-name">Your name</label>
-                            <input id="signup-name" type="text" name="name" placeholder="Write your name here" value="{{ form_data.name|default:'' }}" required>
+                            <input id="signup-name" type="text" name="name" placeholder="Write your name here" value="{{ form_data.name|default:'' }}">
                         </div>
 
                         <div class="Auth_Field">
                             <label for="signup-email">Your email</label>
-                            <input id="signup-email" type="email" name="email" placeholder="Write your email here" value="{{ form_data.email|default:'' }}" required>
+                            <input id="signup-email" type="email" name="email" placeholder="Write your email here" value="{{ form_data.email|default:'' }}">
                         </div>
 
                         <div class="Auth_Field">
                             <label for="signup-password">Your password</label>
-                            <input id="signup-password" type="password" name="password" placeholder="Write your password here" required>
+                            <input id="signup-password" type="password" name="password" placeholder="Write your password here">
                         </div>
 
                         <div class="Auth_Field">
                             <label for="signup-password2">Confirm your password</label>
-                            <input id="signup-password2" type="password" name="password2" placeholder="Confirm your password here" required>
+                            <input id="signup-password2" type="password" name="password2" placeholder="Confirm your password here">
                         </div>
 
                         <button type="submit" class="Auth_Button">Confirm</button>
