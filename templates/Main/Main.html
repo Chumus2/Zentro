@@ -13,14 +13,43 @@
 
         <aside class="Chats_Aside">
             <div class="Aside_Header">
-                <h2>Chats</h2>
 
-                <form action="{% url 'Main' %}" method="get" class="Search_Form">
-                    <input class="Search_Input" type="text" name="search_text" placeholder="Write chat title here" value="{{ search|default:'' }}">
-                    <button class="Search_Button" type="submit">
-                        <img src="{% static 'images/SearchIcon.png' %}" alt="Search" loading="lazy">
-                    </button>
-                </form>
+                <div class="Search_Area">
+
+                    <form action="{% url 'Main' %}" method="get" class="Search_Form">
+                        <button type="button" class="Menu_Button" id="menu-toggle" aria-expanded="false" aria-controls="search-dropdown">
+                            <img src="{% static 'images/MenuIcon.png' %}" alt="Menu" loading="lazy">
+                        </button>
+
+                        <input class="Search_Input" type="text" name="search_text" placeholder="Write chat title here" value="{{ search|default:'' }}">
+                        <button class="Search_Button" type="submit">
+                            <img src="{% static 'images/SearchIcon.png' %}" alt="Search" loading="lazy">
+                        </button>
+                    </form>
+
+                    <div class="Search_Dropdown" id="search-dropdown">
+                        <a href="" target="_self" class="Dropdown_Profile">
+                            <img src="{{ request.user.name }}" loading="lazy" alt="Profile">
+                            <span>{{ request.user.name }}</span>
+                        </a>
+
+                        <hr class="Dropdown_Divider">
+
+                        <a href="" target="_self" class="Dropdown_Link">
+                            <img src="{% static 'images/SettingsIcon.png' %}" loading="lazy" alt="Settings">
+                            <span>Settings</span>
+                        </a>
+
+                        <hr class="Dropdown_Divider">
+
+                        <form action="{% url 'Main' %}" method="post" class="Logout_Form">
+                            {% csrf_token %}
+                            <button class="Ghost_Button" type="submit">Log out</button>
+                        </form>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -55,11 +84,6 @@
                 {% endfor %}
 
             {% endif %}
-
-            <form action="{% url 'Main' %}" method="post" class="Logout_Form">
-                {% csrf_token %}
-                <button class="Ghost_Button" type="submit">Log out</button>
-            </form>
 
         </aside>
 
@@ -112,4 +136,29 @@
 
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const menuToggleButton = document.getElementById("menu-toggle");
+        const searchDropdown = document.getElementById("search-dropdown");
+
+        if (menuToggleButton && searchDropdown) {
+            searchDropdown.classList.add("Search_Dropdown__hidden");
+
+            menuToggleButton.addEventListener("click", () => {
+                const isOpen = searchDropdown.classList.contains("Search_Dropdown__open");
+
+                if (isOpen) {
+                    searchDropdown.classList.remove("Search_Dropdown__open");
+                    searchDropdown.classList.add("Search_Dropdown__hidden");
+                    menuToggleButton.setAttribute("aria-expanded", "false");
+                } else {
+                    searchDropdown.classList.remove("Search_Dropdown__hidden");
+                    searchDropdown.classList.add("Search_Dropdown__open");
+                    menuToggleButton.setAttribute("aria-expanded", "true");
+                }
+            });
+        }
+    </script>
 {% endblock %}
