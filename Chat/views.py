@@ -43,3 +43,12 @@ class EditChatView(LoginRequiredMixin, View):
         chat.save()
 
         return redirect("ChatDetail", chat_id=chat.id)
+    
+
+class ChatParticipantsView(LoginRequiredMixin, View):
+    login_url="HomePage"
+
+    def get(self, request, chat_id):
+        chat = get_object_or_404(Chat, id=chat_id)
+
+        return render(request, "Chat/Participants.html", {"chat": chat})

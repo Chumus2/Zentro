@@ -122,9 +122,9 @@
 
                         <h2 class="ChatCard_Dropdown_Title">{{ active_chat.title }}</h2>
 
-                        <p class="ChatCard_Dropdown_Participants">
+                        <a href="{% url 'Participants' active_chat.id %}" class="ChatCard_Dropdown_Participants">
                             {{ active_chat.participants.count }} participants
-                        </p>
+                        </a>
 
                         <p class="ChatCard_Dropdown_Description">{{ active_chat.description|default:"No description yet." }}</p>
 
