@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
+from Users.models import User
 from Main.models import Chat
 
 
@@ -102,5 +103,21 @@ class ChatParticipantsView(LoginRequiredMixin, View):
 class AddParticipantView(LoginRequiredMixin, View):
     login_url = "HomePage"
 
-    def get(self, request):
-        pass
+    def get(self, request, chat_id):
+        chat = get_object_or_404(Chat, id=chat_id)
+
+        if not chat.participants.filter(id=request.user.id).exists():
+            return redirect("Main")
+        if not chat.admins.filter(id=request.user.id).exists():
+            return redirect("ChatDetail", chat_id=chat.id)
+        
+        friends = request.user.profile.friends.exclude(
+            id__in=chat.participants.values_list("id", flat=True)
+        )
+
+        context = {
+            "chat": chat,
+            "friends": friends
+        }
+
+        return render(request, "Chat/AddParticipants.html", context)

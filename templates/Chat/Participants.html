@@ -84,7 +84,10 @@
                     {% endfor %}
                 </div>
 
-                <a href="{% url 'ChatDetail' chat.id %}" target="_self" class="Participants_Back_Button">Back</a>
+                <div class="Participants_Actions">
+                    <a href="{% url 'AddUser' chat.id %}" target="_self" class="Participants_AddFriend_Button">Add friend</a>
+                    <a href="{% url 'ChatDetail' chat.id %}" target="_self" class="Participants_Back_Button">Back</a>
+                </div>
             </div>
         </div>
     </section>

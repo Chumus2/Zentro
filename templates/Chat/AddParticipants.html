@@ -1,0 +1,38 @@
+{% extends 'Base/Base.html' %}
+{% load static %}
+
+{% block title %}
+    Add friends to {{ chat.title }} - Zentro
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Chat/AddParticipants.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <h2>Add friends</h2>
+
+        {% if friends %}
+
+            {% for friend in friends %}
+                <div>
+                    <img src="{{ friend.profile.icon.url }}" loading="lazy">
+
+                    <h2>{{ friend.name }}</h2>
+
+                    <form action="{% url 'AddUser' chat.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Add</button>
+                    </form> 
+                </div>
+            {% endfor %}
+
+        {% endif %}
+
+        <a href="{% url 'Participants' chat.id %}" target="_self">Back</a>
+
+    </div>
+
+{% endblock %}
