@@ -97,12 +97,12 @@ class CreateChatView(LoginRequiredMixin, View):
     login_url = "HomePage"
 
     def get(self, request):
-        return render(request, "Main/Main.html")
+        return render(request, "Chat/ChatCreation.html")
     
     def post(self, request):
         user = request.user
-        #title = request.POST.get("chat_title")
-        #description = request.POST.get("chat_description")
+        title = request.POST.get("chat_title")
+        description = request.POST.get("chat_description")
 
         chat = Chat.objects.create(
             title=title,

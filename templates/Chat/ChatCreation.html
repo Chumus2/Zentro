@@ -1,0 +1,35 @@
+{% extends 'Base/Base.html' %}
+{% load static %}
+
+{% block title %}Chat creation form - Zentro{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Chat/ChatCreation.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        
+        <h2>Chat creation form</h2>
+
+        <form action="{% url 'CreateChat' %}" method="post">
+            {% csrf_token %}
+
+            <div>
+                <h2>Chat's title</h2>
+                <input type="text" name="chat_title" placeholder="Write chat's title here">
+            </div>
+
+            <div>
+                <h2>Chat's description</h2>
+                <textarea name="chat_description" placeholder="Write chat's description here"></textarea>
+            </div>
+
+            <button type="submit">Create</button>
+
+        </form>
+
+    </div>
+
+{% endblock %}
