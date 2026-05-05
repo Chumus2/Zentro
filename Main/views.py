@@ -14,9 +14,8 @@ class MainView(LoginRequiredMixin, View):
         chats = (Chat.objects.filter(participants=request.user).prefetch_related(Prefetch("messages", queryset=Message.objects.order_by("created_at"))))
 
         if search:
-            chats = chats.filter(title__icontains=search)
-        
-        chats = chats.distinct()
+            chats = chats.filter(title__icontains=search).distinct()
+
         context = {
             "chats": chats,
             "search": search

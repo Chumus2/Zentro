@@ -53,11 +53,26 @@ class ChatParticipantsView(LoginRequiredMixin, View):
     login_url="HomePage"
 
     def get(self, request, chat_id):
+        search = request.GET.get("search")
+
         chat = get_object_or_404(Chat, id=chat_id)
+
+        participants = chat.participants.all()
+        admins = set(chat.admins.values_list("id", flat=True))
 
         if not chat.admins.filter(id=request.user.id).exists():
             return redirect("ChatDetail", chat_id=chat.id)
         if not chat.participants.filter(id=request.user.id).exists():
             return redirect("Main")
+        
+        if search:
+            participants = participants.filter(name__icontains=search).distinct()
 
-        return render(request, "Chat/Participants.html", {"chat": chat})
+
+        context = {
+            "participants": participants,
+            "chat": chat,
+            "admins": admins
+        }
+
+        return render(request, "Chat/Participants.html", context)

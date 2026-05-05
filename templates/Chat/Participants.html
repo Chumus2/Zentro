@@ -1,4 +1,5 @@
 {% extends 'Base/Base.html' %}
+{% load static %}
 
 {% block title %}
     {{ chat.title }} participants - Zentro
@@ -10,7 +11,32 @@
 
     <div>
         
+        <form action="{% url 'Participants' chat.id %}" method="get">
+            <input type="text" name="search" placeholder="Search participant here" autocomplete="off">
+            <button type="submit">
+                <img src="{% static 'images/SearchIcon.png' %}" loading="lazy">
+            </button>
+        </form>
 
+        <div>
+
+            {% for participant in participants %}
+                <div>
+                    <img src="{{ participant.icon.url }}" loading="lazy">
+
+                    <span>
+                        <h2>{{ participant.name }}</h2>
+                        
+                        {% if participant.id in admins %}
+                            <strong>Admin</strong>
+                        {% endif %}
+                    </span>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <a href="{% url 'ChatDetail' chat.id %}" target="_self">Back</a>
 
     </div>
 
