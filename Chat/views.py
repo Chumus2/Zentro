@@ -112,7 +112,7 @@ class AddParticipantView(LoginRequiredMixin, View):
             return redirect("ChatDetail", chat_id=chat.id)
         
         friends = request.user.profile.friends.exclude(
-            id__in=chat.participants.values_list("id", flat=True)
+            user__id__in=chat.participants.values_list("id", flat=True)
         )
 
         context = {
@@ -121,3 +121,19 @@ class AddParticipantView(LoginRequiredMixin, View):
         }
 
         return render(request, "Chat/AddParticipants.html", context)
+    
+    def post(self, request, chat_id):
+        friend_id = request.POST.get("friend_id")
+
+        chat = get_object_or_404(Chat, id=chat_id)
+        friend = get_object_or_404(request.user.profile.friends, id=friend_id)
+
+        if not chat.participants.filter(id=request.user.id).exists():
+            return redirect("Main")
+        if not chat.admins.filter(id=request.user.id).exists():
+            return redirect("ChatDetail", chat_id=chat.id)
+        
+        chat.participants.add(friend.user)
+        chat.save()
+
+        return redirect("Participants", chat_id=chat_id)

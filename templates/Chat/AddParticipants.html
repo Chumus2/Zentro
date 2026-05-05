@@ -11,28 +11,59 @@
 
 {% block content %}
 
-    <div>
-        <h2>Add friends</h2>
+    <section class="AddParticipants_Page">
+        <div class="AddParticipants_Backdrop"></div>
 
-        {% if friends %}
+        <div class="AddParticipants_Shell">
+            <div class="AddParticipants_Copy">
+                <span class="AddParticipants_Badge">Invite friends</span>
+                <h1>{{ chat.title }}</h1>
+                <p>
+                    Add friends from your network into this chat and build the group
+                    without leaving the flow.
+                </p>
+            </div>
 
-            {% for friend in friends %}
-                <div>
-                    <img src="{{ friend.profile.icon.url }}" loading="lazy">
-
-                    <h2>{{ friend.name }}</h2>
-
-                    <form action="{% url 'AddUser' chat.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit">Add</button>
-                    </form> 
+            <div class="AddParticipants_Card">
+                <div class="AddParticipants_Card_Header">
+                    <span class="AddParticipants_Eyebrow">Friends</span>
+                    <h2>Add friends to this chat</h2>
+                    <p>Choose who should join the conversation next.</p>
                 </div>
-            {% endfor %}
 
-        {% endif %}
+                <div class="AddParticipants_List">
+                    {% if friends %}
 
-        <a href="{% url 'Participants' chat.id %}" target="_self">Back</a>
+                        {% for friend in friends %}
+                            <div class="AddParticipant_Row">
+                                {% if friend.icon %}
+                                    <img class="AddParticipant_Avatar" src="{{ friend.icon.url }}" loading="lazy" alt="{{ friend.user.name }}">
+                                {% else %}
+                                    <div class="AddParticipant_Avatar AddParticipant_Avatar__placeholder">{{ friend.user.name|slice:":1"|upper }}</div>
+                                {% endif %}
 
-    </div>
+
+                                <div class="AddParticipant_Copy">
+                                    <h3>{{ friend.user.name }}</h3>
+                                </div>
+
+                                <form action="{% url 'AddUser' chat.id %}" method="post" class="AddParticipant_Action_Form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="friend_id" value="{{ friend.id }}">
+
+                                    <button type="submit" class="AddParticipant_Action_Button">Add</button>
+                                </form>
+                            </div>
+                        {% endfor %}
+
+                    {% else %}
+                        <div class="AddParticipants_Empty">No friends available to add.</div>
+                    {% endif %}
+                </div>
+
+                <a href="{% url 'Participants' chat.id %}" target="_self" class="AddParticipants_Back_Button">Back</a>
+            </div>
+        </div>
+    </section>
 
 {% endblock %}
