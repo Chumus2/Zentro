@@ -91,3 +91,25 @@ class ParticipantLeaveView(LoginRequiredMixin, View):
         chat.save()
 
         return redirect("Main")
+    
+
+class CreateChatView(LoginRequiredMixin, View):
+    login_url = "HomePage"
+
+    def get(self, request):
+        return render(request, "Main/Main.html")
+    
+    def post(self, request):
+        user = request.user
+        #title = request.POST.get("chat_title")
+        #description = request.POST.get("chat_description")
+
+        chat = Chat.objects.create(
+            title=title,
+            description=description,
+            participants=user,
+            admins=user,
+            creator=user
+        )
+
+        return redirect("ChatDetail", chat_id=chat.id)
