@@ -137,3 +137,32 @@ class AddParticipantView(LoginRequiredMixin, View):
         chat.save()
 
         return redirect("Participants", chat_id=chat_id)
+    
+
+class RemoveParticipant(View):
+
+    def get(self, request, chat_id):
+        chat = get_object_or_404(Chat, id=chat_id)
+
+        if not chat.participants.filter(id=request.user.id).exists():
+            return redirect("Main")
+        if not chat.admins.filter(id=request.user.id).exists():
+            return redirect("ChatDetail", chat_id=chat.id)
+        
+        return render(request, "Chat/Participants.html", {"chat": chat})
+
+    def post(self, request, chat_id):
+        participant_id = request.POST.get("participant_id")
+
+        chat = get_object_or_404(Chat, id=chat_id)
+        participant = get_object_or_404(chat.participants, id=participant_id)
+
+        if not chat.participants.filter(id=request.user.id).exists():
+            return redirect("Main")
+        if not chat.admins.filter(id=request.user.id).exists():
+            return redirect("ChatDetail", chat_id=chat.id)
+        
+        chat.participants.remove(participant)
+        chat.save()
+
+        return redirect("Participants", chat_id=chat.id)

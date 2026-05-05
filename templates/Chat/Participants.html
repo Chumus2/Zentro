@@ -76,6 +76,17 @@
                                     {% endif %}
 
                                 </form>
+
+                                <form action="{% url 'RemoveUser' chat.id %}" method="post">
+                                    {% csrf_token %}
+
+                                    <input type="hidden" name="participant_id" value="{{ participant.id }}">
+
+                                    {% if participant.id != chat.creator.id %}
+                                        <button type="submit" name="remove_button" value="remove_user" class="Participant_Action_Button">Remove</button>
+                                    {% endif %}
+
+                                </form>
                             {% endif %}
 
                         </div>
