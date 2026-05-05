@@ -97,3 +97,10 @@ class ChatParticipantsView(LoginRequiredMixin, View):
             if request.user == chat.creator and participant != chat.creator:
                 chat.admins.remove(participant)
                 return redirect("Participants", chat_id=chat.id)
+            
+
+class AddParticipantView(LoginRequiredMixin, View):
+    login_url = "HomePage"
+
+    def get(self, request):
+        pass
