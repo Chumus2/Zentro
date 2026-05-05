@@ -5,39 +5,88 @@
     {{ chat.title }} participants - Zentro
 {% endblock %}
 
-{% block styles %}{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Chat/Participants.css' %}">
+{% endblock %}
 
 {% block content %}
 
-    <div>
-        
-        <form action="{% url 'Participants' chat.id %}" method="get">
-            <input type="text" name="search" placeholder="Search participant here" autocomplete="off">
-            <button type="submit">
-                <img src="{% static 'images/SearchIcon.png' %}" loading="lazy">
-            </button>
-        </form>
+    <section class="Participants_Page">
+        <div class="Participants_Backdrop"></div>
 
-        <div>
+        <div class="Participants_Shell">
+            <div class="Participants_Copy">
+                <span class="Participants_Badge">Chat members</span>
+                <h1>{{ chat.title }}</h1>
+                <p>
+                    Browse the participants in this chat, quickly search for someone,
+                    and see at a glance who has admin access.
+                </p>
+            </div>
 
-            {% for participant in participants %}
-                <div>
-                    <img src="{{ participant.icon.url }}" loading="lazy">
-
-                    <span>
-                        <h2>{{ participant.name }}</h2>
-                        
-                        {% if participant.id in admins %}
-                            <strong>Admin</strong>
-                        {% endif %}
-                    </span>
+            <div class="Participants_Card">
+                <div class="Participants_Card_Header">
+                    <span class="Participants_Eyebrow">Participants</span>
+                    <h2>People in this chat</h2>
+                    <p>Use search to find a participant faster.</p>
                 </div>
-            {% endfor %}
 
+                <form action="{% url 'Participants' chat.id %}" method="get" class="Participants_Search_Form">
+                    <input class="Participants_Search_Input" type="text" name="search" placeholder="Search participant here" value="{{ request.GET.search|default:'' }}" autocomplete="off">
+                    <button class="Participants_Search_Button" type="submit">
+                        <img src="{% static 'images/SearchIcon.png' %}" loading="lazy" alt="Search">
+                    </button>
+                </form>
+
+                <div class="Participants_List">
+                    {% for participant in participants %}
+                        <div class="Participant_Row">
+                            {% if participant.profile.icon %}
+                                <img class="Participant_Avatar" src="{{ participant.profile.icon.url }}" loading="lazy" alt="{{ participant.name }}">
+                            {% else %}
+                                <div class="Participant_Avatar Participant_Avatar__placeholder">{{ participant.name|slice:":1"|upper }}</div>
+                            {% endif %}
+
+                            <span class="Participant_Copy">
+                                <h3>{{ participant.name }}</h3>
+                                
+                                {% if participant.id == chat.creator.id %}
+                                    <strong class="Participant_Badge Participant_Badge__creator">Creator</strong>
+                                {% elif participant.id in admins %}
+                                    <strong class="Participant_Badge">Admin</strong>
+                                {% else %}
+                                    <small class="Participant_Role">Participant</small>
+                                {% endif %}
+                            </span>
+
+                            {% if is_admin %}
+                                <form action="{% url 'Participants' chat.id %}" method="post" class="Participant_Action_Form">
+                                    {% csrf_token %}
+
+                                    {% if request.user.id == chat.creator.id %}
+
+                                        <input type="hidden" name="participant_id" value="{{ participant.id }}">
+
+                                        {% if participant.id in admins and participant.id != chat.creator.id %}
+                                            <button type="submit" name="admin_button" value="remove_admin" class="Participant_Action_Button Participant_Action_Button__danger">Remove admin</button>
+                                        {% elif participant.id not in admins %}
+                                            <button type="submit" name="admin_button" value="add_admin" class="Participant_Action_Button">Add admin</button>
+                                        {% endif %}
+
+                                    {% endif %}
+
+                                </form>
+                            {% endif %}
+
+                        </div>
+                    {% empty %}
+                        <div class="Participants_Empty">No participants found.</div>
+                    {% endfor %}
+                </div>
+
+                <a href="{% url 'ChatDetail' chat.id %}" target="_self" class="Participants_Back_Button">Back</a>
+            </div>
         </div>
-
-        <a href="{% url 'ChatDetail' chat.id %}" target="_self">Back</a>
-
-    </div>
+    </section>
 
 {% endblock %}
