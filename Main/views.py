@@ -68,3 +68,26 @@ class ChatDetailView(LoginRequiredMixin, View):
             )
 
         return redirect("ChatDetail", chat_id=chat_id)
+    
+
+class ParticipantLeaveView(LoginRequiredMixin, View):
+    login_url="HomePage"
+
+    def get(self, request, chat_id):
+        chat = get_object_or_404(Chat, id=chat_id)
+
+        if not chat.participants.filter(id=request.user.id).exists():
+            return redirect("Main")
+        
+        return render(request, "Main/Main.html", {"chat": chat}) 
+    
+    def post(self, request, chat_id):
+        chat = get_object_or_404(Chat, id=chat_id)
+
+        if not chat.participants.filter(id=request.user.id).exists():
+            return redirect("Main")
+        
+        chat.participants.remove(request.user)
+        chat.save()
+
+        return redirect("Main")

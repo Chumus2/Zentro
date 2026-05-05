@@ -93,7 +93,8 @@
 
                 <div class="ChatCard">
                     <div class="ChatCard_Area">
-                    <form class="ChatCard_Info">
+                    <form action="{% url 'LeaveUser' active_chat.id %}" method="post" class="ChatCard_Info">
+                        {% csrf_token %}
 
                         <button type="button" class="ChatCard_Button" id="chatcard-toggle" aria-expanded="false" aria-controls="chatcard-dropdown">
                             {% if active_chat.icon %}
@@ -105,6 +106,8 @@
                                 <p>{{ active_chat.participants.count }} participants</p>
                             </span>
                         </button>
+
+                        <button type="submit" class="Leave_Button">Leave</button>
 
                     </form>
 
