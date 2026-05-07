@@ -1,4 +1,4 @@
-{% extends 'Base/Base.html' %}
+﻿{% extends 'Base/Base.html' %}
 {% load static %}
 
 {% block title %}Zentro{% endblock %}
@@ -34,10 +34,37 @@
 
                         <hr class="Dropdown_Divider">
 
+                        <a href="{% url 'CreateChat' %}" target="_self" class="CreateChat_Link">
+                            <span class="CreateChat_Icon_Wrap">
+                                <img src="{% static 'images/CreateIcon.png' %}" loading="lazy" alt="Create chat">
+                            </span>
+                            <span>Create chat</span>
+                        </a>
+
+                        <hr class="Dropdown_Divider">
+
                         <a href="" target="_self" class="Dropdown_Link">
                             <img src="{% static 'images/SettingsIcon.png' %}" loading="lazy" alt="Settings">
                             <span>Settings</span>
                         </a>
+
+                        <hr class="Dropdown_Divider">
+
+                        <div>
+
+                            {% if friends %}
+
+                                {% for friend in friends %}
+                                    <div>
+                                        <img src="{{ friend.icon.url }}" loading="lazy">
+                                        <h2>{{ friend.user.name }}</h2>
+                                        <input type="checkbox" name="friend_choose" value="{{ friend.user.id }}>
+                                    </div>
+                                {% endfor %}
+
+                            {% endif %}
+
+                        </div>
 
                         <hr class="Dropdown_Divider">
 
@@ -141,18 +168,29 @@
 
                     {% for message in messages %}
 
-                        <div class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}">
+                        {% if not message.if_system %}
 
-                            {% if message.sender == request.user %}
-                                <strong>You</strong>
-                            {% else %}
-                                <strong>{{ message.sender.name }}</strong>
-                            {% endif %}
+                            <div class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}">
 
-                            <p>{{ message.text }}</p>
-                            <small>{{ message.created_at|timesince }}</small>
+                                {% if message.sender == request.user %}
+                                    <strong>You</strong>
+                                {% else %}
+                                    <strong>{{ message.sender.name }}</strong>
+                                {% endif %}
 
-                        </div>
+                                <p>{{ message.text }}</p>
+                                <small>{{ message.created_at|timesince }}</small>
+
+                            </div>
+                        
+                        {% else %}
+
+                            <div class="Message_Item Message_Item__system">
+                                <p>{{ message.text }}</p>
+                                <small>{{ message.created_at|timesince }}</small>
+                            </div>
+
+                        {% endif %}
 
                     {% endfor %}
 

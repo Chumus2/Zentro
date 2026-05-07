@@ -1,0 +1,135 @@
+﻿{% extends 'Base/Base.html' %}
+{% load static %}
+
+{% block title %}Chat creation form - Zentro{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'stylesheets/Chat/ChatCreation.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <section class="ChatCreation_Page">
+        <div class="ChatCreation_Backdrop"></div>
+
+        <div class="ChatCreation_Shell">
+            <div class="ChatCreation_Copy">
+                <span class="ChatCreation_Badge">Create a new space</span>
+                <h1>Start a chat people will actually want to join.</h1>
+                <p>Pick a clear title, add a short description, and spin up a room that feels ready from the first message.</p>
+            </div>
+
+            <div class="ChatCreation_Card">
+                <div class="ChatCreation_Card_Header">
+                    <span class="ChatCreation_Eyebrow">Chat setup</span>
+                    <h2>Chat creation form</h2>
+                    <p>Give your chat a memorable name and a short description so people know what it is for.</p>
+                </div>
+
+                <form action="{% url 'CreateChat' %}" method="post" class="ChatCreation_Form" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if messages %}
+                        <div class="ChatCreation_Messages">
+                            {% for message in messages %}
+                                <div class="ChatCreation_Message">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="ChatCreation_Icon_Field">
+                        <label for="chat_icon">Chat icon</label>
+                        <div class="ChatCreation_Icon_Preview" id="chat-icon-preview">
+                            <span>Preview</span>
+                        </div>
+                        <input id="chat_icon" type="file" name="chat_icon" accept=".png,.jpg,.jpeg,image/png,image/jpeg">
+                        <small>Only PNG and JPG images are allowed.</small>
+                    </div>
+
+                    <div class="ChatCreation_Field">
+                        <label for="chat_title">Chat title</label>
+                        <input id="chat_title" type="text" name="chat_title" placeholder="Write chat title here" autocomplete="off" value="{{ form_data.title|default:'' }}">
+                    </div>
+
+                    <div class="ChatCreation_Field">
+                        <label for="chat_description">Chat description</label>
+                        <textarea id="chat_description" name="chat_description" placeholder="Write chat description here">{{ form_data.description|default:'' }}</textarea>
+                    </div>
+
+                    <div class="ChatCreation_Friends_Block">
+                        <div class="ChatCreation_Friends_Header">
+                            <label>Choose friends</label>
+                            <small>Select the people you want to add right away.</small>
+                        </div>
+
+                        <div class="ChatCreation_Friends_List">
+                            {% if friends %}
+                                {% for friend in friends %}
+                                    <label class="ChatCreation_Friend_Row">
+                                        {% if friend.icon %}
+                                            <img class="ChatCreation_Friend_Avatar" src="{{ friend.icon.url }}" loading="lazy" alt="{{ friend.user.name }}">
+                                        {% else %}
+                                            <div class="ChatCreation_Friend_Avatar ChatCreation_Friend_Avatar__placeholder">{{ friend.user.name|slice:":1"|upper }}</div>
+                                        {% endif %}
+
+                                        <span class="ChatCreation_Friend_Copy">
+                                            <strong>{{ friend.user.name }}</strong>
+                                            <small>Friend</small>
+                                        </span>
+
+                                        <input class="ChatCreation_Friend_Checkbox" type="checkbox" name="friend_choose" value="{{ friend.user.id }}">
+                                    </label>
+                                {% endfor %}
+                            {% else %}
+                                <div class="ChatCreation_Friends_Empty">No friends available yet.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="ChatCreation_Actions">
+                        <a href="{% url 'Main' %}" class="ChatCreation_Back_Button">Back</a>
+                        <button type="submit" class="ChatCreation_Submit_Button">Create chat</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const chatIconInput = document.getElementById("chat_icon");
+        const chatIconPreview = document.getElementById("chat-icon-preview");
+
+        if (chatIconInput && chatIconPreview) {
+            const allowedTypes = ["image/png", "image/jpeg"];
+
+            chatIconInput.addEventListener("change", () => {
+                const selectedFile = chatIconInput.files && chatIconInput.files[0];
+
+                if (!selectedFile) {
+                    chatIconPreview.innerHTML = "<span>Preview</span>";
+                    chatIconPreview.classList.remove("ChatCreation_Icon_Preview__filled");
+                    return;
+                }
+
+                if (!allowedTypes.includes(selectedFile.type)) {
+                    chatIconInput.value = "";
+                    chatIconPreview.innerHTML = "<span>Preview</span>";
+                    chatIconPreview.classList.remove("ChatCreation_Icon_Preview__filled");
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = (event) => {
+                    chatIconPreview.innerHTML = `<img src="${event.target.result}" alt="Chat icon preview">`;
+                    chatIconPreview.classList.add("ChatCreation_Icon_Preview__filled");
+                };
+
+                reader.readAsDataURL(selectedFile);
+            });
+        }
+    </script>
+{% endblock %}
