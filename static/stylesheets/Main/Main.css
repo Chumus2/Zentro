@@ -516,16 +516,16 @@
     position: absolute;
     top: calc(100% + 1rem);
     right: 8.4rem;
-    width: min(22rem, 100%);
+    width: min(24rem, calc(100vw - 2rem));
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    gap: 1rem;
     padding: 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 1.2rem;
-    background: rgba(15, 23, 42, 0.96);
-    box-shadow: 0 24px 44px rgba(2, 8, 23, 0.38);
-    backdrop-filter: blur(16px);
+    border: 1px solid rgba(96, 165, 250, 0.14);
+    border-radius: 1.35rem;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(15, 23, 42, 0.94) 100%);
+    box-shadow: 0 24px 48px rgba(2, 8, 23, 0.42);
+    backdrop-filter: blur(18px);
     z-index: 30;
     opacity: 0;
     transform: translateY(-0.6rem) scale(0.98);
@@ -536,46 +536,102 @@
 .Pinned_Messages_Title {
     margin: 0;
     color: #f8fafc;
-    font-size: 1rem;
+    font-size: 1.02rem;
     font-weight: 700;
+    letter-spacing: 0.01em;
 }
 
 .Pinned_Messages_List {
     display: grid;
-    gap: 0.75rem;
-    max-height: 18rem;
+    gap: 0.8rem;
+    max-height: 20rem;
     overflow-y: auto;
+    padding-right: 0.2rem;
 }
 
 .Pinned_Message_Row {
-    padding: 0.85rem 0.95rem;
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    border-radius: 1rem;
-    background: rgba(30, 41, 59, 0.42);
+    display: grid;
+    grid-template-columns: 2.6rem minmax(0, 1fr);
+    align-items: start;
+    column-gap: 0.8rem;
+    padding: 0.9rem 0.95rem;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 1.05rem;
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.58) 0%, rgba(15, 23, 42, 0.42) 100%);
+    transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
 }
 
-.Pinned_Message_Row p {
+.Pinned_Message_Row:hover {
+    transform: translateY(-1px);
+    border-color: rgba(125, 211, 252, 0.18);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.72) 0%, rgba(15, 23, 42, 0.52) 100%);
+}
+
+.Pinned_Message_Avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(51, 65, 85, 0.85);
+    overflow: hidden;
+}
+
+.Pinned_Message_Avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.Pinned_Message_Avatar span {
+    color: #dbeafe;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.Pinned_Message_Body {
+    display: grid;
+    gap: 0.22rem;
+    min-width: 0;
+}
+
+.Pinned_Message_Author {
     margin: 0;
-    color: #e2e8f0;
-    font-size: 0.92rem;
-    line-height: 1.55;
+    color: #93c5fd;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.Pinned_Message_Text {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 0.96rem;
+    font-weight: 600;
+    line-height: 1.45;
     word-break: break-word;
 }
 
-.Pinned_Message_Row small,
+.Pinned_Message_Time,
 .Pinned_Messages_Empty {
     display: block;
-    margin-top: 0.45rem;
+    margin-top: 0.2rem;
     color: #94a3b8;
     font-size: 0.75rem;
 }
 
 .Pinned_Messages_Empty {
     margin-top: 0;
-    padding: 0.9rem;
-    border: 1px dashed rgba(148, 163, 184, 0.16);
+    padding: 1rem;
+    border: 1px dashed rgba(148, 163, 184, 0.14);
     border-radius: 1rem;
     text-align: center;
+    background: rgba(30, 41, 59, 0.22);
 }
 
 .Pinned_Messages_Dropdown__hidden {
@@ -766,7 +822,7 @@
 }
 
 .Message_Item strong {
-    display: inline-flex;
+    display: block;
     align-items: center;
     margin-bottom: 0.45rem;
     color: #93c5fd;
@@ -774,6 +830,31 @@
     font-weight: 700;
     letter-spacing: 0.03em;
     text-transform: uppercase;
+}
+
+.Message_Pinned_Label {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 0 0.7rem 0 !important;
+    margin-top: 0 !important;
+    margin-right: auto;
+    width: fit-content;
+    padding: 0.32rem 0.68rem;
+    border: 1px solid rgba(250, 204, 21, 0.18);
+    border-radius: 999px;
+    background: rgba(250, 204, 21, 0.12);
+    color: #fde68a !important;
+    font-size: 0.72rem !important;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    text-align: left !important;
+    text-transform: uppercase;
+}
+
+.Message_Pinned_Label i {
+    font-style: normal;
 }
 
 .Message_Item p {
@@ -797,12 +878,22 @@
     color: #eff6ff;
 }
 
+.Message_Item__own .Message_Pinned_Label {
+    color: #fde68a !important;
+}
+
 .Message_Item small {
     display: block;
     margin-top: 0.6rem;
     color: #94a3b8;
     font-size: 0.73rem;
     text-align: right;
+}
+
+.Message_Item small.Message_Pinned_Label {
+    display: flex !important;
+    text-align: left !important;
+    color: #fde68a !important;
 }
 
 .Message_Item__system small {

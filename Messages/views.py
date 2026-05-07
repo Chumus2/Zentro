@@ -33,8 +33,8 @@ def pin_message(request, message_id):
     Message.objects.create(
         chat=chat,
         sender=None,
-        text=f"Message ({message}) have been pinned",
-        if_staff=True
+        text=f"Message ({message.text}) have been pinned",
+        if_system=True
     )
 
     return redirect("ChatDetail", chat_id=chat.id)
@@ -55,8 +55,8 @@ def unpin_message(request, message_id):
     Message.objects.create(
         chat=chat,
         sender=None,
-        text=f"Message ({message}) have been unpinned",
-        if_staff=True
+        text=f"Message ({message.text}) have been unpinned",
+        if_system=True
     )
 
     return redirect("ChatDetail", chat_id=chat.id)
