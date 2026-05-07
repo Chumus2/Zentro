@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
+from django.contrib import messages
 from django.views import View
 from django.db.models import Prefetch
 from .models import *
@@ -101,15 +102,34 @@ class CreateChatView(LoginRequiredMixin, View):
     
     def post(self, request):
         user = request.user
-        title = request.POST.get("chat_title")
-        description = request.POST.get("chat_description")
+        title = request.POST.get("chat_title", "").strip()
+        description = request.POST.get("chat_description", "").strip()
+        chat_icon = request.FILES.get("chat_icon")
+
+        form_data = {
+            "title": title,
+            "description": description
+        }
+
+        if not title:
+            messages.error(request, "Title is required")
+            return render(request, "Chat/ChatCreation.html", {"form_data": form_data})
+
+        if len(description) > 255:
+            messages.error(request, "Description must be under 255 characters long")
+            return render(request, "Chat/ChatCreation.html", {"form_data": form_data})
+
+        if chat_icon and chat_icon.content_type not in {"image/png", "image/jpeg"}:
+            messages.error(request, "Only PNG and JPG images are allowed")
+            return render(request, "Chat/ChatCreation.html", {"form_data": form_data})
 
         chat = Chat.objects.create(
             title=title,
             description=description,
-            participants=user,
-            admins=user,
+            icon=chat_icon,
             creator=user
         )
+        chat.participants.add(user)
+        chat.admins.add(user)
 
         return redirect("ChatDetail", chat_id=chat.id)
