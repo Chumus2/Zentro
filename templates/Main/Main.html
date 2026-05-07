@@ -168,18 +168,29 @@
 
                     {% for message in messages %}
 
-                        <div class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}">
+                        {% if not message.is_system %}
 
-                            {% if message.sender == request.user %}
-                                <strong>You</strong>
-                            {% else %}
-                                <strong>{{ message.sender.name }}</strong>
-                            {% endif %}
+                            <div class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}">
 
-                            <p>{{ message.text }}</p>
-                            <small>{{ message.created_at|timesince }}</small>
+                                {% if message.sender == request.user %}
+                                    <strong>You</strong>
+                                {% else %}
+                                    <strong>{{ message.sender.name }}</strong>
+                                {% endif %}
 
-                        </div>
+                                <p>{{ message.text }}</p>
+                                <small>{{ message.created_at|timesince }}</small>
+
+                            </div>
+                        
+                        {% else %}
+
+                            <div>
+                                <p>{{ message.text }}</p>
+                                <small>{{ message.created_at|timesince }}</small>
+                            </div>
+
+                        {% endif %}
 
                     {% endfor %}
 
