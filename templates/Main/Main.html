@@ -134,9 +134,26 @@
                             </span>
                         </button>
 
+                        <button type="button" class="Pinned_Messages_Button" id="pinned-toggle" aria-expanded="false" aria-controls="pinned-dropdown">Pinned messages</button>
+
                         <button type="submit" class="Leave_Button">Leave</button>
 
                     </form>
+
+                    <div class="Pinned_Messages_Dropdown" id="pinned-dropdown">
+                        <h3 class="Pinned_Messages_Title">Pinned messages</h3>
+
+                        <div class="Pinned_Messages_List">
+                            {% for pinned_message in active_chat.pinned_messages.all %}
+                                <div class="Pinned_Message_Row">
+                                    <p>{{ pinned_message.text }}</p>
+                                    <small>{{ pinned_message.created_at|timesince }}</small>
+                                </div>
+                            {% empty %}
+                                <div class="Pinned_Messages_Empty">No pinned messages yet.</div>
+                            {% endfor %}
+                        </div>
+                    </div>
 
                     <div class="ChatCard_Dropdown" id="chatcard-dropdown">
                         
@@ -254,7 +271,10 @@
         const searchDropdown = document.getElementById("search-dropdown");
         const chatCardToggleButton = document.getElementById("chatcard-toggle");
         const chatCardDropdown = document.getElementById("chatcard-dropdown");
+        const pinnedToggleButton = document.getElementById("pinned-toggle");
+        const pinnedDropdown = document.getElementById("pinned-dropdown");
         const chatPanelOverlay = document.getElementById("chat-panel-overlay");
+        const messagesBox = document.querySelector(".Messages_Box");
         const messageActionAreas = document.querySelectorAll(".Message_Actions");
 
         function syncOverlayState() {
@@ -264,8 +284,9 @@
 
             const isSearchOpen = searchDropdown && searchDropdown.classList.contains("Search_Dropdown__open");
             const isChatCardOpen = chatCardDropdown && chatCardDropdown.classList.contains("ChatCard_Dropdown__open");
+            const isPinnedOpen = pinnedDropdown && pinnedDropdown.classList.contains("Pinned_Messages_Dropdown__open");
 
-            if (isSearchOpen || isChatCardOpen) {
+            if (isSearchOpen || isChatCardOpen || isPinnedOpen) {
                 chatPanelOverlay.classList.add("Chat_Panel_Overlay__visible");
             } else {
                 chatPanelOverlay.classList.remove("Chat_Panel_Overlay__visible");
@@ -312,6 +333,32 @@
             });
         }
 
+        if (pinnedToggleButton && pinnedDropdown) {
+            pinnedDropdown.classList.add("Pinned_Messages_Dropdown__hidden");
+
+            pinnedToggleButton.addEventListener("click", () => {
+                const isOpen = pinnedDropdown.classList.contains("Pinned_Messages_Dropdown__open");
+
+                if (isOpen) {
+                    pinnedDropdown.classList.remove("Pinned_Messages_Dropdown__open");
+                    pinnedDropdown.classList.add("Pinned_Messages_Dropdown__hidden");
+                    pinnedToggleButton.setAttribute("aria-expanded", "false");
+                } else {
+                    pinnedDropdown.classList.remove("Pinned_Messages_Dropdown__hidden");
+                    pinnedDropdown.classList.add("Pinned_Messages_Dropdown__open");
+                    pinnedToggleButton.setAttribute("aria-expanded", "true");
+                }
+
+                syncOverlayState();
+            });
+        }
+
+        if (messagesBox) {
+            requestAnimationFrame(() => {
+                messagesBox.scrollTop = messagesBox.scrollHeight;
+            });
+        }
+
         if (messageActionAreas.length) {
             messageActionAreas.forEach((actionArea) => {
                 const moreButton = actionArea.querySelector(".Message_More_Button");
@@ -341,12 +388,6 @@
 
                 dropdown.addEventListener("click", (event) => {
                     event.stopPropagation();
-                });
-            });
-
-            document.addEventListener("click", () => {
-                document.querySelectorAll(".Message_Dropdown__open").forEach((openedDropdown) => {
-                    openedDropdown.classList.remove("Message_Dropdown__open");
                 });
             });
         }
