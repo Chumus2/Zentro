@@ -20,4 +20,29 @@ def delete_message(request, message_id):
 
 @login_required(login_url="HomePage")
 def pin_message(request, message_id):
-    pass
+    message = get_object_or_404(Message, id=message_id)
+    chat = message.chat
+
+    if not chat.participants.filter(id=request.user.id).exists():
+        return redirect("Main")
+    if not chat.admins.filter(id=request.user.id).exists():
+        return redirect("ChatDetail", chat_id=chat.id)
+    
+    chat.pinned_messages.add(message)
+
+    return redirect("ChatDetail", chat_id=chat.id)
+
+
+@login_required(login_url="HomePage")
+def unpin_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    chat = message.chat
+
+    if not chat.participants.filter(id=request.user.id).exists():
+        return redirect("Main")
+    if not chat.admins.filter(id=request.user.id).exists():
+        return redirect("ChatDetail", chat_id=chat.id)
+    
+    chat.pinned_messages.remove(message)
+
+    return redirect("ChatDetail", chat_id=chat.id)

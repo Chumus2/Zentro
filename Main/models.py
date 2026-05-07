@@ -22,7 +22,7 @@ class Chat(models.Model):
     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="chats")
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="admin_chats")
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="created_chats")
-    pinned_messages = models.ManyToManyField(Message, null=True, blank=True, related_name="pinned_in_chat")
+    pinned_messages = models.ManyToManyField(Message, blank=True, related_name="pinned_in_chat")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def set_creator(self):

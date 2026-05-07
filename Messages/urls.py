@@ -3,5 +3,7 @@ from . import views
 
 
 urlpatterns = [
-    path("delete_message/<int:message_id>/", views.delete_message, name="DeleteMessage")
+    path("delete_message/<int:message_id>/", views.delete_message, name="DeleteMessage"),
+    path("pin/message/<int:message_id>/", views.pin_message, name="PinMessage"),
+    path("unpin/message/<int:message_id>/", views.unpin_message, name="UnpinMessage")
 ]

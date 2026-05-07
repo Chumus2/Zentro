@@ -43,12 +43,14 @@ class ChatDetailView(LoginRequiredMixin, View):
 
         is_admin = active_chat.admins.filter(id=request.user.id).exists()
         messages = active_chat.messages.all().order_by("created_at")
+        pinned_message_ids = set(active_chat.pinned_messages.values_list("id", flat=True))
 
         context = {
             "chats": chats,
             "active_chat": active_chat,
             "messages": messages,
-            "is_admin": is_admin
+            "is_admin": is_admin,
+            "pinned_message_ids": pinned_message_ids
         }
 
         return render(request, "Main/Main.html", context)
