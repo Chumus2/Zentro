@@ -56,6 +56,36 @@
                         <textarea id="chat_description" name="chat_description" placeholder="Write chat description here">{{ form_data.description|default:'' }}</textarea>
                     </div>
 
+                    <div class="ChatCreation_Friends_Block">
+                        <div class="ChatCreation_Friends_Header">
+                            <label>Choose friends</label>
+                            <small>Select the people you want to add right away.</small>
+                        </div>
+
+                        <div class="ChatCreation_Friends_List">
+                            {% if friends %}
+                                {% for friend in friends %}
+                                    <label class="ChatCreation_Friend_Row">
+                                        {% if friend.icon %}
+                                            <img class="ChatCreation_Friend_Avatar" src="{{ friend.icon.url }}" loading="lazy" alt="{{ friend.user.name }}">
+                                        {% else %}
+                                            <div class="ChatCreation_Friend_Avatar ChatCreation_Friend_Avatar__placeholder">{{ friend.user.name|slice:":1"|upper }}</div>
+                                        {% endif %}
+
+                                        <span class="ChatCreation_Friend_Copy">
+                                            <strong>{{ friend.user.name }}</strong>
+                                            <small>Friend</small>
+                                        </span>
+
+                                        <input class="ChatCreation_Friend_Checkbox" type="checkbox" name="friend_choose" value="{{ friend.user.id }}">
+                                    </label>
+                                {% endfor %}
+                            {% else %}
+                                <div class="ChatCreation_Friends_Empty">No friends available yet.</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
                     <div class="ChatCreation_Actions">
                         <a href="{% url 'Main' %}" class="ChatCreation_Back_Button">Back</a>
                         <button type="submit" class="ChatCreation_Submit_Button">Create chat</button>

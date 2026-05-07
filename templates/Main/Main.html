@@ -50,6 +50,24 @@
 
                         <hr class="Dropdown_Divider">
 
+                        <div>
+
+                            {% if friends %}
+
+                                {% for friend in friends %}
+                                    <div>
+                                        <img src="{{ friend.icon.url }}" loading="lazy">
+                                        <h2>{{ friend.user.name }}</h2>
+                                        <input type="checkbox" name="friend_choose" value="{{ friend.user.id }}>
+                                    </div>
+                                {% endfor %}
+
+                            {% endif %}
+
+                        </div>
+
+                        <hr class="Dropdown_Divider">
+
                         <form action="{% url 'Main' %}" method="post" class="Logout_Form">
                             {% csrf_token %}
                             <button class="Ghost_Button" type="submit">Log out</button>

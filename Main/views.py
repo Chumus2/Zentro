@@ -4,6 +4,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.views import View
 from django.db.models import Prefetch
+from Users.models import User
 from .models import *
 
 
@@ -100,13 +101,16 @@ class CreateChatView(LoginRequiredMixin, View):
     login_url = "HomePage"
 
     def get(self, request):
-        return render(request, "Chat/ChatCreation.html")
+        friends = request.user.profile.friends.all()
+
+        return render(request, "Chat/ChatCreation.html", {"friends": friends})
     
     def post(self, request):
         user = request.user
         title = request.POST.get("chat_title", "").strip()
         description = request.POST.get("chat_description", "").strip()
         chat_icon = request.FILES.get("chat_icon")
+        selected_friends = request.POST.getlist("friend_choose")
 
         form_data = {
             "title": title,
@@ -133,5 +137,11 @@ class CreateChatView(LoginRequiredMixin, View):
         )
         chat.participants.add(user)
         chat.admins.add(user)
+
+        if selected_friends:
+            friends = User.objects.filter(
+                profile__in=user.profile.friends.filter(user__id__in=selected_friends)
+            )
+            chat.participants.add(*friends)
 
         return redirect("ChatDetail", chat_id=chat.id)
