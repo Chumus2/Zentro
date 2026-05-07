@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
-from Users.models import User
 from Main.models import Chat
 
 
@@ -163,6 +162,7 @@ class RemoveParticipant(View):
             return redirect("ChatDetail", chat_id=chat.id)
         
         chat.participants.remove(participant)
+        chat.delete_if_empty()
         chat.save()
 
         return redirect("Participants", chat_id=chat.id)

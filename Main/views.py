@@ -92,6 +92,7 @@ class ParticipantLeaveView(LoginRequiredMixin, View):
         
         chat.participants.remove(user)
         chat.admins.remove(user)
+        chat.delete_if_empty()
         chat.save()
 
         return redirect("Main")
