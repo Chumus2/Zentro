@@ -95,6 +95,13 @@ class ParticipantLeaveView(LoginRequiredMixin, View):
         chat.delete_if_empty()
         chat.save()
 
+        Message.objects.create(
+            chat=chat,
+            sender=None,
+            text=f"User {user.name} leaved from this group",
+            if_system=True
+        )
+
         return redirect("Main")
     
 
@@ -144,5 +151,12 @@ class CreateChatView(LoginRequiredMixin, View):
                 profile__in=user.profile.friends.filter(user__id__in=selected_friends)
             )
             chat.participants.add(*friends)
+
+        Message.objects.create(
+            chat=chat,
+            sender=None,
+            text=f"Chat {title} successfuly created!",
+            if_system=True
+        )
 
         return redirect("ChatDetail", chat_id=chat.id)

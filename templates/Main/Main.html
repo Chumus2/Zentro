@@ -168,7 +168,7 @@
 
                     {% for message in messages %}
 
-                        {% if not message.is_system %}
+                        {% if not message.if_system %}
 
                             <div class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}">
 
@@ -185,7 +185,7 @@
                         
                         {% else %}
 
-                            <div>
+                            <div class="Message_Item Message_Item__system">
                                 <p>{{ message.text }}</p>
                                 <small>{{ message.created_at|timesince }}</small>
                             </div>
