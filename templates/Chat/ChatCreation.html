@@ -26,8 +26,13 @@
                     <p>Give your chat a memorable name and a short description so people know what it is for.</p>
                 </div>
 
-                <form action="{% url 'CreateChat' %}" method="post" class="ChatCreation_Form">
+                <form action="{% url 'CreateChat' %}" method="post" class="ChatCreation_Form" enctype="multipart/form-data">
                     {% csrf_token %}
+
+                    <div>
+                        <label for="chat_icon">Chat icon</label>
+                        <input type="file" name="chat_icon">
+                    </div>
 
                     <div class="ChatCreation_Field">
                         <label for="chat_title">Chat title</label>
