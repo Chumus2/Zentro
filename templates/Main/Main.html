@@ -95,7 +95,7 @@
                                 
                                 {% with last_message=chat.messages.last %}
 
-                                    {% if last_message %}
+                                    {% if last_message and not last_message.is_system %}
                                         <p>{{ last_message.text|truncatechars:30 }}</p>
                                     {% endif %}
 
@@ -181,6 +181,18 @@
                                 <p>{{ message.text }}</p>
                                 <small>{{ message.created_at|timesince }}</small>
 
+                                {% if message.sender == request.user %}
+                                    <div class="Message_Actions">
+                                        <button type="button" class="Message_More_Button">
+                                            <img src="{% static 'images/MoreIcon.png' %}" loading="lazy" alt="More">
+                                        </button>
+
+                                        <div class="Message_Dropdown">
+                                            <a href="{% url 'DeleteMessage' message.id %}" target="_self">Delete</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
                             </div>
                         
                         {% else %}
@@ -221,6 +233,7 @@
         const chatCardToggleButton = document.getElementById("chatcard-toggle");
         const chatCardDropdown = document.getElementById("chatcard-dropdown");
         const chatPanelOverlay = document.getElementById("chat-panel-overlay");
+        const messageActionAreas = document.querySelectorAll(".Message_Actions");
 
         function syncOverlayState() {
             if (!chatPanelOverlay) {
@@ -274,6 +287,45 @@
                 }
 
                 syncOverlayState();
+            });
+        }
+
+        if (messageActionAreas.length) {
+            messageActionAreas.forEach((actionArea) => {
+                const moreButton = actionArea.querySelector(".Message_More_Button");
+                const dropdown = actionArea.querySelector(".Message_Dropdown");
+
+                if (!moreButton || !dropdown) {
+                    return;
+                }
+
+                moreButton.addEventListener("click", (event) => {
+                    event.stopPropagation();
+
+                    const isOpen = dropdown.classList.contains("Message_Dropdown__open");
+
+                    document.querySelectorAll(".Message_Dropdown__open").forEach((openedDropdown) => {
+                        if (openedDropdown !== dropdown) {
+                            openedDropdown.classList.remove("Message_Dropdown__open");
+                        }
+                    });
+
+                    if (isOpen) {
+                        dropdown.classList.remove("Message_Dropdown__open");
+                    } else {
+                        dropdown.classList.add("Message_Dropdown__open");
+                    }
+                });
+
+                dropdown.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                });
+            });
+
+            document.addEventListener("click", () => {
+                document.querySelectorAll(".Message_Dropdown__open").forEach((openedDropdown) => {
+                    openedDropdown.classList.remove("Message_Dropdown__open");
+                });
             });
         }
 

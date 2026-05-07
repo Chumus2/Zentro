@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     'HomePage',
     'Users',
     'Main',
-    'Chat'
+    'Chat',
+    'Messages'
 ]
 
 MIDDLEWARE = [
