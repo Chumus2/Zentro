@@ -1,0 +1,208 @@
+﻿.ChatCreation_Page {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 20rem),
+        radial-gradient(circle at right 18%, rgba(251, 191, 36, 0.12), transparent 18rem),
+        linear-gradient(180deg, #081120 0%, #0f1a2f 100%);
+    color: #f8fafc;
+}
+
+.ChatCreation_Backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(14, 165, 233, 0.14), transparent 0, transparent 16rem),
+        radial-gradient(circle at 84% 76%, rgba(59, 130, 246, 0.12), transparent 0, transparent 20rem);
+    pointer-events: none;
+}
+
+.ChatCreation_Shell {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 34rem);
+    gap: 3rem;
+    align-items: center;
+    padding: 3rem;
+}
+
+.ChatCreation_Copy {
+    max-width: 38rem;
+}
+
+.ChatCreation_Badge,
+.ChatCreation_Eyebrow {
+    display: inline-flex;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.55);
+    color: #cbd5e1;
+    letter-spacing: 0.03em;
+}
+
+.ChatCreation_Badge {
+    margin-bottom: 1.15rem;
+    font-size: 0.92rem;
+}
+
+.ChatCreation_Copy h1 {
+    margin: 0 0 1rem;
+    font-size: clamp(2.7rem, 6vw, 4.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+}
+
+.ChatCreation_Copy p {
+    margin: 0;
+    max-width: 34rem;
+    color: #cbd5e1;
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.ChatCreation_Card {
+    width: min(100%, 34rem);
+    padding: 1.8rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.8rem;
+    background: rgba(15, 23, 42, 0.8);
+    box-shadow: 0 32px 70px rgba(2, 8, 23, 0.42);
+    backdrop-filter: blur(18px);
+}
+
+.ChatCreation_Card_Header h2 {
+    margin: 0.9rem 0 0.55rem;
+    color: #f8fafc;
+    font-size: 1.8rem;
+}
+
+.ChatCreation_Card_Header p {
+    margin: 0;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.ChatCreation_Eyebrow {
+    font-size: 0.82rem;
+}
+
+.ChatCreation_Form {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.4rem;
+}
+
+.ChatCreation_Field {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.ChatCreation_Field label {
+    color: #dbeafe;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.ChatCreation_Field input,
+.ChatCreation_Field textarea {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 1rem;
+    background: rgba(30, 41, 59, 0.95);
+    color: #f8fafc;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.ChatCreation_Field textarea {
+    min-height: 10rem;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.ChatCreation_Field input::placeholder,
+.ChatCreation_Field textarea::placeholder {
+    color: #94a3b8;
+}
+
+.ChatCreation_Field input:focus,
+.ChatCreation_Field textarea:focus {
+    border-color: rgba(96, 165, 250, 0.74);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+    transform: translateY(-1px);
+}
+
+.ChatCreation_Actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.4rem;
+}
+
+.ChatCreation_Back_Button,
+.ChatCreation_Submit_Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 9rem;
+    padding: 0.95rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.ChatCreation_Back_Button {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(30, 41, 59, 0.72);
+    color: #e5eefc;
+}
+
+.ChatCreation_Submit_Button {
+    border: none;
+    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+    color: #082032;
+    cursor: pointer;
+    box-shadow: 0 18px 30px rgba(14, 165, 233, 0.28);
+}
+
+.ChatCreation_Back_Button:hover,
+.ChatCreation_Submit_Button:hover {
+    transform: translateY(-2px);
+}
+
+.ChatCreation_Back_Button:hover {
+    background: rgba(51, 65, 85, 0.86);
+}
+
+@media (max-width: 980px) {
+    .ChatCreation_Shell {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.25rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .ChatCreation_Card {
+        padding: 1.25rem;
+        border-radius: 1.35rem;
+    }
+
+    .ChatCreation_Copy h1 {
+        font-size: 2.4rem;
+    }
+
+    .ChatCreation_Actions {
+        flex-direction: column-reverse;
+    }
+
+    .ChatCreation_Back_Button,
+    .ChatCreation_Submit_Button {
+        width: 100%;
+    }
+}

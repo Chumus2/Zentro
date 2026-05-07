@@ -1,4 +1,4 @@
-{% extends 'Base/Base.html' %}
+﻿{% extends 'Base/Base.html' %}
 {% load static %}
 
 {% block title %}Chat creation form - Zentro{% endblock %}
@@ -9,27 +9,43 @@
 
 {% block content %}
 
-    <div>
-        
-        <h2>Chat creation form</h2>
+    <section class="ChatCreation_Page">
+        <div class="ChatCreation_Backdrop"></div>
 
-        <form action="{% url 'CreateChat' %}" method="post">
-            {% csrf_token %}
-
-            <div>
-                <h2>Chat's title</h2>
-                <input type="text" name="chat_title" placeholder="Write chat's title here">
+        <div class="ChatCreation_Shell">
+            <div class="ChatCreation_Copy">
+                <span class="ChatCreation_Badge">Create a new space</span>
+                <h1>Start a chat people will actually want to join.</h1>
+                <p>Pick a clear title, add a short description, and spin up a room that feels ready from the first message.</p>
             </div>
 
-            <div>
-                <h2>Chat's description</h2>
-                <textarea name="chat_description" placeholder="Write chat's description here"></textarea>
+            <div class="ChatCreation_Card">
+                <div class="ChatCreation_Card_Header">
+                    <span class="ChatCreation_Eyebrow">Chat setup</span>
+                    <h2>Chat creation form</h2>
+                    <p>Give your chat a memorable name and a short description so people know what it is for.</p>
+                </div>
+
+                <form action="{% url 'CreateChat' %}" method="post" class="ChatCreation_Form">
+                    {% csrf_token %}
+
+                    <div class="ChatCreation_Field">
+                        <label for="chat_title">Chat title</label>
+                        <input id="chat_title" type="text" name="chat_title" placeholder="Write chat title here" autocomplete="off">
+                    </div>
+
+                    <div class="ChatCreation_Field">
+                        <label for="chat_description">Chat description</label>
+                        <textarea id="chat_description" name="chat_description" placeholder="Write chat description here"></textarea>
+                    </div>
+
+                    <div class="ChatCreation_Actions">
+                        <a href="{% url 'Main' %}" class="ChatCreation_Back_Button">Back</a>
+                        <button type="submit" class="ChatCreation_Submit_Button">Create chat</button>
+                    </div>
+                </form>
             </div>
-
-            <button type="submit">Create</button>
-
-        </form>
-
-    </div>
+        </div>
+    </section>
 
 {% endblock %}

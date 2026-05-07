@@ -1,4 +1,4 @@
-.Main {
+﻿.Main {
     min-height: 100vh;
     display: grid;
     grid-template-columns: 340px minmax(0, 1fr);
@@ -186,7 +186,8 @@
 }
 
 .Dropdown_Profile,
-.Dropdown_Link {
+.Dropdown_Link,
+.CreateChat_Link {
     display: flex;
     align-items: center;
     gap: 0.85rem;
@@ -195,11 +196,12 @@
     border: 1px solid transparent;
     border-radius: 0.9rem;
     background: transparent;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .Dropdown_Profile:hover,
-.Dropdown_Link:hover {
+.Dropdown_Link:hover,
+.CreateChat_Link:hover {
     background: rgba(59, 130, 246, 0.12);
     border-color: rgba(96, 165, 250, 0.2);
     transform: translateY(-1px);
@@ -217,7 +219,8 @@
 }
 
 .Dropdown_Profile span,
-.Dropdown_Link span {
+.Dropdown_Link span,
+.CreateChat_Link span {
     color: #e2e8f0;
     font-weight: 600;
     font-size: 0.95rem;
@@ -231,6 +234,37 @@
     border-radius: 0;
     background: transparent;
     filter: brightness(0) invert(0.9);
+}
+
+.CreateChat_Link {
+    border-color: rgba(96, 165, 250, 0.18);
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(37, 99, 235, 0.2) 100%);
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.16);
+}
+
+.CreateChat_Link:hover {
+    border-color: rgba(125, 211, 252, 0.28);
+    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.22);
+}
+
+.CreateChat_Icon_Wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+}
+
+.CreateChat_Icon_Wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0) invert(1);
 }
 
 .Dropdown_Divider {
@@ -700,5 +734,9 @@
 
     .Primary_Button {
         padding-inline: 1rem;
+    }
+
+    .CreateChat_Link {
+        padding: 0.75rem;
     }
 }
