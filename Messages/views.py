@@ -80,3 +80,36 @@ def edit_message(request, message_id):
             message.save()
 
     return redirect("ChatDetail", chat_id=chat.id)
+
+
+@login_required(login_url="HomePage")
+def reply_to_message(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
+
+    if not chat.participants.filter(id=request.user.id).exists():
+        return redirect("Main")
+
+    if request.method == "POST":
+        text = request.POST.get("message_text", "").strip()
+        reply_to_id = request.POST.get("reply_to_id")
+
+        reply_to = None
+        if reply_to_id:
+            reply_to = Message.objects.filter(id=reply_to_id, chat=chat).first()
+        if text:
+            Message.objects.create(
+                chat=chat,
+                sender=request.user,
+                text=text,
+                reply_to=reply_to
+            )
+
+            return redirect("ChatDetail", chat_id=chat.id)
+        
+    messages = chat.messages.order_by("created_at")
+    context = {
+        "active_chat": chat,
+        "messages": messages
+    }
+
+    return render(request, "Main/Main.html", context)

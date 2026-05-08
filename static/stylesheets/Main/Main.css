@@ -897,6 +897,41 @@ body:has(.Main) {
     display: none !important;
 }
 
+.Message_Reply_Preview {
+    margin-bottom: 0.8rem;
+    padding: 0.75rem 0.85rem;
+    border-left: 3px solid rgba(125, 211, 252, 0.5);
+    border-radius: 0.85rem;
+    background: rgba(15, 23, 42, 0.26);
+}
+
+.Message_Reply_Author {
+    display: block;
+    margin-bottom: 0.22rem;
+    color: #dbeafe !important;
+    font-size: 0.76rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+    text-transform: none !important;
+}
+
+.Message_Reply_Text {
+    margin: 0 !important;
+    color: #cbd5e1 !important;
+    font-size: 0.88rem !important;
+    line-height: 1.45 !important;
+}
+
+.Message_Item__own .Message_Reply_Preview {
+    border-left-color: rgba(219, 234, 254, 0.62);
+    background: rgba(8, 32, 61, 0.24);
+}
+
+.Message_Item__own .Message_Reply_Text,
+.Message_Item__own .Message_Reply_Author {
+    color: #eff6ff !important;
+}
+
 .Message_Item__system p {
     color: #cbd5e1;
     font-size: 0.95rem;
@@ -1105,6 +1140,65 @@ body:has(.Main) {
     background: rgba(15, 23, 42, 0.92);
     position: sticky;
     bottom: 0;
+}
+
+.Reply_Bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(96, 165, 250, 0.16);
+    border-radius: 1rem;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.78) 0%, rgba(15, 23, 42, 0.92) 100%);
+}
+
+.Reply_Bar[hidden] {
+    display: none !important;
+}
+
+.Reply_Bar_Copy {
+    min-width: 0;
+}
+
+.Reply_Bar_Copy strong {
+    display: block;
+    margin-bottom: 0.18rem;
+    color: #dbeafe;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.Reply_Bar_Copy p {
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+.Reply_Bar_Cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 5.5rem;
+    min-height: 2.5rem;
+    padding: 0.65rem 0.95rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 999px;
+    background: rgba(30, 41, 59, 0.72);
+    color: #e2e8f0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.Reply_Bar_Cancel:hover {
+    transform: translateY(-1px);
+    background: rgba(51, 65, 85, 0.86);
 }
 
 .Message_Edit_Form {

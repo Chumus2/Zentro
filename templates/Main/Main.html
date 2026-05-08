@@ -204,7 +204,13 @@
 
                         {% if not message.if_system %}
 
-                            <div id="message-{{ message.id }}" class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}">
+                            <div
+                                id="message-{{ message.id }}"
+                                class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}"
+                                data-message-id="{{ message.id }}"
+                                data-message-author="{% if message.sender %}{{ message.sender.name }}{% else %}System{% endif %}"
+                                data-message-text="{{ message.text|escape }}"
+                            >
 
                                 {% if message.id in pinned_message_ids %}
                                     <small class="Message_Pinned_Label"><i>Pinned message</i></small>
@@ -214,6 +220,19 @@
                                     <strong>You</strong>
                                 {% else %}
                                     <strong>{{ message.sender.name }}</strong>
+                                {% endif %}
+
+                                {% if message.reply_to %}
+                                    <div class="Message_Reply_Preview">
+                                        <strong class="Message_Reply_Author">
+                                            {% if message.reply_to.sender %}
+                                                {{ message.reply_to.sender.name }}
+                                            {% else %}
+                                                System
+                                            {% endif %}
+                                        </strong>
+                                        <p class="Message_Reply_Text">{{ message.reply_to.text|truncatechars:60 }}</p>
+                                    </div>
                                 {% endif %}
 
                                 <p class="Message_Text">{{ message.text }}</p>
@@ -239,11 +258,26 @@
                                         </button>
 
                                         <div class="Message_Dropdown">
+
                                             <div>
-                                                <a href="{% url 'DeleteMessage' message.id %}" target="_self">
-                                                    <img src="{% static 'images/DeleteIcon.png' %}" loading="lazy">
-                                                    Delete
-                                                </a>
+                                                <button type="button" class="Message_Dropdown_Button Message_Reply_Button">
+                                                    <img src="{% static 'images/MoreIcon.png' %}" loading="lazy" alt="Reply">
+                                                    Reply
+                                                </button>
+                                            </div>
+
+                                            <div>
+                                                <button type="button" class="Message_Dropdown_Button Message_Edit_Button">
+                                                    <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit">
+                                                    Edit
+                                                </button>
+                                            </div>
+
+                                            <div>
+                                                <button type="button" class="Message_Dropdown_Button Message_Reply_Button" data-message-id="{{ message.id }}">
+                                                    <img src="{% static 'images/ReplyIcon.png' %}" loading="lazy">
+                                                    Reply
+                                                </button>
                                             </div>
 
                                             <div>
@@ -263,10 +297,10 @@
                                             </div>
 
                                             <div>
-                                                <button type="button" class="Message_Dropdown_Button Message_Edit_Button">
-                                                    <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit">
-                                                    Edit
-                                                </button>
+                                                <a href="{% url 'DeleteMessage' message.id %}" target="_self">
+                                                    <img src="{% static 'images/DeleteIcon.png' %}" loading="lazy">
+                                                    Delete
+                                                </a>
                                             </div>
 
                                         </div>
@@ -290,8 +324,18 @@
 
                 <div class="Message_Form_Wrapper">
 
-                    <form action="" method="post" class="Message_Form">
+                    <div class="Reply_Bar" id="reply-bar" hidden>
+                        <div class="Reply_Bar_Copy">
+                            <strong id="reply-bar-author"></strong>
+                            <p id="reply-bar-text"></p>
+                        </div>
+
+                        <button type="button" class="Reply_Bar_Cancel" id="reply-bar-cancel">Cancel</button>
+                    </div>
+
+                    <form action="{% url 'ReplyToMessage' active_chat.id %}" method="post" class="Message_Form">
                         {% csrf_token %}
+                        <input type="hidden" name="reply_to_id" id="reply-to-input">
                         <input class="Message_Input" type="text" name="message_text" placeholder="Write your message here" autocomplete="off">
                         <button class="Primary_Button" type="submit">Send</button>
                     </form>
@@ -320,6 +364,12 @@
         const pinnedMessageRows = document.querySelectorAll(".Pinned_Message_Row");
         const editButtons = document.querySelectorAll(".Message_Edit_Button");
         const editCancelButtons = document.querySelectorAll(".Message_Edit_Cancel");
+        const replyButtons = document.querySelectorAll(".Message_Reply_Button");
+        const replyBar = document.getElementById("reply-bar");
+        const replyBarAuthor = document.getElementById("reply-bar-author");
+        const replyBarText = document.getElementById("reply-bar-text");
+        const replyBarCancel = document.getElementById("reply-bar-cancel");
+        const replyToInput = document.getElementById("reply-to-input");
 
         function toggleMessageEditMode(messageItem, shouldOpen) {
             if (!messageItem) {
@@ -354,6 +404,24 @@
                 if (actions) {
                     actions.hidden = false;
                 }
+            }
+        }
+
+        function clearReplyState() {
+            if (replyToInput) {
+                replyToInput.value = "";
+            }
+
+            if (replyBar) {
+                replyBar.hidden = true;
+            }
+
+            if (replyBarAuthor) {
+                replyBarAuthor.textContent = "";
+            }
+
+            if (replyBarText) {
+                replyBarText.textContent = "";
             }
         }
 
@@ -498,6 +566,37 @@
                     const messageItem = button.closest(".Message_Item");
                     toggleMessageEditMode(messageItem, false);
                 });
+            });
+        }
+
+        if (replyButtons.length) {
+            replyButtons.forEach((button) => {
+                button.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const messageItem = button.closest(".Message_Item");
+                    const dropdown = button.closest(".Message_Dropdown");
+
+                    if (!messageItem || !replyToInput || !replyBar || !replyBarAuthor || !replyBarText) {
+                        return;
+                    }
+
+                    if (dropdown) {
+                        dropdown.classList.remove("Message_Dropdown__open");
+                    }
+
+                    replyToInput.value = messageItem.dataset.messageId || "";
+                    replyBarAuthor.textContent = messageItem.dataset.messageAuthor || "User";
+                    replyBarText.textContent = messageItem.dataset.messageText || "";
+                    replyBar.hidden = false;
+                });
+            });
+        }
+
+        if (replyBarCancel) {
+            replyBarCancel.addEventListener("click", () => {
+                clearReplyState();
             });
         }
 
