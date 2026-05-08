@@ -93,12 +93,10 @@
                             <span class="ChatBox_Content">
                                 <h3>{{ chat.title }}</h3>
                                 
-                                {% with last_message=chat.messages.last %}
-
+                                {% with last_message=chat.user_messages|last %}
                                     {% if last_message %}
                                         <p>{{ last_message.text|truncatechars:30 }}</p>
                                     {% endif %}
-
                                 {% endwith %}
 
                             </span>

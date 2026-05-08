@@ -8,12 +8,22 @@ from Users.models import User
 from .models import *
 
 
+def get_chats_with_user_messages(user):
+    return Chat.objects.filter(participants=user).prefetch_related(
+        Prefetch(
+            "messages",
+            queryset=Message.objects.filter(if_system=False).order_by("created_at"),
+            to_attr="user_messages"
+        )
+    )
+
+
 class MainView(LoginRequiredMixin, View):
     login_url = "HomePage"
 
     def get(self, request):
         search = request.GET.get("search_text", "").strip()
-        chats = (Chat.objects.filter(participants=request.user).prefetch_related(Prefetch("messages", queryset=Message.objects.order_by("created_at"))))
+        chats = get_chats_with_user_messages(request.user)
 
         if search:
             chats = chats.filter(title__icontains=search).distinct()
@@ -34,7 +44,7 @@ class ChatDetailView(LoginRequiredMixin, View):
     login_url = "HomePage"
 
     def get(self, request, chat_id):
-        chats = Chat.objects.filter(participants=request.user).distinct()
+        chats = get_chats_with_user_messages(request.user).distinct()
         active_chat = get_object_or_404(
             Chat.objects.prefetch_related("messages"),
             id=chat_id,
