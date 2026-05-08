@@ -27,8 +27,8 @@
                     </form>
 
                     <div class="Search_Dropdown" id="search-dropdown">
-                        <a href="" target="_self" class="Dropdown_Profile">
-                            <img src="{{ request.user.name }}" loading="lazy" alt="Profile">
+                        <a href="{% url 'CheckProfile' request.user.id %}" target="_self" class="Dropdown_Profile">
+                            <img src="{{ request.user.icon.url }}" loading="lazy">
                             <span>{{ request.user.name }}</span>
                         </a>
 
