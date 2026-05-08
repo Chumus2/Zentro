@@ -1,7 +1,8 @@
 ﻿.ChatCreation_Page {
     position: relative;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     background:
         radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 20rem),
         radial-gradient(circle at right 18%, rgba(251, 191, 36, 0.12), transparent 18rem),
