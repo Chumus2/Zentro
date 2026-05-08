@@ -1,0 +1,274 @@
+const menuToggleButton = document.getElementById("menu-toggle");
+const searchDropdown = document.getElementById("search-dropdown");
+const chatCardToggleButton = document.getElementById("chatcard-toggle");
+const chatCardDropdown = document.getElementById("chatcard-dropdown");
+const pinnedToggleButton = document.getElementById("pinned-toggle");
+const pinnedDropdown = document.getElementById("pinned-dropdown");
+const chatPanelOverlay = document.getElementById("chat-panel-overlay");
+const messagesBox = document.querySelector(".Messages_Box");
+const messageActionAreas = document.querySelectorAll(".Message_Actions");
+const pinnedMessageRows = document.querySelectorAll(".Pinned_Message_Row");
+const editButtons = document.querySelectorAll(".Message_Edit_Button");
+const editCancelButtons = document.querySelectorAll(".Message_Edit_Cancel");
+const replyButtons = document.querySelectorAll(".Message_Reply_Button");
+const replyBar = document.getElementById("reply-bar");
+const replyBarAuthor = document.getElementById("reply-bar-author");
+const replyBarText = document.getElementById("reply-bar-text");
+const replyBarCancel = document.getElementById("reply-bar-cancel");
+const replyToInput = document.getElementById("reply-to-input");
+
+function toggleMessageEditMode(messageItem, shouldOpen) {
+    if (!messageItem) {
+        return;
+    }
+
+    const textNode = messageItem.querySelector(".Message_Text");
+    const editForm = messageItem.querySelector(".Message_Edit_Form");
+    const actions = messageItem.querySelector(".Message_Actions");
+    const textarea = messageItem.querySelector(".Message_Edit_Textarea");
+
+    if (!textNode || !editForm) {
+        return;
+    }
+
+    if (shouldOpen) {
+        textNode.hidden = true;
+        editForm.hidden = false;
+
+        if (actions) {
+            actions.hidden = true;
+        }
+
+        if (textarea) {
+            textarea.focus();
+            textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        }
+    } else {
+        textNode.hidden = false;
+        editForm.hidden = true;
+
+        if (actions) {
+            actions.hidden = false;
+        }
+    }
+}
+
+function clearReplyState() {
+    if (replyToInput) {
+        replyToInput.value = "";
+    }
+
+    if (replyBar) {
+        replyBar.hidden = true;
+    }
+
+    if (replyBarAuthor) {
+        replyBarAuthor.textContent = "";
+    }
+
+    if (replyBarText) {
+        replyBarText.textContent = "";
+    }
+}
+
+function syncOverlayState() {
+    if (!chatPanelOverlay) {
+        return;
+    }
+
+    const isSearchOpen = searchDropdown && searchDropdown.classList.contains("Search_Dropdown__open");
+    const isChatCardOpen = chatCardDropdown && chatCardDropdown.classList.contains("ChatCard_Dropdown__open");
+    const isPinnedOpen = pinnedDropdown && pinnedDropdown.classList.contains("Pinned_Messages_Dropdown__open");
+
+    if (isSearchOpen || isChatCardOpen || isPinnedOpen) {
+        chatPanelOverlay.classList.add("Chat_Panel_Overlay__visible");
+    } else {
+        chatPanelOverlay.classList.remove("Chat_Panel_Overlay__visible");
+    }
+}
+
+if (menuToggleButton && searchDropdown) {
+    searchDropdown.classList.add("Search_Dropdown__hidden");
+
+    menuToggleButton.addEventListener("click", () => {
+        const isOpen = searchDropdown.classList.contains("Search_Dropdown__open");
+
+        if (isOpen) {
+            searchDropdown.classList.remove("Search_Dropdown__open");
+            searchDropdown.classList.add("Search_Dropdown__hidden");
+            menuToggleButton.setAttribute("aria-expanded", "false");
+        } else {
+            searchDropdown.classList.remove("Search_Dropdown__hidden");
+            searchDropdown.classList.add("Search_Dropdown__open");
+            menuToggleButton.setAttribute("aria-expanded", "true");
+        }
+
+        syncOverlayState();
+    });
+}
+
+if (chatCardToggleButton && chatCardDropdown) {
+    chatCardDropdown.classList.add("ChatCard_Dropdown__hidden");
+
+    chatCardToggleButton.addEventListener("click", () => {
+        const isOpen = chatCardDropdown.classList.contains("ChatCard_Dropdown__open");
+
+        if (isOpen) {
+            chatCardDropdown.classList.remove("ChatCard_Dropdown__open");
+            chatCardDropdown.classList.add("ChatCard_Dropdown__hidden");
+            chatCardToggleButton.setAttribute("aria-expanded", "false");
+        } else {
+            chatCardDropdown.classList.remove("ChatCard_Dropdown__hidden");
+            chatCardDropdown.classList.add("ChatCard_Dropdown__open");
+            chatCardToggleButton.setAttribute("aria-expanded", "true");
+        }
+
+        syncOverlayState();
+    });
+}
+
+if (pinnedToggleButton && pinnedDropdown) {
+    pinnedDropdown.classList.add("Pinned_Messages_Dropdown__hidden");
+
+    pinnedToggleButton.addEventListener("click", () => {
+        const isOpen = pinnedDropdown.classList.contains("Pinned_Messages_Dropdown__open");
+
+        if (isOpen) {
+            pinnedDropdown.classList.remove("Pinned_Messages_Dropdown__open");
+            pinnedDropdown.classList.add("Pinned_Messages_Dropdown__hidden");
+            pinnedToggleButton.setAttribute("aria-expanded", "false");
+        } else {
+            pinnedDropdown.classList.remove("Pinned_Messages_Dropdown__hidden");
+            pinnedDropdown.classList.add("Pinned_Messages_Dropdown__open");
+            pinnedToggleButton.setAttribute("aria-expanded", "true");
+        }
+
+        syncOverlayState();
+    });
+}
+
+if (messagesBox) {
+    requestAnimationFrame(() => {
+        messagesBox.scrollTop = messagesBox.scrollHeight;
+    });
+}
+
+if (messageActionAreas.length) {
+    messageActionAreas.forEach((actionArea) => {
+        const moreButton = actionArea.querySelector(".Message_More_Button");
+        const dropdown = actionArea.querySelector(".Message_Dropdown");
+
+        if (!moreButton || !dropdown) {
+            return;
+        }
+
+        moreButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+
+            const isOpen = dropdown.classList.contains("Message_Dropdown__open");
+
+            document.querySelectorAll(".Message_Dropdown__open").forEach((openedDropdown) => {
+                if (openedDropdown !== dropdown) {
+                    openedDropdown.classList.remove("Message_Dropdown__open");
+                }
+            });
+
+            if (isOpen) {
+                dropdown.classList.remove("Message_Dropdown__open");
+            } else {
+                dropdown.classList.add("Message_Dropdown__open");
+            }
+        });
+
+        dropdown.addEventListener("click", (event) => {
+            event.stopPropagation();
+        });
+    });
+}
+
+if (editButtons.length) {
+    editButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const messageItem = button.closest(".Message_Item");
+            const dropdown = button.closest(".Message_Dropdown");
+
+            if (dropdown) {
+                dropdown.classList.remove("Message_Dropdown__open");
+            }
+
+            toggleMessageEditMode(messageItem, true);
+        });
+    });
+}
+
+if (editCancelButtons.length) {
+    editCancelButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            const messageItem = button.closest(".Message_Item");
+            toggleMessageEditMode(messageItem, false);
+        });
+    });
+}
+
+if (replyButtons.length) {
+    replyButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const messageItem = button.closest(".Message_Item");
+            const dropdown = button.closest(".Message_Dropdown");
+
+            if (!messageItem || !replyToInput || !replyBar || !replyBarAuthor || !replyBarText) {
+                return;
+            }
+
+            if (dropdown) {
+                dropdown.classList.remove("Message_Dropdown__open");
+            }
+
+            replyToInput.value = messageItem.dataset.messageId || "";
+            replyBarAuthor.textContent = messageItem.dataset.messageAuthor || "User";
+            replyBarText.textContent = messageItem.dataset.messageText || "";
+            replyBar.hidden = false;
+        });
+    });
+}
+
+if (replyBarCancel) {
+    replyBarCancel.addEventListener("click", () => {
+        clearReplyState();
+    });
+}
+
+if (pinnedMessageRows.length) {
+    pinnedMessageRows.forEach((row) => {
+
+        row.addEventListener("click", () => {
+            const messageId = row.dataset.messageId;
+            const targetMessage = document.getElementById(`message-${messageId}`);
+
+            pinnedDropdown.classList.remove("Pinned_Messages_Dropdown__open");
+            pinnedDropdown.classList.add("Pinned_Messages_Dropdown__hidden");
+            pinnedToggleButton.setAttribute("aria-expanded", "false");
+            syncOverlayState();
+
+            if (targetMessage && messagesBox) {
+                const boxRect = messagesBox.getBoundingClientRect();
+                const messageRect = targetMessage.getBoundingClientRect();
+                const scrollTop = messagesBox.scrollTop + (messageRect.top - boxRect.top) - 80;
+
+                messagesBox.scrollTo({
+                    top: scrollTop,
+                    behavior: "smooth"
+                });
+            }
+        });
+
+    });
+}
