@@ -21,7 +21,8 @@ INSTALLED_APPS = [
     'Users',
     'Main',
     'Chat',
-    'Messages'
+    'Messages',
+    'Profiles'
 ]
 
 MIDDLEWARE = [

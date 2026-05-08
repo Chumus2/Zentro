@@ -1,4 +1,3 @@
-import random
 from django.db import models
 from django.conf import settings
 
@@ -42,12 +41,3 @@ class Chat(models.Model):
 
     def __str__(self):
         return self.title
-    
-
-class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
-    icon = models.ImageField(upload_to="profile_icon/", blank=True, null=True)
-    friends = models.ManyToManyField("self", blank=True)
-
-    def __str__(self):
-        return f"{self.user} - {self.user.name}"
