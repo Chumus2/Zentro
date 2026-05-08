@@ -8,10 +8,13 @@ def delete_message(request, message_id):
     message = get_object_or_404(Message, id=message_id)
     chat = message.chat
 
-    if message.sender != request.user:
-        return redirect("ChatDetail", chat_id=chat.id)
     if not chat.participants.filter(id=request.user.id).exists():
         return redirect("Main")
+
+    is_admin = chat.admins.filter(id=request.user.id).exists()
+
+    if message.sender != request.user and not is_admin:
+        return redirect("ChatDetail", chat_id=chat.id)
     
     message.delete()
 
