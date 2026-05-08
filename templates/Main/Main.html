@@ -143,7 +143,7 @@
 
                         <div class="Pinned_Messages_List">
                             {% for pinned_message in active_chat.pinned_messages.all %}
-                                <div class="Pinned_Message_Row">
+                                <div class="Pinned_Message_Row" data-message-id="{{ pinned_message.id }}">
                                     <div class="Pinned_Message_Avatar">
                                         {% if pinned_message.sender and pinned_message.sender.profile.icon %}
                                             <img src="{{ pinned_message.sender.profile.icon.url }}" loading="lazy" alt="{{ pinned_message.sender.name }}">
@@ -204,7 +204,7 @@
 
                         {% if not message.if_system %}
 
-                            <div class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}">
+                            <div id="message-{{ message.id }}" class="Message_Item{% if message.sender == request.user %} Message_Item__own{% endif %}">
 
                                 {% if message.id in pinned_message_ids %}
                                     <small class="Message_Pinned_Label"><i>Pinned message</i></small>
@@ -257,7 +257,7 @@
                         
                         {% else %}
 
-                            <div class="Message_Item Message_Item__system">
+                            <div id="message-{{ message.id }}" class="Message_Item Message_Item__system">
                                 <p>{{ message.text }}</p>
                                 <small>{{ message.created_at|timesince }}</small>
                             </div>
@@ -297,6 +297,7 @@
         const chatPanelOverlay = document.getElementById("chat-panel-overlay");
         const messagesBox = document.querySelector(".Messages_Box");
         const messageActionAreas = document.querySelectorAll(".Message_Actions");
+        const pinnedMessageRows = document.querySelectorAll(".Pinned_Message_Row")
 
         function syncOverlayState() {
             if (!chatPanelOverlay) {
@@ -410,6 +411,33 @@
                 dropdown.addEventListener("click", (event) => {
                     event.stopPropagation();
                 });
+            });
+        }
+
+        if (pinnedMessageRows.length) {
+            pinnedMessageRows.forEach((row) => {
+
+                row.addEventListener("click", () => {
+                    const messageId = row.dataset.messageId;
+                    const targetMessage = document.getElementById(`message-${messageId}`);
+
+                    pinnedDropdown.classList.remove("Pinned_Messages_Dropdown__open");
+                    pinnedDropdown.classList.add("Pinned_Messages_Dropdown__hidden");
+                    pinnedToggleButton.setAttribute("aria-expanded", "false");
+                    syncOverlayState();
+
+                    if (targetMessage && messagesBox) {
+                        const boxRect = messagesBox.getBoundingClientRect();
+                        const messageRect = targetMessage.getBoundingClientRect();
+                        const scrollTop = messagesBox.scrollTop + (messageRect.top - boxRect.top) - 24;
+
+                        messagesBox.scrollTo({
+                            top: scrollTop,
+                            behavior: "smooth"
+                        });
+                    }
+                });
+
             });
         }
 
