@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views import View
 from Main.models import Chat, Message
@@ -128,39 +129,49 @@ class ChatParticipantsView(LoginRequiredMixin, View):
                 return redirect("Participants", chat_id=chat.id)
             
 
-class AddParticipantView(LoginRequiredMixin, View):
-    login_url = "HomePage"
+@login_required(login_url="HomePage")
+def participant_leave(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
 
-    def get(self, request, chat_id):
-        chat = get_object_or_404(Chat, id=chat_id)
-
-        if not chat.participants.filter(id=request.user.id).exists():
+    if not chat.participants.filter(id=request.user.id).exists():
             return redirect("Main")
-        if not chat.admins.filter(id=request.user.id).exists():
-            return redirect("ChatDetail", chat_id=chat.id)
-        
-        friends = request.user.profile.friends.exclude(
-            user__id__in=chat.participants.values_list("id", flat=True)
+    
+    if request.method == "POST":
+        user = request.user
+
+        chat.participants.remove(user)
+        chat.admins.remove(user)
+        chat.delete_if_empty()
+        chat.save()
+
+        Message.objects.create(
+            chat=chat,
+            sender=None,
+            text=f"User {user.name} leaved from this group",
+            if_system=True
         )
 
-        context = {
-            "chat": chat,
-            "friends": friends
-        }
+        return redirect("Main")
 
-        return render(request, "Chat/AddParticipants.html", context)
-    
-    def post(self, request, chat_id):
+    return render(request, "Main/Main.html", {"chat": chat}) 
+
+
+@login_required(login_url="HomePage")
+def add_participant(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
+    friends = request.user.profile.friends.exclude(
+        user__id__in=chat.participants.values_list("id", flat=True)
+    )
+
+    if not chat.participants.filter(id=request.user.id).exists():
+            return redirect("Main")
+    if not chat.admins.filter(id=request.user.id).exists():
+        return redirect("ChatDetail", chat_id=chat.id)
+
+    if request.method == "POST":
         friend_id = request.POST.get("friend_id")
-
-        chat = get_object_or_404(Chat, id=chat_id)
         friend = get_object_or_404(request.user.profile.friends, id=friend_id)
 
-        if not chat.participants.filter(id=request.user.id).exists():
-            return redirect("Main")
-        if not chat.admins.filter(id=request.user.id).exists():
-            return redirect("ChatDetail", chat_id=chat.id)
-        
         chat.participants.add(friend.user)
 
         Message.objects.create(
@@ -171,38 +182,34 @@ class AddParticipantView(LoginRequiredMixin, View):
         )
 
         return redirect("Participants", chat_id=chat_id)
-    
 
-class RemoveParticipant(LoginRequiredMixin, View):
-    login_url = "HomePage"
+    context = {
+        "chat": chat,
+        "friends": friends
+    }
 
-    def get(self, request, chat_id):
-        chat = get_object_or_404(Chat, id=chat_id)
+    return render(request, "Chat/AddParticipants.html", context)
 
-        if not chat.participants.filter(id=request.user.id).exists():
+
+@login_required(login_url="HomePage")
+def remove_participant(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
+
+    if not chat.participants.filter(id=request.user.id).exists():
             return redirect("Main")
-        if not chat.admins.filter(id=request.user.id).exists():
-            return redirect("ChatDetail", chat_id=chat.id)
-        
-        return render(request, "Chat/Participants.html", {"chat": chat})
-
-    def post(self, request, chat_id):
+    if not chat.admins.filter(id=request.user.id).exists():
+        return redirect("ChatDetail", chat_id=chat.id)
+    
+    if request.method == "POST":
         participant_id = request.POST.get("participant_id")
-
-        chat = get_object_or_404(Chat, id=chat_id)
         participant = get_object_or_404(chat.participants, id=participant_id)
 
-        if not chat.participants.filter(id=request.user.id).exists():
-            return redirect("Main")
-        if not chat.admins.filter(id=request.user.id).exists():
-            return redirect("ChatDetail", chat_id=chat.id)
-        
         chat.participants.remove(participant)
 
         if not chat.participants.exists():
             chat.delete()
             return redirect("Main")
-
+        
         Message.objects.create(
             chat=chat,
             sender=None,
@@ -211,3 +218,5 @@ class RemoveParticipant(LoginRequiredMixin, View):
         )
 
         return redirect("Participants", chat_id=chat.id)
+
+    return render(request, "Chat/Participants.html", {"chat": chat})
