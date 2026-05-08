@@ -579,6 +579,7 @@ body:has(.Main) {
     border-radius: 1.05rem;
     background: linear-gradient(180deg, rgba(30, 41, 59, 0.58) 0%, rgba(15, 23, 42, 0.42) 100%);
     transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+    cursor: pointer;
 }
 
 .Pinned_Message_Row:hover {
@@ -891,6 +892,11 @@ body:has(.Main) {
     word-break: break-word;
 }
 
+.Message_Text[hidden],
+.Message_Edit_Form[hidden] {
+    display: none !important;
+}
+
 .Message_Item__system p {
     color: #cbd5e1;
     font-size: 0.95rem;
@@ -1099,6 +1105,77 @@ body:has(.Main) {
     background: rgba(15, 23, 42, 0.92);
     position: sticky;
     bottom: 0;
+}
+
+.Message_Edit_Form {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 0.35rem;
+}
+
+.Message_Edit_Textarea {
+    width: 100%;
+    min-height: 7rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(125, 211, 252, 0.24);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.5);
+    color: #f8fafc;
+    line-height: 1.65;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.Message_Edit_Textarea:focus {
+    border-color: rgba(96, 165, 250, 0.74);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+    background: rgba(15, 23, 42, 0.68);
+}
+
+.Message_Item__own .Message_Edit_Textarea {
+    border-color: rgba(219, 234, 254, 0.28);
+    background: rgba(8, 32, 61, 0.32);
+    color: #eff6ff;
+}
+
+.Message_Edit_Actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.65rem;
+}
+
+.Message_Edit_Save,
+.Message_Edit_Cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 5.75rem;
+    min-height: 2.6rem;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.Message_Edit_Save {
+    border: none;
+    background: linear-gradient(135deg, #67e8f9 0%, #2563eb 100%);
+    color: #eff6ff;
+    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.18);
+}
+
+.Message_Edit_Cancel {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(30, 41, 59, 0.72);
+    color: #e2e8f0;
+}
+
+.Message_Edit_Save:hover,
+.Message_Edit_Cancel:hover {
+    transform: translateY(-1px);
 }
 
 .Message_Form {

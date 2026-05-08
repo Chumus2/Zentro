@@ -60,3 +60,23 @@ def unpin_message(request, message_id):
     )
 
     return redirect("ChatDetail", chat_id=chat.id)
+
+
+@login_required(login_url="HomePage")
+def edit_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    chat = message.chat
+
+    if not chat.participants.filter(id=request.user.id).exists():
+        return redirect("Main")
+    if not message.sender == request.user:
+        return redirect("ChatDetail", chat_id=chat.id)
+    
+    if request.method == "POST":
+        new_text = request.POST.get("message_text", "").strip()
+
+        if new_text:
+            message.text = new_text
+            message.save()
+
+    return redirect("ChatDetail", chat_id=chat.id)

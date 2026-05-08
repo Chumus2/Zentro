@@ -163,7 +163,7 @@
                                             {% endif %}
                                         </p>
                                         <h3 class="Pinned_Message_Text">{{ pinned_message.text }}</h3>
-                                        <small class="Pinned_Message_Time">{{ pinned_message.created_at|timesince }}</small>
+                                        <small class="Pinned_Message_Time">{{ pinned_message.created_at|timesince }} ago</small>
                                     </div>
                                 </div>
                             {% empty %}
@@ -216,8 +216,21 @@
                                     <strong>{{ message.sender.name }}</strong>
                                 {% endif %}
 
-                                <p>{{ message.text }}</p>
-                                <small>{{ message.created_at|timesince }}</small>
+                                <p class="Message_Text">{{ message.text }}</p>
+
+                                {% if message.sender == request.user %}
+                                    <form action="{% url 'EditMessage' message.id %}" method="post" class="Message_Edit_Form" hidden>
+                                        {% csrf_token %}
+                                        <textarea name="message_text" class="Message_Edit_Textarea" rows="3">{{ message.text }}</textarea>
+
+                                        <div class="Message_Edit_Actions">
+                                            <button type="submit" class="Message_Edit_Save">Save</button>
+                                            <button type="button" class="Message_Edit_Cancel">Cancel</button>
+                                        </div>
+                                    </form>
+                                {% endif %}
+
+                                <small>{{ message.created_at|timesince }} ago</small>
 
                                 {% if message.sender == request.user %}
                                     <div class="Message_Actions">
@@ -247,6 +260,13 @@
                                                     </a>
                                                 {% endif %}
 
+                                            </div>
+
+                                            <div>
+                                                <button type="button" class="Message_Dropdown_Button Message_Edit_Button">
+                                                    <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit">
+                                                    Edit
+                                                </button>
                                             </div>
 
                                         </div>
@@ -297,7 +317,45 @@
         const chatPanelOverlay = document.getElementById("chat-panel-overlay");
         const messagesBox = document.querySelector(".Messages_Box");
         const messageActionAreas = document.querySelectorAll(".Message_Actions");
-        const pinnedMessageRows = document.querySelectorAll(".Pinned_Message_Row")
+        const pinnedMessageRows = document.querySelectorAll(".Pinned_Message_Row");
+        const editButtons = document.querySelectorAll(".Message_Edit_Button");
+        const editCancelButtons = document.querySelectorAll(".Message_Edit_Cancel");
+
+        function toggleMessageEditMode(messageItem, shouldOpen) {
+            if (!messageItem) {
+                return;
+            }
+
+            const textNode = messageItem.querySelector(".Message_Text");
+            const editForm = messageItem.querySelector(".Message_Edit_Form");
+            const actions = messageItem.querySelector(".Message_Actions");
+            const textarea = messageItem.querySelector(".Message_Edit_Textarea");
+
+            if (!textNode || !editForm) {
+                return;
+            }
+
+            if (shouldOpen) {
+                textNode.hidden = true;
+                editForm.hidden = false;
+
+                if (actions) {
+                    actions.hidden = true;
+                }
+
+                if (textarea) {
+                    textarea.focus();
+                    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+                }
+            } else {
+                textNode.hidden = false;
+                editForm.hidden = true;
+
+                if (actions) {
+                    actions.hidden = false;
+                }
+            }
+        }
 
         function syncOverlayState() {
             if (!chatPanelOverlay) {
@@ -410,6 +468,35 @@
 
                 dropdown.addEventListener("click", (event) => {
                     event.stopPropagation();
+                });
+            });
+        }
+
+        if (editButtons.length) {
+            editButtons.forEach((button) => {
+                button.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const messageItem = button.closest(".Message_Item");
+                    const dropdown = button.closest(".Message_Dropdown");
+
+                    if (dropdown) {
+                        dropdown.classList.remove("Message_Dropdown__open");
+                    }
+
+                    toggleMessageEditMode(messageItem, true);
+                });
+            });
+        }
+
+        if (editCancelButtons.length) {
+            editCancelButtons.forEach((button) => {
+                button.addEventListener("click", (event) => {
+                    event.preventDefault();
+
+                    const messageItem = button.closest(".Message_Item");
+                    toggleMessageEditMode(messageItem, false);
                 });
             });
         }
