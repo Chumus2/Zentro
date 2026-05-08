@@ -1,7 +1,8 @@
 .AddParticipants_Page {
     position: relative;
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     background:
         radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 20rem),
         radial-gradient(circle at right 18%, rgba(251, 191, 36, 0.12), transparent 18rem),
@@ -21,12 +22,14 @@
 .AddParticipants_Shell {
     position: relative;
     z-index: 1;
+    width: min(100%, 1400px);
     min-height: 100vh;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 36rem);
+    grid-template-columns: minmax(0, 1fr) minmax(500px, 760px);
     gap: 3rem;
     align-items: center;
-    padding: 3rem;
+    padding: clamp(1.25rem, 3vw, 3rem);
 }
 
 .AddParticipants_Copy {
@@ -67,7 +70,8 @@
 }
 
 .AddParticipants_Card {
-    width: min(100%, 36rem);
+    width: min(100%, 44rem);
+    min-width: 0;
     padding: 1.8rem;
     border: 1px solid rgba(148, 163, 184, 0.18);
     border-radius: 1.8rem;
@@ -94,12 +98,14 @@
 
 .AddParticipants_List {
     display: grid;
+    min-width: 0;
     gap: 0.85rem;
     margin-top: 1.4rem;
 }
 
 .AddParticipant_Row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 3.6rem minmax(0, 1fr) auto;
     align-items: center;
     gap: 0.95rem;
     padding: 0.95rem 1rem;
@@ -143,6 +149,8 @@
 
 .AddParticipant_Copy h3 {
     margin: 0;
+    max-width: 100%;
+    word-break: break-word;
     color: #f8fafc;
     font-size: 1rem;
     font-weight: 700;
@@ -158,6 +166,7 @@
     align-items: center;
     justify-content: center;
     min-width: 8.5rem;
+    min-height: 3.25rem;
     padding: 0.82rem 1rem;
     border-radius: 999px;
     font-weight: 700;
@@ -205,6 +214,7 @@
     .AddParticipants_Shell {
         grid-template-columns: 1fr;
         padding: 2rem 1.25rem;
+        align-items: start;
     }
 }
 
@@ -219,13 +229,17 @@
     }
 
     .AddParticipant_Row {
+        grid-template-columns: 3.6rem minmax(0, 1fr);
         align-items: flex-start;
-        flex-wrap: wrap;
     }
 
     .AddParticipant_Action_Form,
-    .AddParticipant_ActionButton,
+    .AddParticipant_Action_Button,
     .AddParticipants_Back_Button {
         width: 100%;
+    }
+
+    .AddParticipant_Action_Form {
+        grid-column: 2;
     }
 }

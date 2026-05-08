@@ -22,12 +22,14 @@
 .EditChat_Shell {
     position: relative;
     z-index: 1;
+    width: min(100%, 1400px);
     min-height: 100vh;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 34rem);
+    grid-template-columns: minmax(0, 1fr) minmax(460px, 680px);
     gap: 3rem;
     align-items: center;
-    padding: 3rem;
+    padding: clamp(1.25rem, 3vw, 3rem);
 }
 
 .EditChat_Copy {
@@ -66,7 +68,9 @@
 }
 
 .EditChat_Card {
-    width: min(100%, 34rem);
+    width: min(100%, 40rem);
+    min-width: 0;
+    overflow-x: hidden;
     padding: 1.8rem;
     border: 1px solid rgba(148, 163, 184, 0.18);
     border-radius: 1.8rem;
@@ -109,12 +113,15 @@
 
 .EditChat_Form {
     display: grid;
+    min-width: 0;
+    overflow-x: hidden;
     gap: 1rem;
     margin-top: 1.4rem;
 }
 
 .EditChat_Field {
     display: grid;
+    min-width: 0;
     gap: 0.45rem;
 }
 
@@ -127,6 +134,7 @@
 .EditChat_Field input,
 .EditChat_Field textarea {
     width: 100%;
+    min-width: 0;
     padding: 0.95rem 1rem;
     border: 1px solid rgba(148, 163, 184, 0.22);
     border-radius: 1rem;
@@ -140,6 +148,10 @@
     min-height: 10rem;
     resize: vertical;
     line-height: 1.6;
+}
+
+.EditChat_Field input {
+    min-height: 3.5rem;
 }
 
 .EditChat_Field input:focus,
@@ -162,6 +174,7 @@
     align-items: center;
     justify-content: center;
     min-width: 9rem;
+    min-height: 3.5rem;
     padding: 0.95rem 1.25rem;
     border-radius: 999px;
     font-weight: 700;
@@ -196,6 +209,14 @@
     .EditChat_Shell {
         grid-template-columns: 1fr;
         padding: 2rem 1.25rem;
+        align-items: start;
+    }
+}
+
+@media (max-width: 1280px) {
+    .EditChat_Shell {
+        grid-template-columns: minmax(0, 1fr) minmax(400px, 580px);
+        gap: 2rem;
     }
 }
 

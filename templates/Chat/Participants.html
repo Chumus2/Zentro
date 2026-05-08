@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{% static 'stylesheets/Chat/Participants.css' %}">
+    <link rel="stylesheet" href="{% static 'stylesheets/Chat/Participants.css' %}?v=20260508-1">
 {% endblock %}
 
 {% block content %}
@@ -77,7 +77,7 @@
 
                                 </form>
 
-                                <form action="{% url 'RemoveUser' chat.id %}" method="post">
+                                <form action="{% url 'RemoveUser' chat.id %}" method="post" class="Participant_Action_Form">
                                     {% csrf_token %}
 
                                     <input type="hidden" name="participant_id" value="{{ participant.id }}">
