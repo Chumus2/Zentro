@@ -15,7 +15,16 @@
 
         <div class="Profile_Card">
 
-            <a href="{% url 'Main' %}" target="_self" class="Profile_Back">Back</a>
+            <div class="Profile_Header">
+                <a href="{% url 'Main' %}" target="_self" class="Profile_Back">Back</a>
+                
+                {% if request.user.profile == user.profile %}
+                    <button type="button" class="Profile_Edit">
+                        <img src="{% static 'images/EditIcon.png' %}" loading="lazy">
+                        Edit
+                    </button>
+                {% endif %}
+            </div>
 
             {% if user.profile.icon %}
                 <img src="{{ user.profile.icon.url }}" loading="lazy" class="Profile_Avatar">
