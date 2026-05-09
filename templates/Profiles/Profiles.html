@@ -23,6 +23,48 @@
                 <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
             {% endif %} 
 
+            <div>
+                <img src="{% static 'images/UsernameIcon.png' %}" loading="lazy">
+                <h2>{{ user.name }}</h2>
+                <small>Username</small>
+            </div>
+
+            <div>
+                <img src="{% static 'images/BioIcon.png' %}" loading="lazy">
+                
+                {% if user.profile.bio %}
+                    <p>{{ user.profile.bio|default:'' }}</p> 
+                {% else %}  
+                    <p>No description</p>
+                {% endif %}
+
+                <small>Bio</small>
+            </div>
+
+            <div>
+                <img src="{% static 'images/BirthdayIcon.png' %}" loading="lazy">
+                
+                {% if user.profile.birthday %}
+                    <h2>{{ user.profile.birthday }}</h2>
+                {% else %}
+                    <h2>Birtday not specified</h2>
+                {% endif %}
+
+                <small>Birthday</small>
+            </div>
+
+            <div>
+                <img src="{% static 'images/CountryIcon.png' %}" loading="lazy">
+
+                {% if user.profile.country %}
+                    <h2>{{ user.profile.country.name }}</h2>
+                {% else %}
+                    <h2>Country not specified</h2>
+                {% endif %}
+
+                <small>Country</small>
+            </div>
+
         </div>
 
     </div>
