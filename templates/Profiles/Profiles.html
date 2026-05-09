@@ -17,73 +17,94 @@
 
             <div class="Profile_Header">
                 <a href="{% url 'Main' %}" target="_self" class="Profile_Back">Back</a>
-                
+
                 {% if request.user.profile == user.profile %}
-                    <button type="button" class="Profile_Edit">
+                    <button type="button" class="Profile_Edit" id="edit-toggle">
                         <img src="{% static 'images/EditIcon.png' %}" loading="lazy">
-                        Edit
+                        <span>Edit</span>
                     </button>
                 {% endif %}
             </div>
 
-            {% if user.profile.icon %}
-                <img src="{{ user.profile.icon.url }}" loading="lazy" class="Profile_Avatar">
-            {% else %}
-                <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy" class="Profile_Avatar">
-            {% endif %} 
+            <form method="post" enctype="multipart/form-data" action="{% url 'CheckProfile' user.id %}" class="Profile_Form" id="profile-form">
+                {% csrf_token %}
 
-            <hr class="Profile_Divider">
-
-            <div class="Profile_Row">
-                <img class="Profile_Row_Icon" src="{% static 'images/UsernameIcon.png' %}" loading="lazy">
-                
-                <div class="Profile_Row_Body">
-                    <h2>{{ user.name }}</h2>
-                    <small>Username</small>
-                </div>
-            </div>
-
-            <div class="Profile_Row">
-                <img class="Profile_Row_Icon" src="{% static 'images/BioIcon.png' %}" loading="lazy">
-                
-                <div class="Profile_Row_Body">
-                    {% if user.profile.bio %}
-                        <p>{{ user.profile.bio|default:'' }}</p> 
-                    {% else %}  
-                        <p>No description</p>
-                    {% endif %}
-                    <small>Bio</small>
-                </div>
-            </div>
-
-            <div class="Profile_Row">
-                <img class="Profile_Row_Icon" src="{% static 'images/BirthdayIcon.png' %}" loading="lazy">
-                
-                <div class="Profile_Row_Body">
-                    {% if user.profile.birthday %}
-                        <h2>{{ user.profile.birthday }}</h2>
+                <div class="Profile_Avatar_Wrap">
+                    {% if user.profile.icon %}
+                        <img src="{{ user.profile.icon.url }}" loading="lazy" class="Profile_Avatar" id="avatar-preview">
                     {% else %}
-                        <h2>Birtday not specified</h2>
+                        <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy" class="Profile_Avatar" id="avatar-preview">
                     {% endif %}
-                    <small>Birthday</small>
-                </div>
-            </div>
 
-            <div class="Profile_Row">
-                <img class="Profile_Row_Icon" src="{% static 'images/CountryIcon.png' %}" loading="lazy">
-
-                <div class="Profile_Row_Body">
-                    {% if user.profile.country %}
-                        <h2>{{ user.profile.country.name }}</h2>
-                    {% else %}
-                        <h2>Country not specified</h2>
-                    {% endif %}
-                    <small>Country</small>
+                    <label class="Profile_Avatar_Label" id="avatar-label" hidden>
+                        <input type="file" name="icon" accept="image/*" class="Profile_Avatar_Input" id="avatar-input">
+                        Change photo
+                    </label>
                 </div>
-            </div>
+
+                <hr class="Profile_Divider">
+
+                <div class="Profile_Row">
+                    <img class="Profile_Row_Icon" src="{% static 'images/UsernameIcon.png' %}" loading="lazy">
+                    <div class="Profile_Row_Body">
+                        <h2 class="Profile_View">{{ user.name }}</h2>
+                        <input type="text" name="name" value="{{ user.name }}" class="Profile_Input" hidden>
+                        <small>Username</small>
+                    </div>
+                </div>
+
+                <div class="Profile_Row">
+                    <img class="Profile_Row_Icon" src="{% static 'images/BioIcon.png' %}" loading="lazy">
+                    <div class="Profile_Row_Body">
+                        {% if user.profile.bio %}
+                            <p class="Profile_View">{{ user.profile.bio }}</p>
+                        {% else %}
+                            <p class="Profile_View">No description</p>
+                        {% endif %}
+                        <textarea name="bio" class="Profile_Input Profile_Textarea" hidden>{{ user.profile.bio|default:'' }}</textarea>
+                        <small>Bio</small>
+                    </div>
+                </div>
+
+                <div class="Profile_Row">
+                    <img class="Profile_Row_Icon" src="{% static 'images/BirthdayIcon.png' %}" loading="lazy">
+                    <div class="Profile_Row_Body">
+                        {% if user.profile.birthday %}
+                            <h2 class="Profile_View">{{ user.profile.birthday }}</h2>
+                        {% else %}
+                            <h2 class="Profile_View">Birthday not specified</h2>
+                        {% endif %}
+                        <input type="date" name="birthday" value="{{ user.profile.birthday|default:'' }}" class="Profile_Input" hidden>
+                        <small>Birthday</small>
+                    </div>
+                </div>
+
+                <div class="Profile_Row">
+                    <img class="Profile_Row_Icon" src="{% static 'images/CountryIcon.png' %}" loading="lazy">
+                    <div class="Profile_Row_Body">
+                        {% if user.profile.country %}
+                            <h2 class="Profile_View">{{ user.profile.country.name }}</h2>
+                        {% else %}
+                            <h2 class="Profile_View">Country not specified</h2>
+                        {% endif %}
+                        <input type="text" name="country" value="{{ user.profile.country.name|default:'' }}" class="Profile_Input" hidden>
+                        <small>Country</small>
+                    </div>
+                </div>
+
+                <div class="Profile_Actions" id="profile-actions" hidden>
+                    <button type="button" class="Profile_Cancel" id="edit-cancel">Cancel</button>
+                    <button type="submit" class="Profile_Save">Save</button>
+                </div>
+
+            </form>
 
         </div>
 
     </div>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/Profiles/Profiles.js' %}"></script>
 {% endblock %}

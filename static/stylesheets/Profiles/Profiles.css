@@ -92,6 +92,21 @@
     background: rgba(51, 65, 85, 0.86);
 }
 
+.Profile_Form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.Profile_Avatar_Wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .Profile_Avatar {
     width: 7.25rem;
     height: 7.25rem;
@@ -101,6 +116,36 @@
     border: 2px solid rgba(96, 165, 250, 0.32);
     background: rgba(30, 41, 59, 0.92);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08), 0 20px 40px rgba(15, 23, 42, 0.24);
+}
+
+.Profile_Avatar_Label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.8rem;
+    padding: 0.65rem 1.1rem;
+    border: 1px dashed rgba(96, 165, 250, 0.34);
+    border-radius: 999px;
+    background: rgba(30, 41, 59, 0.58);
+    color: #93c5fd;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.Profile_Avatar_Label[hidden] {
+    display: none !important;
+}
+
+.Profile_Avatar_Label:hover {
+    transform: translateY(-1px);
+    background: rgba(30, 41, 59, 0.72);
+    border-color: rgba(96, 165, 250, 0.5);
+}
+
+.Profile_Avatar_Input {
+    display: none;
 }
 
 .Profile_Divider {
@@ -145,7 +190,8 @@
     min-width: 0;
 }
 
-.Profile_Row_Body h2 {
+.Profile_Row_Body h2,
+.Profile_View {
     margin: 0;
     font-size: 1rem;
     font-weight: 700;
@@ -156,12 +202,12 @@
     white-space: nowrap;
 }
 
-.Profile_Row_Body p {
-    margin: 0;
+.Profile_Row_Body p.Profile_View {
     font-size: 0.92rem;
+    font-weight: 400;
     color: #94a3b8;
     line-height: 1.6;
-    word-break: break-word;
+    white-space: normal;
 }
 
 .Profile_Row_Body small {
@@ -178,6 +224,84 @@
     letter-spacing: 0.02em;
     margin-top: 0.25rem;
     align-self: flex-start;
+}
+
+.Profile_Input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 1rem;
+    background: rgba(30, 41, 59, 0.95);
+    color: #f8fafc;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    box-sizing: border-box;
+}
+
+.Profile_Input:focus {
+    border-color: rgba(96, 165, 250, 0.74);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+    transform: translateY(-1px);
+}
+
+.Profile_Input::placeholder {
+    color: #94a3b8;
+}
+
+.Profile_Textarea {
+    min-height: 6rem;
+    resize: none;
+    line-height: 1.6;
+}
+
+.Profile_Actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 0.2rem;
+}
+
+.Profile_Actions[hidden] {
+    display: none !important;
+}
+
+.Profile_Cancel,
+.Profile_Save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 9rem;
+    min-height: 3.5rem;
+    padding: 0.95rem 1.25rem;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.Profile_Cancel {
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(30, 41, 59, 0.72);
+    color: #e5eefc;
+}
+
+.Profile_Save {
+    border: none;
+    background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+    color: #082032;
+    box-shadow: 0 18px 30px rgba(14, 165, 233, 0.28);
+}
+
+.Profile_Cancel:hover,
+.Profile_Save:hover {
+    transform: translateY(-2px);
+}
+
+.Profile_Cancel:hover {
+    background: rgba(51, 65, 85, 0.86);
 }
 
 @media (max-width: 640px) {
@@ -197,7 +321,9 @@
     }
 
     .Profile_Back,
-    .Profile_Edit {
+    .Profile_Edit,
+    .Profile_Cancel,
+    .Profile_Save {
         min-width: auto;
         flex: 1;
     }
