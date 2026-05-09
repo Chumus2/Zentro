@@ -26,8 +26,16 @@
                 {% endif %}
             </div>
 
-            <form method="post" enctype="multipart/form-data" action="{% url 'CheckProfile' user.id %}" class="Profile_Form" id="profile-form">
+            <form method="post" enctype="multipart/form-data" action="{% url 'CheckProfile' user.id %}" class="Profile_Form" id="profile-form" data-edit="{% if edit_mode %}true{% else %}false{% endif %}">
                 {% csrf_token %}
+
+                {% if messages %}
+                    <div class="Profile_Messages">
+                        {% for message in messages %}
+                            <div class="Profile_Message">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
                 <div class="Profile_Avatar_Wrap">
                     {% if user.profile.icon %}
@@ -74,7 +82,7 @@
                         {% else %}
                             <h2 class="Profile_View">Birthday not specified</h2>
                         {% endif %}
-                        <input type="date" name="birthday" value="{{ user.profile.birthday|default:'' }}" class="Profile_Input" hidden>
+                        <input type="date" name="birthday" value="{{ user.profile.birthday|date:'Y-m-d'|default:'' }}" class="Profile_Input" hidden>
                         <small>Birthday</small>
                     </div>
                 </div>

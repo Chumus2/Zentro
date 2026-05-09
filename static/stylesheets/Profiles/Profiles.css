@@ -309,6 +309,21 @@ select.Profile_Input option {
     background: #1e293b;
     color: #f8fafc;
 }
+
+.Profile_Messages {
+    display: grid;
+    gap: 0.65rem;
+    width: 100%;
+}
+ 
+.Profile_Message {
+    padding: 0.85rem 1rem;
+    border: 1px solid rgba(248, 113, 113, 0.28);
+    border-radius: 1rem;
+    background: rgba(127, 29, 29, 0.22);
+    color: #fecaca;
+    line-height: 1.5;
+}
  
 .Profile_Actions[hidden],
 .Profile_Avatar_Label[hidden] {

@@ -1,3 +1,4 @@
+const form = document.getElementById("profile-form");
 const editToggle = document.getElementById("edit-toggle");
 const editCancel = document.getElementById("edit-cancel");
 const profileActions = document.getElementById("profile-actions");
@@ -26,6 +27,9 @@ function exitEditMode() {
 editToggle.addEventListener("click", enterEditMode);
 editCancel.addEventListener("click", exitEditMode);
 
+if (form.dataset.edit == 'true') {
+    enterEditMode();
+}
 
 avatarInput.addEventListener("change", () => {
     const file = avatarInput.files[0];

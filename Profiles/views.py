@@ -39,6 +39,7 @@ class ProfilesView(LoginRequiredMixin, View):
         context = {
             "user": user,
             "countries": countries,
+            "edit_mode": True
         }
 
         # Name checks
