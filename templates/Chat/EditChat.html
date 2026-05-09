@@ -40,8 +40,23 @@
 
                 {% endif %}
 
-                <form action="{% url 'EditChat' chat.id %}" method="post" class="EditChat_Form">
+                <form action="{% url 'EditChat' chat.id %}" method="post" class="EditChat_Form" enctype="multipart/form-data">
                     {% csrf_token %}
+
+                    <div class="EditChat_Icon_Field">
+                        <label for="chat_icon">Chat icon</label>
+
+                        <div class="EditChat_Icon_Preview{% if chat.icon %} EditChat_Icon_Preview__filled{% endif %}" id="chat-icon-preview">
+                            {% if chat.icon %}
+                                <img src="{{ chat.icon.url }}" alt="{{ chat.title }}">
+                            {% else %}
+                                <span>Preview</span>
+                            {% endif %}
+                        </div>
+
+                        <input id="chat_icon" name="chat_icon" type="file" accept=".png,.jpg,.jpeg,image/png,image/jpeg">
+                        <small>Only PNG and JPG images are allowed.</small>
+                    </div>
 
                     <div class="EditChat_Field">
                         <label for="chat-title">Chat's title</label>
@@ -63,4 +78,8 @@
 
     </section>
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/Chat/EditChat.js' %}"></script>
 {% endblock %}

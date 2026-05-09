@@ -20,8 +20,9 @@ class EditChatView(LoginRequiredMixin, View):
         return render(request, "Chat/EditChat.html", {"chat": chat})
     
     def post(self, request, chat_id):
-        title = request.POST.get("chat_title")
+        title = request.POST.get("chat_title", "").strip()
         description = request.POST.get("chat_description", "").strip()
+        chat_icon = request.FILES.get("chat_icon")
 
         chat = get_object_or_404(Chat, id=chat_id)
 
@@ -38,12 +39,18 @@ class EditChatView(LoginRequiredMixin, View):
         if not title:
             messages.error(request, "Title is required")
             return render(request, "Chat/EditChat.html", {"chat": chat, "form_data": form_data})
+        
         if len(description) > 255:
             messages.error(request, "Description must be under 255 characters long")
             return render(request, "Chat/EditChat.html", {"chat": chat, "form_data": form_data})
+        
+        if chat_icon and chat_icon.content_type not in ["image/png", "image/jpeg"]:
+            messages.error(request, "Only PNG and JPG images are allowed")
+            return render(request, "Chat/EditChat.html", {"chat": chat, "form_data": form_data})
             
         title_changed = title != chat.title
-        description_changed = description != chat.description
+        description_changed = description != (chat.description or "")
+        icon_changed = chat_icon is not None
 
         if title_changed:
             Message.objects.create(
@@ -59,9 +66,20 @@ class EditChatView(LoginRequiredMixin, View):
                 text=f"Group's descrption have been changed",
                 if_system=True
             )
+        if icon_changed:
+            Message.objects.create(
+                chat=chat,
+                sender=None,
+                text=f"Group's icon have been changed",
+                if_system=True
+            )
 
         chat.title = title
         chat.description = description
+
+        if chat_icon is not None:
+            chat.icon = chat_icon
+
         chat.save()
 
         return redirect("ChatDetail", chat_id=chat.id)
