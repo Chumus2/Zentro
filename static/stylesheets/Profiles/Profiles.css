@@ -1,0 +1,159 @@
+.Profile {
+    min-height: 100vh;
+    width: min(100%, 1820px);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    background:
+        radial-gradient(circle at top left, rgba(82, 146, 255, 0.14), transparent 22rem),
+        linear-gradient(180deg, #0f172a 0%, #111827 100%);
+    color: #e5eefc;
+    box-sizing: border-box;
+}
+
+.Profile a {
+    color: #cfe4ff;
+    text-decoration: none;
+}
+
+.Profile a:hover {
+    color: #f8fbff;
+}
+
+.Profile_Card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: min(100%, 480px);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 1.5rem;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 24px 48px rgba(2, 8, 23, 0.38);
+}
+
+.Profile_Back {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 999px;
+    background: rgba(30, 41, 59, 0.72);
+    color: #cfe4ff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.Profile_Back:hover {
+    transform: translateY(-1px);
+    background: rgba(51, 65, 85, 0.86);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.2);
+    color: #f8fbff;
+}
+
+.Profile_Avatar {
+    width: 7rem;
+    height: 7rem;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(96, 165, 250, 0.32);
+    background: rgba(30, 41, 59, 0.92);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 16px 32px rgba(2, 8, 23, 0.3);
+}
+
+.Profile_Divider {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.Profile_Row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 1.1rem;
+    background: rgba(30, 41, 59, 0.45);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.Profile_Row:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(96, 165, 250, 0.18);
+    transform: translateY(-1px);
+}
+
+.Profile_Row_Icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+    object-fit: contain;
+    margin-top: 0.15rem;
+    filter: brightness(0) invert(0.75);
+}
+
+.Profile_Row_Body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.Profile_Row_Body h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #e5eefc;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.Profile_Row_Body p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: #94a3b8;
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+.Profile_Row_Body small {
+    margin-top: 0.1rem;
+    font-size: 0.75rem;
+    color: #60a5fa;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+
+@media (max-width: 640px) {
+    .Profile {
+        padding: 0.85rem;
+        align-items: flex-start;
+    }
+
+    .Profile_Card {
+        width: 100%;
+        padding: 1.25rem;
+        gap: 1.1rem;
+    }
+
+    .Profile_Avatar {
+        width: 5.5rem;
+        height: 5.5rem;
+    }
+}

@@ -6,63 +6,71 @@
 {% endblock %}
 
 {% block styles %}
-    <link rel="stylesheet" href="stylesheets/Profiles/Profiles.css">
+    <link rel="stylesheet" href="{% static 'stylesheets/Profiles/Profiles.css' %}">
 {% endblock %}
 
 {% block content %}
 
-    <div>
+    <div class="Profile">
 
-        <div>
+        <div class="Profile_Card">
 
-            <a href="{% url 'Main' %}" target="_self">Back</a>
+            <a href="{% url 'Main' %}" target="_self" class="Profile_Back">Back</a>
 
             {% if user.profile.icon %}
-                <img src="{{ user.profile.icon.url }}" loading="lazy">
+                <img src="{{ user.profile.icon.url }}" loading="lazy" class="Profile_Avatar">
             {% else %}
-                <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
+                <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy" class="Profile_Avatar">
             {% endif %} 
 
-            <div>
-                <img src="{% static 'images/UsernameIcon.png' %}" loading="lazy">
-                <h2>{{ user.name }}</h2>
-                <small>Username</small>
-            </div>
+            <hr class="Profile_Divider">
 
-            <div>
-                <img src="{% static 'images/BioIcon.png' %}" loading="lazy">
+            <div class="Profile_Row">
+                <img class="Profile_Row_Icon" src="{% static 'images/UsernameIcon.png' %}" loading="lazy">
                 
-                {% if user.profile.bio %}
-                    <p>{{ user.profile.bio|default:'' }}</p> 
-                {% else %}  
-                    <p>No description</p>
-                {% endif %}
-
-                <small>Bio</small>
+                <div class="Profile_Row_Body">
+                    <h2>{{ user.name }}</h2>
+                    <small>Username</small>
+                </div>
             </div>
 
-            <div>
-                <img src="{% static 'images/BirthdayIcon.png' %}" loading="lazy">
+            <div class="Profile_Row">
+                <img class="Profile_Row_Icon" src="{% static 'images/BioIcon.png' %}" loading="lazy">
                 
-                {% if user.profile.birthday %}
-                    <h2>{{ user.profile.birthday }}</h2>
-                {% else %}
-                    <h2>Birtday not specified</h2>
-                {% endif %}
-
-                <small>Birthday</small>
+                <div class="Profile_Row_Body">
+                    {% if user.profile.bio %}
+                        <p>{{ user.profile.bio|default:'' }}</p> 
+                    {% else %}  
+                        <p>No description</p>
+                    {% endif %}
+                    <small>Bio</small>
+                </div>
             </div>
 
-            <div>
-                <img src="{% static 'images/CountryIcon.png' %}" loading="lazy">
+            <div class="Profile_Row">
+                <img class="Profile_Row_Icon" src="{% static 'images/BirthdayIcon.png' %}" loading="lazy">
+                
+                <div class="Profile_Row_Body">
+                    {% if user.profile.birthday %}
+                        <h2>{{ user.profile.birthday }}</h2>
+                    {% else %}
+                        <h2>Birtday not specified</h2>
+                    {% endif %}
+                    <small>Birthday</small>
+                </div>
+            </div>
 
-                {% if user.profile.country %}
-                    <h2>{{ user.profile.country.name }}</h2>
-                {% else %}
-                    <h2>Country not specified</h2>
-                {% endif %}
+            <div class="Profile_Row">
+                <img class="Profile_Row_Icon" src="{% static 'images/CountryIcon.png' %}" loading="lazy">
 
-                <small>Country</small>
+                <div class="Profile_Row_Body">
+                    {% if user.profile.country %}
+                        <h2>{{ user.profile.country.name }}</h2>
+                    {% else %}
+                        <h2>Country not specified</h2>
+                    {% endif %}
+                    <small>Country</small>
+                </div>
             </div>
 
         </div>
