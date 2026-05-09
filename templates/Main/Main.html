@@ -226,11 +226,21 @@
                                     <small class="Message_Pinned_Label"><i>Pinned message</i></small>
                                 {% endif %}
 
-                                {% if message.sender == request.user %}
-                                    <strong>You</strong>
-                                {% else %}
-                                    <strong>{{ message.sender.name }}</strong>
-                                {% endif %}
+                                <div class="Message_Author">
+
+                                    {% if message.sender.profile.icon %}
+                                        <img src="{{ message.sender.profile.icon.url }}" loading="lazy" class="Message_Avatar">
+                                    {% else %}
+                                        <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy" class="Message_Avatar">
+                                    {% endif %}
+
+                                    {% if message.sender == request.user %}
+                                        <strong>You</strong>
+                                    {% else %}
+                                        <strong>{{ message.sender.name }}</strong>
+                                    {% endif %}
+
+                                </div>
 
                                 {% if message.reply_to %}
                                     <div class="Message_Reply_Preview">
