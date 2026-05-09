@@ -100,6 +100,8 @@
                         <div class="ChatBox{% if active_chat and active_chat.id == chat.id %} ChatBox__active{% endif %}">
                             {% if chat.icon %}
                                 <img src="{{ chat.icon.url }}" loading="lazy" width="60" height="60">
+                            {% else %}
+                                <img src="{% static 'images/DefaultChatIcon.png' %}" loading="lazy" width="60" height="60">
                             {% endif %}
  
                             <span class="ChatBox_Content">
@@ -136,6 +138,8 @@
                         <button type="button" class="ChatCard_Button" id="chatcard-toggle" aria-expanded="false" aria-controls="chatcard-dropdown">
                             {% if active_chat.icon %}
                                 <img src="{{ active_chat.icon.url }}" loading="lazy" width="60" height="60">
+                            {% else %}
+                                <img src="{% static 'images/DefaultChatIcon.png' %}" loading="lazy" width="60" height="60">
                             {% endif %}
 
                             <span class="ChatCard_Copy">
@@ -160,7 +164,7 @@
                                         {% if pinned_message.sender and pinned_message.sender.profile.icon %}
                                             <img src="{{ pinned_message.sender.profile.icon.url }}" loading="lazy" alt="{{ pinned_message.sender.name }}">
                                         {% else %}
-                                            <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
+                                            <img src="{% static 'images/DefaultChatIcon.png' %}" loading="lazy">
                                         {% endif %}
                                     </div>
 
