@@ -134,10 +134,6 @@
     transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.Profile_Avatar_Label[hidden] {
-    display: none !important;
-}
-
 .Profile_Avatar_Label:hover {
     transform: translateY(-1px);
     background: rgba(30, 41, 59, 0.72);
@@ -264,10 +260,6 @@
     margin-top: 0.2rem;
 }
 
-.Profile_Actions[hidden] {
-    display: none !important;
-}
-
 .Profile_Cancel,
 .Profile_Save {
     display: inline-flex;
@@ -303,6 +295,26 @@
 .Profile_Cancel:hover {
     background: rgba(51, 65, 85, 0.86);
 }
+
+select.Profile_Input {
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+select.Profile_Input option {
+    background: #1e293b;
+    color: #f8fafc;
+}
+ 
+.Profile_Actions[hidden],
+.Profile_Avatar_Label[hidden] {
+    display: none !important;
+}
+
 
 @media (max-width: 640px) {
     .Profile {

@@ -87,7 +87,15 @@
                         {% else %}
                             <h2 class="Profile_View">Country not specified</h2>
                         {% endif %}
-                        <input type="text" name="country" value="{{ user.profile.country.name|default:'' }}" class="Profile_Input" hidden>
+                        
+                        <select name="country" class="Profile_Input" hidden>
+                            <option value="">Not specified</option>
+
+                            {% for code, name in countries %}
+                                <option value="{{ code }}" {% if user.profile.country.code == code %}selected{% endif %}>{{ name }}</option>
+                            {% endfor %}
+                        </select>
+
                         <small>Country</small>
                     </div>
                 </div>
