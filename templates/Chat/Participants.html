@@ -48,7 +48,13 @@
                             {% endif %}
 
                             <span class="Participant_Copy">
-                                <h3>{{ participant.name }}</h3>
+                                {% if request.user == participant %}
+                                    <h2 class="Participant_Name">You</h2>
+                                {% else %}
+                                    <a href="{% url 'CheckProfile' participant.id %}" target="_self" class="Participant_Name">
+                                        {{ participant.name }}
+                                    </a>
+                                {% endif %}
                                 
                                 {% if participant.id == chat.creator.id %}
                                     <strong class="Participant_Badge Participant_Badge__creator">Creator</strong>

@@ -237,7 +237,9 @@
                                     {% if message.sender == request.user %}
                                         <strong>You</strong>
                                     {% else %}
-                                        <strong>{{ message.sender.name }}</strong>
+                                        <a href="{% url 'CheckProfile' message.sender.id %}" target="_self">
+                                            {{ message.sender.name }}
+                                        </a>
                                     {% endif %}
 
                                 </div>

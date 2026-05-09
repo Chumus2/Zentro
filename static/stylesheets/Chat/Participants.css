@@ -237,15 +237,23 @@
     gap: 0.45rem;
     min-width: 0;
     flex: 1;
-}
+} 
 
-.Participant_Copy h3 {
+.Participant_Name {
     margin: 0;
     max-width: 100%;
-    word-break: break-word;
     color: #f8fafc;
+    font-family: Inter, sans-serif;
     font-size: 1rem;
     font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    word-break: break-word;
+    transition: color 0.2s ease;
+}
+
+.Participant_Name:hover {
+    color: #7dd3fc;
 }
 
 .Participant_Badge {
