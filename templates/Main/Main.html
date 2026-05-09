@@ -27,7 +27,7 @@
                     </form>
 
                     <div class="Search_Dropdown" id="search-dropdown">
-                        <a href="{% url 'CheckProfile' request.user.id %}" target="_self" class="Dropdown_Profile">
+                        <a href="{% url 'CheckProfile' request.user.id %}?next={% url 'Main' %}" target="_self" class="Dropdown_Profile">
                            
                             {% if request.user.profile.icon %}
                                 <img src="{{ user.profile.icon.url }}" loading="lazy">
@@ -237,7 +237,7 @@
                                     {% if message.sender == request.user %}
                                         <strong>You</strong>
                                     {% else %}
-                                        <a href="{% url 'CheckProfile' message.sender.id %}" target="_self">
+                                        <a href="{% url 'CheckProfile' message.sender.id %}?next={% url 'ChatDetail' active_chat.id %}" target="_self">
                                             {{ message.sender.name }}
                                         </a>
                                     {% endif %}

@@ -18,7 +18,8 @@ class ProfilesView(LoginRequiredMixin, View):
 
         context = {
             "user": user,
-            "countries": countries
+            "countries": countries,
+            "next": request.GET.get("next")
         }
 
         return render(request, "Profiles/Profiles.html", context)
@@ -35,11 +36,13 @@ class ProfilesView(LoginRequiredMixin, View):
         birthday = request.POST.get("birthday")
         country = request.POST.get("country")
         icon = request.FILES.get("icon")
+        next_url = request.POST.get("next")
 
         context = {
             "user": user,
             "countries": countries,
-            "edit_mode": True
+            "edit_mode": True,
+            "next": request.GET.get("next")
         }
 
         # Name checks
@@ -77,4 +80,7 @@ class ProfilesView(LoginRequiredMixin, View):
         
         profile.save()
 
-        return redirect("CheckProfile", user_id=user.id)
+        if next_url:
+            return redirect(next_url)
+
+        return redirect("Main")

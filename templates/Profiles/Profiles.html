@@ -16,7 +16,8 @@
         <div class="Profile_Card">
 
             <div class="Profile_Header">
-                <a href="{% url 'Main' %}" target="_self" class="Profile_Back">Back</a>
+                <a href="{% if next %}{{ next }}{% else %}{% url 'Main' %}{% endif %}" 
+                target="_self" class="Profile_Back">Back</a>
 
                 {% if request.user.profile == user.profile %}
                     <button type="button" class="Profile_Edit" id="edit-toggle">
@@ -36,6 +37,8 @@
                         {% endfor %}
                     </div>
                 {% endif %}
+
+                <input type="hidden" name="next" value="{{ next }}">
 
                 <div class="Profile_Avatar_Wrap">
                     {% if user.profile.icon %}

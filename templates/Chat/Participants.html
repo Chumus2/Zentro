@@ -51,7 +51,7 @@
                                 {% if request.user == participant %}
                                     <h2 class="Participant_Name">You</h2>
                                 {% else %}
-                                    <a href="{% url 'CheckProfile' participant.id %}" target="_self" class="Participant_Name">
+                                    <a href="{% url 'CheckProfile' participant.id %}?next={% url 'Participants' chat.id %}" target="_self" class="Participant_Name">
                                         {{ participant.name }}
                                     </a>
                                 {% endif %}
