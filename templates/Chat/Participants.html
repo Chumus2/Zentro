@@ -44,7 +44,7 @@
                             {% if participant.profile.icon %}
                                 <img class="Participant_Avatar" src="{{ participant.profile.icon.url }}" loading="lazy" alt="{{ participant.name }}">
                             {% else %}
-                                <div class="Participant_Avatar Participant_Avatar__placeholder">{{ participant.name|slice:":1"|upper }}</div>
+                                <img class="Participant_Avatar Participant_Avatar__placeholder" src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
                             {% endif %}
 
                             <span class="Participant_Copy">

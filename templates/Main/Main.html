@@ -28,7 +28,13 @@
 
                     <div class="Search_Dropdown" id="search-dropdown">
                         <a href="{% url 'CheckProfile' request.user.id %}" target="_self" class="Dropdown_Profile">
-                            <img src="{{ request.user.icon.url }}" loading="lazy">
+                           
+                            {% if request.user.profile.icon %}
+                                <img src="{{ user.profile.icon.url }}" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
+                            {% endif %} 
+
                             <span>{{ request.user.name }}</span>
                         </a>
 
@@ -56,7 +62,13 @@
 
                                 {% for friend in friends %}
                                     <div>
-                                        <img src="{{ friend.icon.url }}" loading="lazy">
+
+                                        {% if friend.icon %}
+                                            <img src="{{ friend.icon.url }}" loading="lazy">
+                                        {% else %}
+                                            <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
+                                        {% endif %}
+
                                         <h2>{{ friend.user.name }}</h2>
                                         <input type="checkbox" name="friend_choose" value="{{ friend.user.id }}">
                                     </div>
@@ -147,10 +159,8 @@
                                     <div class="Pinned_Message_Avatar">
                                         {% if pinned_message.sender and pinned_message.sender.profile.icon %}
                                             <img src="{{ pinned_message.sender.profile.icon.url }}" loading="lazy" alt="{{ pinned_message.sender.name }}">
-                                        {% elif pinned_message.sender %}
-                                            <span>{{ pinned_message.sender.name|slice:":1" }}</span>
                                         {% else %}
-                                            <span>S</span>
+                                            <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
                                         {% endif %}
                                     </div>
 

@@ -69,7 +69,7 @@
                                         {% if friend.icon %}
                                             <img class="ChatCreation_Friend_Avatar" src="{{ friend.icon.url }}" loading="lazy" alt="{{ friend.user.name }}">
                                         {% else %}
-                                            <div class="ChatCreation_Friend_Avatar ChatCreation_Friend_Avatar__placeholder">{{ friend.user.name|slice:":1"|upper }}</div>
+                                            <img class="ChatCreation_Friend_Avatar ChatCreation_Friend_Avatar__placeholder" src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
                                         {% endif %}
 
                                         <span class="ChatCreation_Friend_Copy">

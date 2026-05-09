@@ -13,20 +13,17 @@
 
     <div>
 
-        <form action="" method="post">
-            {% csrf_token %}
+        <div>
 
-            <div>
-                <h2>Name</h2>
-                <input type="text" name="user_name" placeholder="{{ user.name|default:'' }}">
-            </div>
+            <a href="{% url 'Main' %}" target="_self">Back</a>
 
-            <div>
-                <h2>Bio</h2>
-                <textArea name="user_bio">{{ user.profile.bio|default:'' }}</textArea>
-            </div>
+            {% if user.profile.icon %}
+                <img src="{{ user.profile.icon.url }}" loading="lazy">
+            {% else %}
+                <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
+            {% endif %} 
 
-        </form>
+        </div>
 
     </div>
 
