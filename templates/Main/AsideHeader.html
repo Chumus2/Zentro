@@ -1,0 +1,80 @@
+{% load static %}
+<div class="Aside_Header">
+
+    <div class="Search_Area">
+
+        <form action="{% url 'Main' %}" method="get" class="Search_Form">
+            <button type="button" class="Menu_Button" id="menu-toggle" aria-expanded="false" aria-controls="search-dropdown">
+                <img src="{% static 'images/MenuIcon.png' %}" alt="Menu" loading="lazy">
+            </button>
+
+            <input class="Search_Input" type="text" name="search_text" placeholder="Write chat title here" value="{{ search|default:'' }}" autocomplete="off">
+            <button class="Search_Button" type="submit">
+                <img src="{% static 'images/SearchIcon.png' %}" alt="Search" loading="lazy">
+            </button>
+        </form>
+
+        <div class="Search_Dropdown" id="search-dropdown">
+            <a href="{% url 'CheckProfile' request.user.id %}?next={% url 'Main' %}" target="_self" class="Dropdown_Profile">
+               
+                {% if request.user.profile.icon %}
+                    <img src="{{ user.profile.icon.url }}" loading="lazy">
+                {% else %}
+                    <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
+                {% endif %} 
+
+                <span>{{ request.user.name }}</span>
+            </a>
+
+            <hr class="Dropdown_Divider">
+
+            <a href="{% url 'CreateChat' %}" target="_self" class="CreateChat_Link">
+                <span class="CreateChat_Icon_Wrap">
+                    <img src="{% static 'images/CreateIcon.png' %}" loading="lazy" alt="Create chat">
+                </span>
+                <span>Create chat</span>
+            </a>
+
+            <hr class="Dropdown_Divider">
+
+            <a href="" target="_self" class="Dropdown_Link">
+                <img src="{% static 'images/SettingsIcon.png' %}" loading="lazy" alt="Settings">
+                <span>Settings</span>
+            </a>
+
+            <hr class="Dropdown_Divider">
+
+            <div>
+
+                {% if friends %}
+
+                    {% for friend in friends %}
+                        <div>
+
+                            {% if friend.icon %}
+                                <img src="{{ friend.icon.url }}" loading="lazy">
+                            {% else %}
+                                <img src="{% static 'images/DefaultProfileIcon.png' %}" loading="lazy">
+                            {% endif %}
+
+                            <h2>{{ friend.user.name }}</h2>
+                            <input type="checkbox" name="friend_choose" value="{{ friend.user.id }}">
+                        </div>
+                    {% endfor %}
+
+                {% endif %}
+
+            </div>
+
+            <hr class="Dropdown_Divider">
+
+            <form action="{% url 'Main' %}" method="post" class="Logout_Form">
+                {% csrf_token %}
+                <button class="Ghost_Button" type="submit">Log out</button>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

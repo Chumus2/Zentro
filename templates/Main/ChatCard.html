@@ -1,0 +1,82 @@
+{% load static %}
+<div class="ChatCard">
+    <div class="ChatCard_Area">
+    <form action="{% url 'LeaveUser' active_chat.id %}" method="post" class="ChatCard_Info">
+        {% csrf_token %}
+
+        <button type="button" class="ChatCard_Button" id="chatcard-toggle" aria-expanded="false" aria-controls="chatcard-dropdown">
+            {% if active_chat.icon %}
+                <img src="{{ active_chat.icon.url }}" loading="lazy" width="60" height="60">
+            {% else %}
+                <img src="{% static 'images/DefaultChatIcon.png' %}" loading="lazy" width="60" height="60">
+            {% endif %}
+
+            <span class="ChatCard_Copy">
+                <h2>{{ active_chat.title }}</h2>
+                <p>{{ active_chat.participants.count }} participants</p>
+            </span>
+        </button>
+
+        <button type="button" class="Pinned_Messages_Button" id="pinned-toggle" aria-expanded="false" aria-controls="pinned-dropdown">Pinned messages</button>
+
+        <button type="submit" class="Leave_Button">Leave</button>
+
+    </form>
+
+    <div class="Pinned_Messages_Dropdown" id="pinned-dropdown">
+        <h3 class="Pinned_Messages_Title">Pinned messages</h3>
+
+        <div class="Pinned_Messages_List">
+            {% for pinned_message in active_chat.pinned_messages.all %}
+                <div class="Pinned_Message_Row" data-message-id="{{ pinned_message.id }}">
+                    <div class="Pinned_Message_Avatar">
+                        {% if pinned_message.sender and pinned_message.sender.profile.icon %}
+                            <img src="{{ pinned_message.sender.profile.icon.url }}" loading="lazy" alt="{{ pinned_message.sender.name }}">
+                        {% else %}
+                            <img src="{% static 'images/DefaultChatIcon.png' %}" loading="lazy">
+                        {% endif %}
+                    </div>
+
+                    <div class="Pinned_Message_Body">
+                        <p class="Pinned_Message_Author">
+                            {% if pinned_message.sender %}
+                                {{ pinned_message.sender.name }}
+                            {% else %}
+                                System
+                            {% endif %}
+                        </p>
+                        <h3 class="Pinned_Message_Text">{{ pinned_message.text }}</h3>
+                        <small class="Pinned_Message_Time">{{ pinned_message.created_at|timesince }} ago</small>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="Pinned_Messages_Empty">No pinned messages yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="ChatCard_Dropdown" id="chatcard-dropdown">
+        
+        {% if is_admin %}
+            <a href="{% url 'EditChat' active_chat.id %}" target="_self" class="ChatCard_Dropdown_Edit">
+                <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit chat">
+            </a>
+        {% endif %}
+
+        {% if active_chat.icon %}
+            <img class="ChatCard_Dropdown_Icon" src="{{ active_chat.icon.url }}" loading="lazy" alt="{{ active_chat.title }}">
+        {% endif %}
+
+        <h2 class="ChatCard_Dropdown_Title">{{ active_chat.title }}</h2>
+
+        <a href="{% url 'Participants' active_chat.id %}" class="ChatCard_Dropdown_Participants">
+            {{ active_chat.participants.count }} participants
+        </a>
+
+        <p class="ChatCard_Dropdown_Description">{{ active_chat.description|default:"No description yet." }}</p>
+
+        <small class="ChatCard_Dropdown_Date">Created at {{ active_chat.created_at }}</small>
+
+    </div>
+</div>
+</div>

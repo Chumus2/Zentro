@@ -1,0 +1,51 @@
+{% load static %}
+<div class="Message_Actions">
+    <button type="button" class="Message_More_Button">
+        <img src="{% static 'images/MoreIcon.png' %}" loading="lazy" alt="More">
+    </button>
+
+    <div class="Message_Dropdown">
+
+        <div>
+            <button type="button" class="Message_Dropdown_Button Message_Reply_Button">
+                <img src="{% static 'images/ReplyIcon.png' %}" loading="lazy" alt="Reply">
+                Reply
+            </button>
+        </div>
+
+        {% if message.sender == request.user %}
+            <div>
+                <button type="button" class="Message_Dropdown_Button Message_Edit_Button">
+                    <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit">
+                    Edit
+                </button>
+            </div>
+        {% endif %}
+
+        <div>
+
+            {% if message.id in pinned_message_ids %}
+                <a href="{% url 'UnpinMessage' message.id %}" target="_self">
+                    <img src="{% static 'images/PinIcon.png' %}" loading="lazy">
+                    Unpin
+                </a>
+            {% else %}
+                <a href="{% url 'PinMessage' message.id %}" target="_self">
+                    <img src="{% static 'images/PinIcon.png' %}" loading="lazy">
+                    Pin
+                </a>
+            {% endif %}
+
+        </div>
+
+        {% if message.sender == request.user or is_admin %}
+            <div>
+                <a href="{% url 'DeleteMessage' message.id %}" target="_self">
+                    <img src="{% static 'images/DeleteIcon.png' %}" loading="lazy">
+                    Delete
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
