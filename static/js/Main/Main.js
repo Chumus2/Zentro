@@ -27,6 +27,9 @@ const replyToInput = document.getElementById("reply-to-input");
 const filesToggle = document.getElementById("files-toggle");
 const filesDropdown = document.getElementById("files-dropdown");
 
+const chooseMediaButton = document.getElementById("choose-media-button");
+const mediaInput = document.getElementById("media-input");
+
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
     if (!messageItem) {
@@ -277,3 +280,9 @@ if (pinnedMessageRows.length) {
 
     });
 }
+
+
+chooseMediaButton.addEventListener("click", () => {
+    mediaInput.accept = "image/*,video/*";
+    mediaInput.click();
+});

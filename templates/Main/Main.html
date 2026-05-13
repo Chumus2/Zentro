@@ -164,7 +164,12 @@
                     </form>
 
                     <div class="Files_Dropdown" id="files-dropdown" hidden>
-                        <button type="button">Photo or Video</button>
+                        <input type="file" id="media-input" hidden>
+
+                        <button type="button" id="choose-media-button">
+                            <img src="{% static 'images/PhotoIcon.png' %}" loading="lazy">
+                            Photo or Video
+                        </button>
                     </div>
     
                 </div>
