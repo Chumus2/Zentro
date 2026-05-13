@@ -29,6 +29,7 @@ const filesDropdown = document.getElementById("files-dropdown");
 
 const chooseMediaButton = document.getElementById("choose-media-button");
 const mediaInput = document.getElementById("media-input");
+const selectedFileDropdown = document.getElementById("selected-file-dropdown");
 
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
@@ -93,8 +94,9 @@ function syncOverlayState() {
     const isSearchOpen = searchDropdown && searchDropdown.classList.contains("Search_Dropdown__open");
     const isChatCardOpen = chatCardDropdown && chatCardDropdown.classList.contains("ChatCard_Dropdown__open");
     const isPinnedOpen = pinnedDropdown && pinnedDropdown.classList.contains("Pinned_Messages_Dropdown__open");
+    const isSelectedFileOpen = selectedFileDropdown && !selectedFileDropdown.hidden;
 
-    if (isSearchOpen || isChatCardOpen || isPinnedOpen) {
+    if (isSearchOpen || isChatCardOpen || isPinnedOpen || isSelectedFileOpen) {
         chatPanelOverlay.classList.add("Chat_Panel_Overlay__visible");
     } else {
         chatPanelOverlay.classList.remove("Chat_Panel_Overlay__visible");
@@ -282,7 +284,28 @@ if (pinnedMessageRows.length) {
 }
 
 
-chooseMediaButton.addEventListener("click", () => {
-    mediaInput.accept = "image/*,video/*";
-    mediaInput.click();
-});
+if (chooseMediaButton && mediaInput) {
+    chooseMediaButton.addEventListener("click", () => {
+        filesDropdown.classList.remove("Files_Dropdown__open");
+        filesDropdown.classList.add("Files_Dropdown__hidden");
+        filesToggle.setAttribute("aria-expanded", "false");
+
+        mediaInput.value = "";
+        mediaInput.accept = "image/*,video/*";
+        mediaInput.click();
+    });
+}
+
+if (mediaInput && selectedFileDropdown) {
+    mediaInput.addEventListener("change", () => {
+        const selectedFile = mediaInput.files?.[0];
+
+        if (!selectedFile) {
+            return;
+        }
+
+        selectedFileDropdown.textContent = selectedFile.name;
+        selectedFileDropdown.hidden = false;
+        syncOverlayState();
+    });
+}
