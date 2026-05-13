@@ -5,6 +5,9 @@
 
 {% block styles %}
     <link rel="stylesheet" href="{% static 'stylesheets/Main/Main.css' %}">
+    <link rel="stylesheet" href="{% static 'stylesheets/Main/AsideHeader.css' %}">
+    <link rel="stylesheet" href="{% static 'stylesheets/Main/ChatCard.css' %}">
+    <link rel="stylesheet" href="{% static 'stylesheets/Main/MessageAction.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -120,7 +123,7 @@
 
                                 <small>{{ message.created_at|timesince }} ago</small>
 
-                                {% include 'MessageAction.html' %}
+                                {% include 'Main/MessageAction.html' %}
 
                             </div>
                         
@@ -152,8 +155,17 @@
                         {% csrf_token %}
                         <input type="hidden" name="reply_to_id" id="reply-to-input">
                         <input class="Message_Input" type="text" name="message_text" placeholder="Write your message here" autocomplete="off">
+
+                        <button type="button" class="Message_File_Button" id="files-toggle">
+                            <img src="{% static 'images/FilesIcon.png' %}" loading="lazy">
+                        </button>
+
                         <button class="Primary_Button" type="submit">Send</button>
                     </form>
+
+                    <div class="Files_Dropdown" id="files-dropdown" hidden>
+                        <button type="button">Photo or Video</button>
+                    </div>
     
                 </div>
 

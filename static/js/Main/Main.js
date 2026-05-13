@@ -1,21 +1,32 @@
 const menuToggleButton = document.getElementById("menu-toggle");
 const searchDropdown = document.getElementById("search-dropdown");
+
 const chatCardToggleButton = document.getElementById("chatcard-toggle");
 const chatCardDropdown = document.getElementById("chatcard-dropdown");
+
 const pinnedToggleButton = document.getElementById("pinned-toggle");
 const pinnedDropdown = document.getElementById("pinned-dropdown");
+
 const chatPanelOverlay = document.getElementById("chat-panel-overlay");
+
 const messagesBox = document.querySelector(".Messages_Box");
 const messageActionAreas = document.querySelectorAll(".Message_Actions");
+
 const pinnedMessageRows = document.querySelectorAll(".Pinned_Message_Row");
+
 const editButtons = document.querySelectorAll(".Message_Edit_Button");
 const editCancelButtons = document.querySelectorAll(".Message_Edit_Cancel");
+
 const replyButtons = document.querySelectorAll(".Message_Reply_Button");
 const replyBar = document.getElementById("reply-bar");
 const replyBarAuthor = document.getElementById("reply-bar-author");
 const replyBarText = document.getElementById("reply-bar-text");
 const replyBarCancel = document.getElementById("reply-bar-cancel");
 const replyToInput = document.getElementById("reply-to-input");
+
+const filesToggle = document.getElementById("files-toggle");
+const filesDropdown = document.getElementById("files-dropdown");
+
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
     if (!messageItem) {
@@ -87,65 +98,59 @@ function syncOverlayState() {
     }
 }
 
-if (menuToggleButton && searchDropdown) {
-    searchDropdown.classList.add("Search_Dropdown__hidden");
+function setupDropdownToggle(button, dropdown, openClass, hiddenClass) {
+    if (!button || !dropdown) {
+        return;
+    }
 
-    menuToggleButton.addEventListener("click", () => {
-        const isOpen = searchDropdown.classList.contains("Search_Dropdown__open");
+    dropdown.classList.add(hiddenClass)
+
+    button.addEventListener("click", () => {
+        const isOpen = dropdown.classList.contains(openClass);
 
         if (isOpen) {
-            searchDropdown.classList.remove("Search_Dropdown__open");
-            searchDropdown.classList.add("Search_Dropdown__hidden");
-            menuToggleButton.setAttribute("aria-expanded", "false");
+            dropdown.classList.remove(openClass);
+            dropdown.classList.add(hiddenClass);
+            button.setAttribute("aria-expanded", "false");
         } else {
-            searchDropdown.classList.remove("Search_Dropdown__hidden");
-            searchDropdown.classList.add("Search_Dropdown__open");
-            menuToggleButton.setAttribute("aria-expanded", "true");
+            dropdown.classList.remove(hiddenClass);
+            dropdown.classList.add(openClass);
+            button.setAttribute("aria-expanded", "true");
         }
 
         syncOverlayState();
     });
 }
 
-if (chatCardToggleButton && chatCardDropdown) {
-    chatCardDropdown.classList.add("ChatCard_Dropdown__hidden");
 
-    chatCardToggleButton.addEventListener("click", () => {
-        const isOpen = chatCardDropdown.classList.contains("ChatCard_Dropdown__open");
+setupDropdownToggle(
+    menuToggleButton,
+    searchDropdown,
+    "Search_Dropdown__open",
+    "Search_Dropdown__hidden"
+);
 
-        if (isOpen) {
-            chatCardDropdown.classList.remove("ChatCard_Dropdown__open");
-            chatCardDropdown.classList.add("ChatCard_Dropdown__hidden");
-            chatCardToggleButton.setAttribute("aria-expanded", "false");
-        } else {
-            chatCardDropdown.classList.remove("ChatCard_Dropdown__hidden");
-            chatCardDropdown.classList.add("ChatCard_Dropdown__open");
-            chatCardToggleButton.setAttribute("aria-expanded", "true");
-        }
+setupDropdownToggle(
+    chatCardToggleButton,
+    chatCardDropdown,
+    "ChatCard_Dropdown__open",
+    "ChatCard_Dropdown__hidden"
+);
 
-        syncOverlayState();
-    });
-}
+setupDropdownToggle(
+    pinnedToggleButton,
+    pinnedDropdown,
+    "Pinned_Messages_Dropdown__open",
+    "Pinned_Messages_Dropdown__hidden"
+);
 
-if (pinnedToggleButton && pinnedDropdown) {
-    pinnedDropdown.classList.add("Pinned_Messages_Dropdown__hidden");
+setupDropdownToggle(
+    filesToggle,
+    filesDropdown,
+    "Files_Dropdown__open",
+    "Files_Dropdown__hidden"
+);
 
-    pinnedToggleButton.addEventListener("click", () => {
-        const isOpen = pinnedDropdown.classList.contains("Pinned_Messages_Dropdown__open");
-
-        if (isOpen) {
-            pinnedDropdown.classList.remove("Pinned_Messages_Dropdown__open");
-            pinnedDropdown.classList.add("Pinned_Messages_Dropdown__hidden");
-            pinnedToggleButton.setAttribute("aria-expanded", "false");
-        } else {
-            pinnedDropdown.classList.remove("Pinned_Messages_Dropdown__hidden");
-            pinnedDropdown.classList.add("Pinned_Messages_Dropdown__open");
-            pinnedToggleButton.setAttribute("aria-expanded", "true");
-        }
-
-        syncOverlayState();
-    });
-}
 
 if (messagesBox) {
     requestAnimationFrame(() => {

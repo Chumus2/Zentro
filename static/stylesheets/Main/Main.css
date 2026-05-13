@@ -46,36 +46,6 @@ body:has(.Main) {
     margin-top: 0.35rem;
 }
 
-.Aside_Header {
-    margin-bottom: 1rem;
-    padding-bottom: 0.85rem;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.14);
-}
-
-.Aside_Header h2 {
-    margin: 0;
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-}
-
-.Search_Area {
-    position: relative;
-    margin-top: 1rem;
-}
-
-.Search_Form {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    padding: 0.35rem;
-    border: 1px solid rgba(148, 163, 184, 0.14);
-    border-radius: 999px;
-    background: rgba(8, 15, 30, 0.55);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.Search_Input,
 .Message_Input {
     flex: 1;
     min-width: 0;
@@ -89,31 +59,17 @@ body:has(.Main) {
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 }
 
-.Search_Input {
-    padding-inline: 1.1rem;
-    border-color: transparent;
-    background: transparent;
-}
-
-.Search_Input::placeholder,
 .Message_Input::placeholder {
     color: #94a3b8;
 }
 
-.Search_Input:focus,
 .Message_Input:focus {
     border-color: rgba(96, 165, 250, 0.7);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
 }
 
-.Search_Input:focus {
-    background: rgba(15, 23, 42, 0.42);
-}
-
-.Search_Button,
 .Primary_Button,
-.Ghost_Button,
-.Menu_Button {
+.Ghost_Button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -124,183 +80,25 @@ body:has(.Main) {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.Search_Button,
 .Primary_Button {
     background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%);
     color: #eff6ff;
     box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24);
 }
 
-.Menu_Button,
-.Search_Button {
-    width: 3.2rem;
-    height: 3.2rem;
-    flex-shrink: 0;
-}
-
-.Menu_Button {
-    background: rgba(30, 41, 59, 0.9);
-    color: #eff6ff;
-    border: 1px solid rgba(148, 163, 184, 0.16);
-}
-
-.Menu_Button img,
-.Search_Button img {
-    width: 1.1rem;
-    height: 1.1rem;
-    object-fit: contain;
-}
-
-.Menu_Button img {
-    filter: brightness(0) invert(0.9);
-}
-
-.Search_Button img {
-    filter: brightness(0) invert(1);
-}
-
-.Menu_Button:hover,
-.Search_Button:hover,
 .Primary_Button:hover,
 .Ghost_Button:hover {
     transform: translateY(-1px);
 }
 
-.Menu_Button:hover {
-    background: rgba(51, 65, 85, 0.96);
-    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.22);
-}
-
-.Search_Button:hover,
 .Primary_Button:hover {
     box-shadow: 0 18px 34px rgba(37, 99, 235, 0.3);
-}
-
-.Search_Dropdown {
-    position: absolute;
-    top: calc(100% + 0.75rem);
-    left: 0;
-    width: min(18rem, 100%);
-    min-height: 4rem;
-    padding: 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 1.2rem;
-    background: rgba(15, 23, 42, 0.96);
-    box-shadow: 0 24px 44px rgba(2, 8, 23, 0.38);
-    backdrop-filter: blur(16px);
-    z-index: 30;
-    opacity: 0;
-    transform: translateY(-0.6rem) scale(0.98);
-    transform-origin: top left;
-    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
-}
-
-.Search_Dropdown a:hover {
-    color: #f8fbff;
-}
-
-.Dropdown_Profile,
-.Dropdown_Link,
-.CreateChat_Link {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    width: 100%;
-    padding: 0.7rem 0.8rem;
-    border: 1px solid transparent;
-    border-radius: 0.9rem;
-    background: transparent;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.Dropdown_Profile:hover,
-.Dropdown_Link:hover,
-.CreateChat_Link:hover {
-    background: rgba(59, 130, 246, 0.12);
-    border-color: rgba(96, 165, 250, 0.2);
-    transform: translateY(-1px);
-}
-
-.Dropdown_Profile img,
-.Dropdown_Link img {
-    width: 2rem;
-    height: 2rem;
-    flex-shrink: 0;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    background: rgba(30, 41, 59, 0.92);
-}
-
-.Dropdown_Profile span,
-.Dropdown_Link span,
-.CreateChat_Link span {
-    color: #e2e8f0;
-    font-weight: 600;
-    font-size: 0.95rem;
-    line-height: 1.4;
-}
-
-.Dropdown_Link img {
-    padding: 0;
-    object-fit: contain;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-    filter: brightness(0) invert(0.9);
-}
-
-.CreateChat_Link {
-    border-color: rgba(96, 165, 250, 0.18);
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(37, 99, 235, 0.2) 100%);
-    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.16);
-}
-
-.CreateChat_Link:hover {
-    border-color: rgba(125, 211, 252, 0.28);
-    box-shadow: 0 18px 32px rgba(15, 23, 42, 0.22);
-}
-
-.CreateChat_Icon_Wrap {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.2rem;
-    height: 2.2rem;
-    flex-shrink: 0;
-    overflow: hidden;
-    border: none;
-    border-radius: 999px;
-    background: transparent;
-}
-
-.CreateChat_Icon_Wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0) invert(1);
 }
 
 .Dropdown_Divider {
     margin: 0.75rem 0;
     border: 0;
     border-top: 1px solid rgba(148, 163, 184, 0.12);
-}
-
-.Search_Dropdown__hidden {
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.Search_Dropdown__open {
-    visibility: visible;
-    pointer-events: auto;
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-.Logout_Form {
-    margin-top: auto;
 }
 
 .Ghost_Button {
@@ -359,8 +157,7 @@ body:has(.Main) {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.24) 0%, rgba(14, 165, 233, 0.18) 100%);
 }
 
-.ChatBox img,
-.ChatCard_Info img {
+.ChatBox img {
     display: block;
     width: 3.75rem;
     height: 3.75rem;
@@ -412,33 +209,6 @@ body:has(.Main) {
     opacity: 1;
 }
 
-.ChatCard {
-    position: relative;
-    z-index: 11;
-    padding: 1.15rem 1.4rem;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-    background: rgba(30, 41, 59, 0.55);
-}
-
-.ChatCard_Area {
-    position: relative;
-}
-
-.ChatCard_Info {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    flex-wrap: wrap;
-}
-
-.ChatCard_Info h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #f8fafc;
-}
-
-.ChatCard_Copy,
 .ChatCard_Content {
     display: flex;
     flex-direction: column;
@@ -446,355 +216,11 @@ body:has(.Main) {
     gap: 0.5rem;
 }
 
-.ChatCard_Button {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex: 1;
-    min-width: 14rem;
-    padding: 0.65rem 0.75rem;
-    border: 1px solid transparent;
-    border-radius: 1.15rem;
-    background: transparent;
-    text-align: left;
-    cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.ChatCard_Button:hover {
-    background: rgba(59, 130, 246, 0.12);
-    border-color: rgba(96, 165, 250, 0.22);
-    transform: translateY(-1px);
-}
-
-.ChatCard_Button .ChatCard_Copy p {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.35rem 0.7rem;
-    border: 1px solid rgba(148, 163, 184, 0.14);
-    border-radius: 999px;
-    background: rgba(15, 23, 42, 0.46);
-    color: #dbeafe;
-    font-size: 0.88rem;
-    font-weight: 600;
-    line-height: 1.2;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.Leave_Button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    min-width: 6.5rem;
-    min-height: 3rem;
-    padding: 0.72rem 1rem;
-    border: 1px solid rgba(248, 113, 113, 0.18);
-    border-radius: 999px;
-    background: linear-gradient(135deg, rgba(127, 29, 29, 0.26) 0%, rgba(220, 38, 38, 0.18) 100%);
-    color: #fecaca;
-    font-size: 0.82rem;
-    font-weight: 700;
-    line-height: 1.2;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-}
-
-.Leave_Button:hover {
-    transform: translateY(-1px);
-    border-color: rgba(248, 113, 113, 0.3);
-    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
-}
-
-.Pinned_Messages_Button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    min-width: 8.5rem;
-    min-height: 3rem;
-    padding: 0.72rem 1rem;
-    border: 1px solid rgba(96, 165, 250, 0.18);
-    border-radius: 999px;
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.18) 0%, rgba(37, 99, 235, 0.2) 100%);
-    color: #dbeafe;
-    font-size: 0.82rem;
-    font-weight: 700;
-    line-height: 1.2;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-}
-
-.Pinned_Messages_Button:hover {
-    transform: translateY(-1px);
-    border-color: rgba(125, 211, 252, 0.28);
-    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
-}
-
-.Pinned_Messages_Dropdown {
-    position: absolute;
-    top: calc(100% + 1rem);
-    right: 8.4rem;
-    width: min(24rem, calc(100vw - 2rem));
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    border: 1px solid rgba(96, 165, 250, 0.14);
-    border-radius: 1.35rem;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(15, 23, 42, 0.94) 100%);
-    box-shadow: 0 24px 48px rgba(2, 8, 23, 0.42);
-    backdrop-filter: blur(18px);
-    z-index: 30;
-    opacity: 0;
-    transform: translateY(-0.6rem) scale(0.98);
-    transform-origin: top right;
-    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
-}
-
-.Pinned_Messages_Title {
-    margin: 0;
-    color: #f8fafc;
-    font-size: 1.02rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-}
-
-.Pinned_Messages_List {
-    display: grid;
-    gap: 0.8rem;
-    max-height: 20rem;
-    overflow-y: auto;
-    padding-right: 0.2rem;
-}
-
-.Pinned_Message_Row {
-    display: grid;
-    grid-template-columns: 2.6rem minmax(0, 1fr);
-    align-items: start;
-    column-gap: 0.8rem;
-    padding: 0.9rem 0.95rem;
-    border: 1px solid rgba(148, 163, 184, 0.1);
-    border-radius: 1.05rem;
-    background: linear-gradient(180deg, rgba(30, 41, 59, 0.58) 0%, rgba(15, 23, 42, 0.42) 100%);
-    transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
-    cursor: pointer;
-}
-
-.Pinned_Message_Row:hover {
-    transform: translateY(-1px);
-    border-color: rgba(125, 211, 252, 0.18);
-    background: linear-gradient(180deg, rgba(30, 41, 59, 0.72) 0%, rgba(15, 23, 42, 0.52) 100%);
-}
-
-.Pinned_Message_Avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.6rem;
-    height: 2.6rem;
-    border-radius: 50%;
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    background: rgba(51, 65, 85, 0.85);
-    overflow: hidden;
-}
-
-.Pinned_Message_Avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.Pinned_Message_Avatar span {
-    color: #dbeafe;
-    font-size: 0.82rem;
-    font-weight: 800;
-    text-transform: uppercase;
-}
-
-.Pinned_Message_Body {
-    display: grid;
-    gap: 0.22rem;
-    min-width: 0;
-}
-
-.Pinned_Message_Author {
-    margin: 0;
-    color: #93c5fd;
-    font-size: 0.78rem;
-    font-weight: 700;
-    line-height: 1.25;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-}
-
-.Pinned_Message_Text {
-    margin: 0;
-    color: #f8fafc;
-    font-size: 0.96rem;
-    font-weight: 600;
-    line-height: 1.45;
-    word-break: break-word;
-}
-
-.Pinned_Message_Time,
-.Pinned_Messages_Empty {
-    display: block;
-    margin-top: 0.2rem;
-    color: #94a3b8;
-    font-size: 0.75rem;
-}
-
-.Pinned_Messages_Empty {
-    margin-top: 0;
-    padding: 1rem;
-    border: 1px dashed rgba(148, 163, 184, 0.14);
-    border-radius: 1rem;
-    text-align: center;
-    background: rgba(30, 41, 59, 0.22);
-}
-
-.Pinned_Messages_Dropdown__hidden {
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.Pinned_Messages_Dropdown__open {
-    visibility: visible;
-    pointer-events: auto;
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-.ChatCard_Dropdown {
-    position: absolute;
-    top: calc(100% + 3rem);
-    left: 50%;
-    width: min(18rem, 100%);
-    min-height: 4rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.9rem;
-    padding: 1.25rem 1rem 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 1.2rem;
-    background: rgba(15, 23, 42, 0.96);
-    box-shadow: 0 24px 44px rgba(2, 8, 23, 0.38);
-    backdrop-filter: blur(16px);
-    z-index: 30;
-    opacity: 0;
-    transform: translateX(-50%) translateY(-0.6rem) scale(0.98);
-    transform-origin: top center;
-    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
-}
-
-.ChatCard_Dropdown_Icon {
-    width: 9rem;
-    height: 9rem;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid rgba(148, 163, 184, 0.22);
-    background: rgba(30, 41, 59, 0.92);
-}
-
 .ChatCard_Dropdown_Header {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-}
-
-.ChatCard_Dropdown_Title {
-    margin: 0;
-    color: #f8fafc;
-    font-size: 1.2rem;
-    font-weight: 700;
-    line-height: 1.2;
-    text-align: center;
-}
-
-.ChatCard_Dropdown_Edit {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.15rem;
-    height: 2.15rem;
-    flex-shrink: 0;
-    border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 999px;
-    background: rgba(30, 41, 59, 0.72);
-    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.ChatCard_Dropdown_Edit:hover {
-    background: rgba(59, 130, 246, 0.16);
-    border-color: rgba(96, 165, 250, 0.24);
-    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.18);
-    transform: translateY(-1px);
-}
-
-.ChatCard_Dropdown_Edit img {
-    width: 1rem;
-    height: 1rem;
-    object-fit: contain;
-    filter: brightness(0) invert(0.92);
-}
-
-.ChatCard_Dropdown_Participants {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 2rem;
-    margin: 0;
-    padding: 0.42rem 0.9rem;
-    border: 1px solid rgba(148, 163, 184, 0.14);
-    border-radius: 999px;
-    background: rgba(30, 41, 59, 0.68);
-    color: #dbeafe;
-    font-size: 0.84rem;
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.ChatCard_Dropdown_Description {
-    width: 90%;
-    margin: 0;
-    padding: 0.85rem 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    border-radius: 1rem;
-    background: rgba(30, 41, 59, 0.42);
-    color: #dbeafe;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    text-align: center;
-    word-break: break-word;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.ChatCard_Dropdown_Date {
-    margin-top: 0.2rem;
-    color: #94a3b8;
-    font-size: 0.78rem;
-    text-align: center;
-}
-
-.ChatCard_Dropdown__hidden {
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.ChatCard_Dropdown__open {
-    visibility: visible;
-    pointer-events: auto;
-    opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1);
 }
 
 .Messages_Box {
@@ -821,10 +247,6 @@ body:has(.Main) {
     box-shadow: 0 14px 32px rgba(15, 23, 42, 0.2);
     backdrop-filter: blur(10px);
     z-index: 1;
-}
-
-.Message_Item:has(.Message_Dropdown__open) {
-    z-index: 50;
 }
 
 .Message_Item__own {
@@ -987,32 +409,6 @@ body:has(.Main) {
     margin-bottom: 0.45rem;
 }
 
-.Message_Actions {
-    position: absolute;
-    top: 0.7rem;
-    right: 0.7rem;
-    z-index: 5;
-}
-
-.Message_More_Button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border: 1px solid rgba(148, 163, 184, 0.14);
-    border-radius: 999px;
-    background: rgba(15, 23, 42, 0.74);
-    cursor: pointer;
-    transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
-}
-
-.Message_Item:hover .Message_More_Button,
-.Message_Actions:hover .Message_More_Button,
-.Message_More_Button:focus-visible {
-    opacity: 1;
-}
-
 .Message_More_Button:hover {
     transform: translateY(-1px);
     background: rgba(30, 41, 59, 0.94);
@@ -1024,129 +420,6 @@ body:has(.Main) {
     height: 1rem;
     object-fit: contain;
     filter: brightness(0) invert(0.96);
-}
-
-.Message_Dropdown {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 0.3rem);
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    min-width: 8rem;
-    padding: 0.45rem;
-    border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 0.95rem;
-    background: rgba(15, 23, 42, 0.96);
-    box-shadow: 0 18px 36px rgba(2, 8, 23, 0.34);
-    backdrop-filter: blur(16px);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transform: translateY(0.35rem) scale(0.98);
-    transform-origin: bottom right;
-    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
-}
-
-.Message_Dropdown__open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateY(0) scale(1);
-}
-
-.Message_Dropdown_Button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    padding: 0.7rem 0.8rem;
-    border: 1px solid transparent;
-    border-radius: 0.75rem;
-    background: transparent;
-    color: #dbeafe;
-    font-size: 0.83rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
-}
-
-.Message_Dropdown a,
-.Message_Dropdown button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.55rem;
-    width: 100%;
-    padding: 0.72rem 0.82rem;
-    border: 1px solid transparent;
-    border-radius: 0.75rem;
-    background: transparent;
-    color: #dbeafe;
-    font-size: 0.83rem;
-    font-weight: 600;
-    line-height: 1.2;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
-}
-
-.Message_Dropdown a img,
-.Message_Dropdown button img {
-    width: 0.95rem;
-    height: 0.95rem;
-    flex-shrink: 0;
-    object-fit: contain;
-}
-
-.Message_Dropdown > div {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-}
-
-.Message_Dropdown > div img {
-    width: 1.05rem;
-    height: 1.05rem;
-    flex-shrink: 0;
-    object-fit: contain;
-}
-
-.Message_Dropdown a:hover,
-.Message_Dropdown button:hover {
-    transform: translateY(-1px);
-    background: rgba(59, 130, 246, 0.12);
-    border-color: rgba(96, 165, 250, 0.18);
-    color: #eff6ff;
-}
-
-.Message_Dropdown a:last-child,
-.Message_Dropdown button:last-child,
-.Message_Dropdown_Button__danger {
-    color: #fecaca;
-}
-
-.Message_Dropdown a:last-child:hover,
-.Message_Dropdown button:last-child:hover,
-.Message_Dropdown_Button__danger:hover {
-    background: rgba(220, 38, 38, 0.12);
-    border-color: rgba(248, 113, 113, 0.18);
-    color: #fee2e2;
-}
-
-.Message_Dropdown_Button:hover {
-    transform: translateY(-1px);
-    background: rgba(59, 130, 246, 0.12);
-    border-color: rgba(96, 165, 250, 0.18);
-}
-
-.Message_Dropdown_Button__danger {
-    color: #fecaca;
-}
-
-.Message_Dropdown_Button__danger:hover {
-    background: rgba(220, 38, 38, 0.12);
-    border-color: rgba(248, 113, 113, 0.18);
 }
 
 .Message_Form_Wrapper {
@@ -1296,6 +569,51 @@ body:has(.Main) {
     flex-wrap: wrap;
 }
 
+.Message_File_Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.4rem;
+    height: 3.4rem;
+    flex-shrink: 0;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 999px;
+    background: rgba(30, 41, 59, 0.78);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.Message_File_Button:hover {
+    transform: translateY(-1px);
+    background: rgba(51, 65, 85, 0.92);
+    border-color: rgba(96, 165, 250, 0.24);
+    box-shadow: 0 14px 24px rgba(15, 23, 42, 0.2);
+}
+
+.Message_File_Button:focus-visible {
+    outline: none;
+    border-color: rgba(96, 165, 250, 0.7);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
+
+.Message_File_Button img {
+    width: 1.15rem;
+    height: 1.15rem;
+    object-fit: contain;
+    filter: brightness(0) invert(0.96);
+}
+
+.Message_Form {
+    position: relative;
+}
+
+.Files_Dropdown {
+    position: absolute;
+    bottom: 4.2rem;
+    right: 5rem;
+}
+
 .Primary_Button {
     padding: 0.95rem 1.35rem;
     min-height: 3.4rem;
@@ -1370,26 +688,13 @@ body:has(.Main) {
         gap: 0.5rem;
     }
 
-    .Search_Button,
-    .Primary_Button {
+    .Primary_Button,
+    .Message_File_Button {
         height: 3rem;
     }
 
     .Primary_Button {
         padding-inline: 1rem;
         width: 100%;
-    }
-
-    .CreateChat_Link {
-        padding: 0.75rem;
-    }
-
-    .ChatCard {
-        padding-inline: 1rem;
-    }
-
-    .Pinned_Messages_Dropdown {
-        right: 0;
-        width: min(100%, 22rem);
     }
 }
