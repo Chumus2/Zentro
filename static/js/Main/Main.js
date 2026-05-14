@@ -31,6 +31,10 @@ const chooseMediaButton = document.getElementById("choose-media-button");
 const mediaInput = document.getElementById("media-input");
 const selectedFileDropdown = document.getElementById("selected-file-dropdown");
 
+const selectedFileImage = document.getElementById("selected-file-image");
+const selectedFileVideo = document.getElementById("selected-file-video");
+const selectedFileCancel = document.getElementById("selected-file-cancel");
+
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
     if (!messageItem) {
@@ -304,8 +308,34 @@ if (mediaInput && selectedFileDropdown) {
             return;
         }
 
-        selectedFileDropdown.textContent = selectedFile.name;
+        const fileURL = URL.createObjectURL(selectedFile);
+
+        selectedFileImage.hidden = true;
+        selectedFileVideo.hidden = true;
+
+        if (selectedFile.type.startsWith("image/")) {
+            selectedFileImage.src = fileURL;
+            selectedFileImage.hidden = false;
+        }
+
+        if (selectedFile.type.startsWith("video/")) {
+            selectedFileVideo.src = fileURL;
+            selectedFileVideo.hidden = false;
+        }
+
         selectedFileDropdown.hidden = false;
+        syncOverlayState();
+    });
+}
+
+if (selectedFileCancel) {
+    selectedFileCancel.addEventListener("click", () => {
+        selectedFileDropdown.hidden = true;
+        mediaInput.value = "";
+        selectedFileImage.src = "";
+        selectedFileVideo.src = "";
+        selectedFileImage.hidden = true;
+        selectedFileVideo.hidden = true;
         syncOverlayState();
     });
 }

@@ -141,7 +141,17 @@
                 </div>
 
                 <div class="Selected_File_Dropdown" id="selected-file-dropdown" hidden>
-                    
+                    <button type="button" id="selected-file-cancel">
+                        <img src="{% static 'images/CancelIcon.png' %}" loading="lazy">
+                    </button>
+
+                    <img id="selected-file-image" hidden>
+                    <video id="selected-file-video" muted hidden></video>
+
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Send</button>
+                    </form>
                 </div>
 
                 <div class="Message_Form_Wrapper">
