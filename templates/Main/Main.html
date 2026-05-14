@@ -35,8 +35,10 @@
                                 <h3>{{ chat.title }}</h3>
                                 
                                 {% with last_message=chat.user_messages|last %}
-                                    {% if last_message %}
+                                    {% if last_message.text %}
                                         <p>{{ last_message.text|truncatechars:30 }}</p>
+                                    {% elif last_message.attachments.first %}
+                                        <p>{{ last_message.attachments.first.file.name|cut:"messages/file/"|truncatechars:30 }}</p>
                                     {% endif %}
                                 {% endwith %}
 
@@ -108,7 +110,27 @@
                                     </div>
                                 {% endif %}
 
-                                <p class="Message_Text">{{ message.text }}</p>
+                                {% if message.text %}
+                                    <p class="Message_Text">{{ message.text }}</p>
+                                {% endif %}
+
+                                {% if message.attachments.all %}
+                                    <div class="Message_Attachments">
+                                        {% for attachment in message.attachments.all %}
+                                            {% if attachment.attachment_type == "image" %}
+                                                <img src="{{ attachment.file.url }}" loading="lazy" class="Message_Attachment_Image">
+                                            {% elif attachment.attachment_type == "video" %}
+                                                <video controls preload="metadata" class="Message_Attachment_Video">
+                                                    <source src="{{ attachment.file.url }}">
+                                                </video>
+                                            {% else %}
+                                                <a href="{{ attachment.file.url }}" target="_blank" class="Message_Attachment_File">
+                                                    {{ attachment.file.name }}
+                                                </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
 
                                 {% if message.sender == request.user %}
                                     <form action="{% url 'EditMessage' message.id %}" method="post" class="Message_Edit_Form" hidden>

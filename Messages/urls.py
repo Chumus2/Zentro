@@ -7,5 +7,6 @@ urlpatterns = [
     path("pin/message/<int:message_id>/", views.pin_message, name="PinMessage"),
     path("unpin/message/<int:message_id>/", views.unpin_message, name="UnpinMessage"),
     path("edit_message/<int:message_id>/", views.edit_message, name="EditMessage"),
-    path("reply_to_message/<int:chat_id>/", views.reply_to_message, name="ReplyToMessage")
+    path("reply_to_message/<int:chat_id>/", views.reply_to_message, name="ReplyToMessage"),
+    path("send_file/<int:chat_id>/", views.send_file, name="SendFile")
 ]

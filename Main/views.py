@@ -52,7 +52,7 @@ class ChatDetailView(LoginRequiredMixin, View):
         )
 
         is_admin = active_chat.admins.filter(id=request.user.id).exists()
-        messages = active_chat.messages.order_by("created_at")
+        messages = active_chat.messages.prefetch_related("attachments").order_by("created_at")
         pinned_messages = active_chat.pinned_messages.all().order_by("created_at")
         pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
 

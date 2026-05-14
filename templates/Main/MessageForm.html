@@ -8,8 +8,9 @@
     <video id="selected-file-video" muted hidden></video>
     <small id="selected-file-name"></small>
 
-    <form action="" method="post">
+    <form action="{% url 'SendFile' active_chat.id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <input type="file" name="file" id="media-input" hidden accept="image/*,video/*">
         <button type="submit">Send</button>
     </form>
 </div>
@@ -38,8 +39,6 @@
     </form>
 
     <div class="Files_Dropdown" id="files-dropdown">
-        <input type="file" id="media-input" hidden>
-
         <button type="button" id="choose-media-button">
             <img src="{% static 'images/PhotoIcon.png' %}" loading="lazy">
             Photo or Video

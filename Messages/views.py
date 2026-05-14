@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from Main.models import Message, Chat
+from Main.models import Message, Chat, MessageAttachment
 
 
 @login_required(login_url="HomePage")
@@ -116,3 +116,33 @@ def reply_to_message(request, chat_id):
     }
 
     return render(request, "Main/Main.html", context)
+
+
+@login_required(login_url="HomePage")
+def send_file(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
+
+    if request.method == "POST":
+        uploaded_file = request.FILES.get("file")
+
+        if uploaded_file:
+            message = Message.objects.create(
+                chat=chat,
+                sender=request.user,
+                text=""
+            )
+
+            if uploaded_file.content_type.startswith("image/"):
+                attachment_type = "image"
+            elif uploaded_file.content_type.startswith("video/"):
+                attachment_type = "video"
+            else: 
+                attachment_type = "file"
+
+            MessageAttachment.objects.create(
+                message=message,
+                file=uploaded_file,
+                attachment_type=attachment_type
+            )
+        
+    return redirect("ChatDetail", chat.id)
