@@ -34,6 +34,7 @@ const selectedFileDropdown = document.getElementById("selected-file-dropdown");
 const selectedFileImage = document.getElementById("selected-file-image");
 const selectedFileVideo = document.getElementById("selected-file-video");
 const selectedFileCancel = document.getElementById("selected-file-cancel");
+const selectedFileName = document.getElementById("selected-file-name");
 
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
@@ -323,6 +324,7 @@ if (mediaInput && selectedFileDropdown) {
             selectedFileVideo.hidden = false;
         }
 
+        selectedFileName.textContent = selectedFile.name;
         selectedFileDropdown.hidden = false;
         syncOverlayState();
     });
@@ -334,6 +336,7 @@ if (selectedFileCancel) {
         mediaInput.value = "";
         selectedFileImage.src = "";
         selectedFileVideo.src = "";
+        selectedFileName.textContent = "";
         selectedFileImage.hidden = true;
         selectedFileVideo.hidden = true;
         syncOverlayState();

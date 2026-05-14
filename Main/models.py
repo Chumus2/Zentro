@@ -15,6 +15,12 @@ class Message(models.Model):
         return f"{self.sender} - {self.text}"
     
 
+class MessageAttachment(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments")
+    file = models.FileField(upload_to="messages/file/")
+    attachment_type = models.CharField(max_length=20)
+    
+
 class Chat(models.Model):
     icon = models.ImageField(upload_to="chat_icons/", blank=True, null=True)
     title = models.CharField(max_length=50, default="Chat")
