@@ -120,9 +120,11 @@
                                             {% if attachment.attachment_type == "image" %}
                                                 <img src="{{ attachment.file.url }}" loading="lazy" class="Message_Attachment_Image">
                                             {% elif attachment.attachment_type == "video" %}
-                                                <video controls preload="metadata" class="Message_Attachment_Video">
-                                                    <source src="{{ attachment.file.url }}">
-                                                </video>
+                                                <div class="Message_Video_Wrapper">
+                                                    <video controls preload="metadata" class="Message_Attachment_Video">
+                                                        <source src="{{ attachment.file.url }}">
+                                                    </video>
+                                                </div>
                                             {% else %}
                                                 <a href="{{ attachment.file.url }}" target="_blank" class="Message_Attachment_File">
                                                     {{ attachment.file.name }}
