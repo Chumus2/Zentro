@@ -22,6 +22,17 @@
             </div>
         {% endif %}
 
+        {% with attachment=message.attachments.first %}
+            {% if attachment %}
+                <div>
+                    <a href="{{ attachment.file.url }}" download>
+                        <img src="{% static 'images/DownloadIcon.png' %}" loading="lazy" alt="Download">
+                        Download
+                    </a>
+                </div>
+            {% endif %}
+        {% endwith %}
+
         <div>
 
             {% if message.id in pinned_message_ids %}
