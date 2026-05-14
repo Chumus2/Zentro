@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'stylesheets/Main/AsideHeader.css' %}">
     <link rel="stylesheet" href="{% static 'stylesheets/Main/ChatCard.css' %}">
     <link rel="stylesheet" href="{% static 'stylesheets/Main/MessageAction.css' %}">
+    <link rel="stylesheet" href="{% static 'stylesheets/Main/MessageForm.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -140,53 +141,7 @@
 
                 </div>
 
-                <div class="Selected_File_Dropdown" id="selected-file-dropdown" hidden>
-                    <button type="button" id="selected-file-cancel">
-                        <img src="{% static 'images/CancelIcon.png' %}" loading="lazy">
-                    </button>
-
-                    <img id="selected-file-image" hidden>
-                    <video id="selected-file-video" muted hidden></video>
-
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        <button type="submit">Send</button>
-                    </form>
-                </div>
-
-                <div class="Message_Form_Wrapper">
-
-                    <div class="Reply_Bar" id="reply-bar" hidden>
-                        <div class="Reply_Bar_Copy">
-                            <strong id="reply-bar-author"></strong>
-                            <p id="reply-bar-text"></p>
-                        </div>
-
-                        <button type="button" class="Reply_Bar_Cancel" id="reply-bar-cancel">Cancel</button>
-                    </div>
-
-                    <form action="{% url 'ReplyToMessage' active_chat.id %}" method="post" class="Message_Form">
-                        {% csrf_token %}
-                        <input type="hidden" name="reply_to_id" id="reply-to-input">
-                        <input class="Message_Input" type="text" name="message_text" placeholder="Write your message here" autocomplete="off">
-
-                        <button type="button" class="Message_File_Button" id="files-toggle">
-                            <img src="{% static 'images/FilesIcon.png' %}" loading="lazy">
-                        </button>
-
-                        <button class="Primary_Button" type="submit">Send</button>
-                    </form>
-
-                    <div class="Files_Dropdown" id="files-dropdown">
-                        <input type="file" id="media-input" hidden>
-
-                        <button type="button" id="choose-media-button">
-                            <img src="{% static 'images/PhotoIcon.png' %}" loading="lazy">
-                            Photo or Video
-                        </button>
-                    </div>
-
-                </div>
+                {% include 'Main/MessageForm.html' %}
 
             {% endif %}
 
