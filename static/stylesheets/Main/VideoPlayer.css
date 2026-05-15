@@ -23,6 +23,37 @@
     object-fit: cover;
 }
 
+.Message_Video_Wrapper:fullscreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    border: none;
+    border-radius: 0;
+    background: #020617;
+    box-shadow: none;
+}
+
+.Message_Video_Wrapper:fullscreen .Message_Attachment_Video {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    object-fit: contain;
+    background: #020617;
+}
+
+.Message_Video_Wrapper:fullscreen .Video_Controls {
+    padding: 1rem 1.25rem;
+}
+
+.Message_Video_Wrapper:fullscreen .Video_Fullscreen_Button {
+    top: 1rem;
+    right: 1rem;
+}
+
 .Video_Overlay_Play {
     position: absolute;
     top: 50%;
