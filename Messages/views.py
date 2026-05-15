@@ -129,7 +129,7 @@ def send_file(request, chat_id):
             message = Message.objects.create(
                 chat=chat,
                 sender=request.user,
-                text=""
+                text=uploaded_file.name
             )
 
             if uploaded_file.content_type.startswith("image/"):

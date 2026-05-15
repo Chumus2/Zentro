@@ -36,6 +36,9 @@ const selectedFileVideo = document.getElementById("selected-file-video");
 const selectedFileCancel = document.getElementById("selected-file-cancel");
 const selectedFileName = document.getElementById("selected-file-name");
 
+const chooseDocumentButton = document.getElementById("choose-document-button");
+const documentInput = document.getElementById("document-input");
+
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
     if (!messageItem) {
@@ -339,6 +342,37 @@ if (selectedFileCancel) {
         selectedFileName.textContent = "";
         selectedFileImage.hidden = true;
         selectedFileVideo.hidden = true;
+        syncOverlayState();
+    });
+}
+
+
+if (chooseDocumentButton && documentInput) {
+    chooseDocumentButton.addEventListener("click", () => {
+        filesDropdown.classList.remove("Files_Dropdown__open");
+        filesDropdown.classList.add("Files_Dropdown__hidden");
+        filesToggle.setAttribute("aria-expanded", "false");
+
+        documentInput.value = "";
+        documentInput.click();
+    });
+}
+
+if (documentInput && selectedFileDropdown) {
+    documentInput.addEventListener("change", () => {
+        const selectedFile = documentInput.files?.[0];
+
+        if (!selectedFile) {
+            return;
+        }
+
+        selectedFileImage.hidden = true;
+        selectedFileVideo.hidden = true;
+        selectedFileImage.src = "";
+        selectedFileVideo.src = "";
+
+        selectedFileName.textContent = selectedFile.name;
+        selectedFileDropdown.hidden = false;
         syncOverlayState();
     });
 }

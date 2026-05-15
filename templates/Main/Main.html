@@ -203,7 +203,8 @@
                                                 </div>
                                             {% else %}
                                                 <a href="{{ attachment.file.url }}" target="_blank" class="Message_Attachment_File">
-                                                    {{ attachment.file.name }}
+                                                    <img src="{% static 'images/DocumentIcon.png' %}" alt="">
+                                                    <span>{{ message.text|default:attachment.file.name }}</span>
                                                 </a>
                                             {% endif %}
                                         {% endfor %}

@@ -294,14 +294,36 @@ body:has(.Main) {
 }
 
 .Message_Attachment_File {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: fit-content;
+    max-width: min(100%, 20rem);
+    padding: 0.85rem 1rem;
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.36);
     color: #bfdbfe;
     font-size: 0.95rem;
-    text-decoration: underline;
+    text-decoration: none;
     word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .Message_Item__own .Message_Attachment_File {
     color: #eff6ff;
+}
+
+.Message_Attachment_File img {
+    width: 1.35rem;
+    height: 1.35rem;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.Message_Attachment_File span {
+    display: block;
+    max-width: 16rem;
+    line-height: 1.35;
 }
 
 .Message_Reply_Preview {
