@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from Main.models import Message, Chat, MessageAttachment
+from django.contrib import messages
+from Main.models import Message, Chat, MessageAttachment, Poll, PollOption
 
 
 @login_required(login_url="HomePage")
@@ -146,4 +147,41 @@ def send_file(request, chat_id):
                 attachment_type=attachment_type
             )
         
+    return redirect("ChatDetail", chat.id)
+
+
+@login_required(login_url="HomePage")
+def create_poll(request, chat_id):
+    chat = get_object_or_404(Chat, id=chat_id)
+
+    if request.method == "POST":
+        title = request.POST.get("poll_title", "").strip()
+        question = request.POST.get("poll_question", "").strip()
+        options = [option.strip() for option in request.POST.getlist("poll_options")]
+    
+        if not title or not question or any(not option for option in options):
+            messages.error(request, "All field are required")
+            return render(request, "Main/Main.html")
+        if len(options) < 2:
+            messages.error(request, "Poll must contains at least 2 options")
+            return render(request, "Main/Main.html")
+
+        message = Message.objects.create(
+            chat=chat,
+            sender=request.user,
+            text=""
+        )
+
+        poll = Poll.objects.create(
+            message=message,
+            title=title,
+            question=question
+        )
+
+        for option in options:
+            PollOption.objects.create(
+                poll=poll,
+                text=option
+            )
+
     return redirect("ChatDetail", chat.id)

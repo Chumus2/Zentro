@@ -50,7 +50,7 @@ class Chat(models.Model):
 
 class Poll(models.Model):
     message = models.OneToOneField(Message, on_delete=models.CASCADE, related_name="poll")
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, blank=True, null=True)
     question = models.CharField(max_length=255)
     is_closed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
