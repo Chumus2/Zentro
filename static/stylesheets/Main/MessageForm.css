@@ -333,6 +333,33 @@
     color: #94a3b8;
 }
 
+.Polls_Dropdown {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 40;
+    pointer-events: none;
+}
+
+.Polls_Dropdown__hidden {
+    display: none;
+}
+
+.Polls_Dropdown__open {
+    display: flex;
+}
+
+.Polls_Dropdown_Content {
+    width: min(32rem, calc(100vw - 2rem));
+    padding: 1.4rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.96) 0%, rgba(15, 23, 42, 0.98) 100%);
+    box-shadow: 0 24px 80px rgba(2, 6, 23, 0.42);
+    pointer-events: auto;
+}
+
 
 @media (max-width: 640px) {
     .Message_Form {

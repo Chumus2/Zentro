@@ -40,6 +40,7 @@ const chooseDocumentButton = document.getElementById("choose-document-button");
 const documentInput = document.getElementById("document-input");
 
 const createPollsButton = document.getElementById("create-polls-button");
+const pollsDropdown = document.getElementById("polls-dropdown");
 
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
@@ -105,8 +106,9 @@ function syncOverlayState() {
     const isChatCardOpen = chatCardDropdown && chatCardDropdown.classList.contains("ChatCard_Dropdown__open");
     const isPinnedOpen = pinnedDropdown && pinnedDropdown.classList.contains("Pinned_Messages_Dropdown__open");
     const isSelectedFileOpen = selectedFileDropdown && !selectedFileDropdown.hidden;
+    const isPollsOpen = pollsDropdown && pollsDropdown.classList.contains("Polls_Dropdown__open");
 
-    if (isSearchOpen || isChatCardOpen || isPinnedOpen || isSelectedFileOpen) {
+    if (isSearchOpen || isChatCardOpen || isPinnedOpen || isSelectedFileOpen || isPollsOpen) {
         chatPanelOverlay.classList.add("Chat_Panel_Overlay__visible");
     } else {
         chatPanelOverlay.classList.remove("Chat_Panel_Overlay__visible");
@@ -375,6 +377,20 @@ if (documentInput && selectedFileDropdown) {
 
         selectedFileName.textContent = selectedFile.name;
         selectedFileDropdown.hidden = false;
+        syncOverlayState();
+    });
+}
+
+
+if (createPollsButton && pollsDropdown && filesDropdown && filesToggle) {
+    createPollsButton.addEventListener("click", () => {
+        filesDropdown.classList.remove("Files_Dropdown__open");
+        filesDropdown.classList.add("Files_Dropdown__hidden");
+        filesToggle.setAttribute("aria-expanded", "false");
+
+        pollsDropdown.classList.remove("Polls_Dropdown__hidden");
+        pollsDropdown.classList.add("Polls_Dropdown__open");
+
         syncOverlayState();
     });
 }

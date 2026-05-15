@@ -18,8 +18,8 @@
     </form>
 </div>
 
-<div class="Polls_Dropdown" id="polls-dropdown" hidden>
-    <form action="" method="post">
+<div class="Polls_Dropdown Polls_Dropdown__hidden" id="polls-dropdown">
+    <form action="" method="post" class="Polls_Dropdown_Content">
         {% csrf_token %}
 
         <h2>Poll's title</h2>
@@ -31,7 +31,6 @@
         <h2>Poll's answers</h2>
 
         <button type="submit">Create</button>
-
     </form>
 </div>
 

@@ -173,6 +173,7 @@ body:has(.Main) {
 
 .Chat_Panel_Overlay__visible {
     opacity: 1;
+    pointer-events: auto;
 }
 
 
