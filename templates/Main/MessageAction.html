@@ -22,7 +22,7 @@
             </div>
         {% endif %}
 
-        {% with attachment=message.attachments.first %}
+        {% with attachment=message.prefetched_attachments|first %}
             {% if attachment %}
                 <div>
                     <a href="{{ attachment.file.url }}" download>

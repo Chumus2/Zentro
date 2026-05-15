@@ -7,6 +7,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = config("DEBUG", default=False, cast=bool)
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost"
+]
+
 ALLOWED_HOSTS = []
 
 
@@ -22,7 +27,8 @@ INSTALLED_APPS = [
     'Main',
     'Chat',
     'Messages',
-    'Profiles'
+    'Profiles',
+    "debug_toolbar"
 ]
 
 MIDDLEWARE = [
@@ -33,6 +39,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware"
 ]
 
 ROOT_URLCONF = 'Zentro.urls'

@@ -12,10 +12,20 @@ def get_chats_with_user_messages(user):
     return Chat.objects.filter(participants=user).prefetch_related(
         Prefetch(
             "messages",
-            queryset=Message.objects.filter(if_system=False).order_by("created_at"),
+            queryset=(
+                Message.objects
+                .filter(if_system=False)
+                .prefetch_related(
+                    Prefetch(
+                        "attachments",
+                        queryset=MessageAttachment.objects.order_by("id"),
+                        to_attr="prefetched_attachments",
+                    )
+                )
+                .order_by("created_at")
+            ),
             to_attr="user_messages"
-        )
-    )
+    ))
 
 
 class MainView(LoginRequiredMixin, View):
@@ -52,7 +62,13 @@ class ChatDetailView(LoginRequiredMixin, View):
         )
 
         is_admin = active_chat.admins.filter(id=request.user.id).exists()
-        messages = active_chat.messages.prefetch_related("attachments").order_by("created_at")
+        messages = active_chat.messages.select_related(
+            "sender", "sender__profile", "reply_to", "reply_to__sender", "reply_to__sender__profile"
+        ).prefetch_related(Prefetch(
+            "attachments", queryset=MessageAttachment.objects.order_by("id"),
+            to_attr="prefetched_attachments"
+        )).order_by("created_at")
+
         pinned_messages = active_chat.pinned_messages.all().order_by("created_at")
         pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
 
@@ -62,7 +78,7 @@ class ChatDetailView(LoginRequiredMixin, View):
             "messages": messages,
             "is_admin": is_admin,
             "pinned_messages": pinned_messages,
-            "pinned_message_ids": pinned_message_ids
+            "pinned_message_ids": pinned_message_ids,
         }
 
         return render(request, "Main/Main.html", context)

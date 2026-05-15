@@ -7,6 +7,7 @@ from .media_views import serve_media
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("__debug__/", include("debug_toolbar.urls")),
 
     path("", include("Main.urls")),
     path("homepage/", include("HomePage.urls")),
