@@ -12,6 +12,8 @@
         {% csrf_token %}
         <input type="file" name="file" id="media-input" hidden accept="image/*,video/*">
         <input type="file" name="file" id="document-input" accept=".pdf,.doc,.docx,.txt,.rtf,.xls,.xlsx,.ppt,.pptx" hidden>
+        
+        <input type="text" name="text" id="attachment-message-input" class="Attachment_Message_Input" placeholder="Write a message for attachment" autocomplete="off">
         <button type="submit">Send</button>
     </form>
 </div>

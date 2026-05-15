@@ -123,13 +123,14 @@ def send_file(request, chat_id):
     chat = get_object_or_404(Chat, id=chat_id)
 
     if request.method == "POST":
+        text = request.POST.get("text", "").strip()
         uploaded_file = request.FILES.get("file")
 
         if uploaded_file:
             message = Message.objects.create(
                 chat=chat,
                 sender=request.user,
-                text=uploaded_file.name
+                text=text
             )
 
             if uploaded_file.content_type.startswith("image/"):
