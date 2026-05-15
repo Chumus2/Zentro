@@ -501,6 +501,45 @@ body:has(.Main) {
     transform: translateY(-1px);
 }
 
+.Poll_Options_List {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.Poll_Option_Row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.Poll_Option_Row input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.Poll_Remove_Option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 0.85rem;
+    background: rgba(30, 41, 59, 0.72);
+    cursor: pointer;
+}
+
+.Poll_Remove_Option img {
+    width: 1rem;
+    height: 1rem;
+    object-fit: contain;
+}
+
 .ChatBox_Content p,
 .ChatCard_Content p {
     margin: 0;

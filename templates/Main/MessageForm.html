@@ -22,15 +22,36 @@
     <form action="" method="post" class="Polls_Dropdown_Content">
         {% csrf_token %}
 
-        <h2>Poll's title</h2>
-        <input type="text" name="poll_title" placeholder="Write poll's title here">
+        <h2>Create poll</h2>
 
-        <h2>Poll's question</h2>
-        <input type="text" name="poll_question" placeholder="Write poll's question here">
+        <label class="Polls_Field">
+            <span>Poll's title</span>
+            <input type="text" name="poll_title" placeholder="Write poll's title here">
+        </label>
 
-        <h2>Poll's answers</h2>
+        <label class="Polls_Field">
+            <span>Poll's question</span>
+            <input type="text" name="poll_question" placeholder="Write poll's question here">
+        </label>
 
-        <button type="submit">Create</button>
+        <div class="Polls_Field">
+            <span>Poll's answers</span>
+        </div>
+
+        <div class="Poll_Options_List" id="input-polls">
+            <div class="Poll_Option_Row">
+                <input type="text" name="poll_options" placeholder="Option 1">
+                <button type="button" class="Poll_Remove_Option">
+                    <img src="{% static 'images/DeleteIcon.png' %}" loading="lazy">
+                </button>
+            </div>
+        </div>
+
+        <div class="Polls_Actions">
+            <button type="button" id="add-poll-option-button">Add option</button>
+
+            <button type="submit">Create</button>
+        </div>
     </form>
 </div>
 

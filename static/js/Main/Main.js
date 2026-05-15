@@ -41,6 +41,8 @@ const documentInput = document.getElementById("document-input");
 
 const createPollsButton = document.getElementById("create-polls-button");
 const pollsDropdown = document.getElementById("polls-dropdown");
+const pollOptions = document.getElementById("input-polls");
+const addPollOptionButton = document.getElementById("add-poll-option-button");
 
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
@@ -136,6 +138,28 @@ function setupDropdownToggle(button, dropdown, openClass, hiddenClass) {
         }
 
         syncOverlayState();
+    });
+}
+
+
+function refreshPollOptionPlaceholders() {
+    const inputs = pollOptions.querySelectorAll("input[name='poll_options']");
+
+    inputs.forEach((input, index) => {
+        input.placeholder = `Option ${index + 1}`;
+    });
+}
+
+function attachRemoveOptionHandler(button) {
+    button.addEventListener("click", () => {
+        const rows = pollOptions.querySelectorAll(".Poll_Option_Row");
+
+        if (rows.length <= 1) {
+            return;
+        }
+
+        button.closest(".Poll_Option_Row")?.remove();
+        refreshPollOptionPlaceholders();
     });
 }
 
@@ -392,5 +416,37 @@ if (createPollsButton && pollsDropdown && filesDropdown && filesToggle) {
         pollsDropdown.classList.add("Polls_Dropdown__open");
 
         syncOverlayState();
+    });
+}
+
+
+if (pollOptions && addPollOptionButton) {
+    addPollOptionButton.addEventListener("click", () => {
+        const inputCount = pollOptions.querySelectorAll("input").length + 1;
+
+        if (inputCount <= 10) {
+            const row = document.createElement("div");
+            row.className = "Poll_Option_Row";
+
+            const newInput = document.createElement("input");
+            newInput.type = "text";
+            newInput.name = "poll_options";
+            newInput.placeholder = `Option ${inputCount}`;
+
+            const removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.className = "Poll_Remove_Option";
+
+            const icon = document.createElement("img");
+            icon.src = "/static/images/DeleteIcon.png";
+            icon.loading = "lazy";
+
+            removeButton.appendChild(icon);
+            row.appendChild(newInput);
+            row.appendChild(removeButton);
+            pollOptions.appendChild(row);
+
+            attachRemoveOptionHandler(removeButton);
+        }
     });
 }
