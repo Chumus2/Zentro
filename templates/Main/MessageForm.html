@@ -18,6 +18,23 @@
     </form>
 </div>
 
+<div class="Polls_Dropdown" id="polls-dropdown" hidden>
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <h2>Poll's title</h2>
+        <input type="text" name="poll_title" placeholder="Write poll's title here">
+
+        <h2>Poll's question</h2>
+        <input type="text" name="poll_question" placeholder="Write poll's question here">
+
+        <h2>Poll's answers</h2>
+
+        <button type="submit">Create</button>
+
+    </form>
+</div>
+
 <div class="Message_Form_Wrapper">
 
     <div class="Reply_Bar" id="reply-bar" hidden>
@@ -50,6 +67,11 @@
         <button type="button" id="choose-document-button">
             <img src="{% static 'images/DocumentIcon.png' %}" loading="lazy">
             Documents
+        </button>
+
+        <button type="button" id="create-polls-button">
+            <img src="{% static 'images/PollIcon.png' %}" loading="lazy">
+            Polls
         </button>
     </div>
 

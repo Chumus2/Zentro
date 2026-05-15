@@ -19,6 +19,14 @@ class MessageAttachment(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments")
     file = models.FileField(upload_to="messages/file/")
     attachment_type = models.CharField(max_length=20)
+
+
+class Poll(models.Model):
+    message = models.OneToOneField(Message, on_delete=models.CASCADE, related_name="poll")
+    title = models.CharField(max_length=50)
+    question = models.CharField(max_length=100)
+    is_multiple_choice = models.BooleanField(default=False)
+    is_closed = models.BooleanField(default=False)
     
 
 class Chat(models.Model):

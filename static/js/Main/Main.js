@@ -39,6 +39,8 @@ const selectedFileName = document.getElementById("selected-file-name");
 const chooseDocumentButton = document.getElementById("choose-document-button");
 const documentInput = document.getElementById("document-input");
 
+const createPollsButton = document.getElementById("create-polls-button");
+
 
 function toggleMessageEditMode(messageItem, shouldOpen) {
     if (!messageItem) {
