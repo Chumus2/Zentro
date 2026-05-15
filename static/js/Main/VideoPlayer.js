@@ -17,6 +17,7 @@ function syncVideoPlayer(player) {
     const duration = player.querySelector("[data-duration]");
     const playButtons = player.querySelectorAll("[data-play-toggle]");
     const muteButton = player.querySelector("[data-mute-toggle]");
+    const volumeSlider = player.querySelector("[data-volume-slider]");
 
     if (!video || !progress || !currentTime || !duration) {
         return;
@@ -47,6 +48,10 @@ function syncVideoPlayer(player) {
         }
     }
 
+    if (volumeSlider) {
+        volumeSlider.value = video.muted ? 0 : video.volume;
+    }
+
     currentTime.textContent = formatVideoTime(video.currentTime);
     duration.textContent = formatVideoTime(video.duration);
 
@@ -70,6 +75,7 @@ function setupVideoPlayers() {
         const progress = player.querySelector("[data-progress]");
         const playButtons = player.querySelectorAll("[data-play-toggle]");
         const muteButton = player.querySelector("[data-mute-toggle]");
+        const volumeSlider = player.querySelector("[data-volume-slider]");
         const fullscreenButton = player.querySelector("[data-fullscreen-toggle]");
 
         if (!video || !progress) {
@@ -113,6 +119,14 @@ function setupVideoPlayers() {
         if (muteButton) {
             muteButton.addEventListener("click", () => {
                 video.muted = !video.muted;
+            });
+        }
+
+        if (volumeSlider) {
+            volumeSlider.addEventListener("input", () => {
+                const volume = Number(volumeSlider.value);
+                video.volume = volume;
+                video.muted = volume === 0;
             });
         }
 
