@@ -174,7 +174,7 @@
                                                 
                                                         <span class="Video_Time" data-duration>0:00</span>
                                                 
-                                                        <div class="Video_Volume_Control">
+                                                        <div class="Video_Volume_Wrapper">
                                                             <button 
                                                                 type="button" 
                                                                 class="Video_Control_Button" 
@@ -183,21 +183,22 @@
                                                                 data-muted-icon="{% static 'images/MutedIcon.png' %}"
                                                                 aria-label="Mute or unmute"
                                                             >
-                                                                <img src="{% static 'images/VolumeIcon.png' %}" loading="lazy">
+                                                                <img src="{% static 'images/VolumeIcon.png' %}" loading="lazy" alt="">
                                                             </button>
-
-                                                            <input 
-                                                                type="range"
-                                                                class="Video_Volume_Slider"
-                                                                data-volume-slider
-                                                                min="0"
-                                                                max="1"
-                                                                step="0.01"
-                                                                value="1"
-                                                                aria-label="Volume"
-                                                            >
-                                                        </div>
-                                                
+                                                        
+                                                            <div class="Video_Volume_Popup">
+                                                                <input
+                                                                    type="range"
+                                                                    class="Video_Volume_Slider"
+                                                                    data-volume-slider
+                                                                    min="0"
+                                                                    max="1"
+                                                                    step="0.01"
+                                                                    value="1"
+                                                                    aria-label="Volume"
+                                                                >
+                                                            </div>
+                                                        </div>                                                        
                                                     </div>
                                                 </div>
                                             {% else %}
