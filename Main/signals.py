@@ -1,6 +1,6 @@
 from django.db.models.signals import pre_save, post_delete
 from django.dispatch import receiver
-from .models import Chat
+from .models import Chat, MessageAttachment
 from Profiles.models import Profile
 
 
@@ -25,6 +25,11 @@ def delete_old_chat_icon_on_delete(sender, instance, **kwargs):
     if instance.icon:
         instance.icon.delete(save=False)
 
+@receiver(post_delete, sender=Chat)
+def delete_chat_icon(sender, instance, **kwargs):
+    if instance.icon:
+        instance.icon.delete(save=False)
+
 
 @receiver(pre_save, sender=Profile)
 def delete_old_profile_icon_on_change(sender, instance, **kwargs):
@@ -46,3 +51,9 @@ def delete_old_profile_icon_on_change(sender, instance, **kwargs):
 def delete_old_profile_icon_on_delete(sender, instance, **kwargs):
     if instance.icon:
         instance.icon.delete(save=False)
+
+
+@receiver(post_delete, sender=MessageAttachment)
+def delete_attachment_file(sender, instance, **kwargs):
+    if instance.file:
+        instance.file.delete(save=False)

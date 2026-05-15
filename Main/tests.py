@@ -40,4 +40,3 @@ class ServeMediaTests(TestCase):
         self.assertEqual(response.headers["Content-Range"], "bytes 2-5/10")
         self.assertEqual(response.headers["Content-Length"], "4")
         self.assertEqual(b"".join(response.streaming_content), b"2345")
-
