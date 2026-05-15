@@ -110,10 +110,10 @@ def reply_to_message(request, chat_id):
 
             return redirect("ChatDetail", chat_id=chat.id)
         
-    messages = chat.messages.order_by("created_at")
+    chat_messages = chat.messages.order_by("created_at")
     context = {
         "active_chat": chat,
-        "messages": messages
+        "chat_messages": chat_messages
     }
 
     return render(request, "Main/Main.html", context)
@@ -158,13 +158,19 @@ def create_poll(request, chat_id):
         title = request.POST.get("poll_title", "").strip()
         question = request.POST.get("poll_question", "").strip()
         options = [option.strip() for option in request.POST.getlist("poll_options")]
+        chat_messages = chat.messages.order_by("created_at")
+
+        context = {
+            "active_chat": chat,
+            "chat_messages": chat_messages
+        }
     
         if not title or not question or any(not option for option in options):
             messages.error(request, "All field are required")
-            return render(request, "Main/Main.html")
+            return render(request, "Main/Main.html", context)
         if len(options) < 2:
             messages.error(request, "Poll must contains at least 2 options")
-            return render(request, "Main/Main.html")
+            return render(request, "Main/Main.html", context)
 
         message = Message.objects.create(
             chat=chat,

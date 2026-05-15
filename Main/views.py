@@ -62,12 +62,24 @@ class ChatDetailView(LoginRequiredMixin, View):
         )
 
         is_admin = active_chat.admins.filter(id=request.user.id).exists()
-        messages = active_chat.messages.select_related(
-            "sender", "sender__profile", "reply_to", "reply_to__sender", "reply_to__sender__profile"
-        ).prefetch_related(Prefetch(
-            "attachments", queryset=MessageAttachment.objects.order_by("id"),
-            to_attr="prefetched_attachments"
-        )).order_by("created_at")
+        chat_messages = active_chat.messages.select_related(
+            "sender",
+            "sender__profile",
+            "reply_to",
+            "reply_to__sender",
+            "reply_to__sender__profile",
+            "poll",
+        ).prefetch_related(
+            Prefetch(
+                "attachments",
+                queryset=MessageAttachment.objects.order_by("id"),
+                to_attr="prefetched_attachments"
+            ),
+            Prefetch(
+                "poll__options",
+                queryset=PollOption.objects.order_by("id")
+            )
+        ).order_by("created_at")
 
         pinned_messages = active_chat.pinned_messages.all().order_by("created_at")
         pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
@@ -75,7 +87,7 @@ class ChatDetailView(LoginRequiredMixin, View):
         context = {
             "chats": chats,
             "active_chat": active_chat,
-            "messages": messages,
+            "chat_messages": chat_messages,
             "is_admin": is_admin,
             "pinned_messages": pinned_messages,
             "pinned_message_ids": pinned_message_ids,

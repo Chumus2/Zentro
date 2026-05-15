@@ -19,18 +19,20 @@
 </div>
 
 <div class="Polls_Dropdown Polls_Dropdown__hidden" id="polls-dropdown">
-    {% if messages %}
-        <div class="Error_Messages">
-            {% for message in messages %}
-                <div class="Error_Message">{{ message }}</div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
     <form action="{% url 'CreatePoll' active_chat.id %}" method="post" class="Polls_Dropdown_Content">
         {% csrf_token %}
 
+        <a href="{% url 'ChatDetail' active_chat.id %}" target="_self" class="Poll_Back_Button">Back</a>
+
         <h2>Create poll</h2>
+
+        {% if messages %}
+            <div class="Poll_Error_Messages">
+                {% for message in messages %}
+                    <div class="Poll_Error_Message">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
         <label class="Polls_Field">
             <span>Poll's title</span>

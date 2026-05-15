@@ -64,7 +64,7 @@
 
                 <div class="Messages_Box">
 
-                    {% for message in messages %}
+                    {% for message in chat_messages %}
 
                         {% if not message.if_system %}
 
@@ -113,6 +113,24 @@
 
                                 {% if message.text %}
                                     <p class="Message_Text">{{ message.text }}</p>
+                                {% endif %}
+
+                                {% if message.poll %}
+                                    <div class="Message_Poll">
+                                        {% if message.poll.title %}
+                                            <strong class="Message_Poll_Title">{{ message.poll.title }}</strong>
+                                        {% endif %}
+
+                                        <p class="Message_Poll_Question">{{ message.poll.question }}</p>
+
+                                        <div class="Message_Poll_Options">
+                                            {% for option in message.poll.options.all %}
+                                                <div class="Message_Poll_Option">
+                                                    <span>{{ option.text }}</span>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 {% endif %}
 
                                 {% with attachments=message.prefetched_attachments %}

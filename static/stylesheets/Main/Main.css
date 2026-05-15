@@ -362,6 +362,70 @@ body:has(.Main) {
     color: #eff6ff !important;
 }
 
+.Message_Poll {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 0.85rem;
+    padding: 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.3);
+}
+
+.Message_Poll_Title {
+    margin: 0;
+    color: #bfdbfe !important;
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0;
+    text-transform: none !important;
+}
+
+.Message_Poll_Question {
+    margin: 0;
+    color: #f8fafc !important;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.Message_Poll_Options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.Message_Poll_Option {
+    padding: 0.8rem 0.95rem;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 0.9rem;
+    background: rgba(30, 41, 59, 0.72);
+}
+
+.Message_Poll_Option span {
+    display: block;
+    color: #e2e8f0;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+.Message_Item__own .Message_Poll {
+    background: rgba(8, 32, 61, 0.22);
+    border-color: rgba(219, 234, 254, 0.18);
+}
+
+.Message_Item__own .Message_Poll_Title,
+.Message_Item__own .Message_Poll_Question,
+.Message_Item__own .Message_Poll_Option span {
+    color: #eff6ff !important;
+}
+
+.Message_Item__own .Message_Poll_Option {
+    border-color: rgba(219, 234, 254, 0.16);
+    background: rgba(8, 32, 61, 0.28);
+}
+
 .Message_Item__system p {
     color: #cbd5e1;
     font-size: 0.95rem;
