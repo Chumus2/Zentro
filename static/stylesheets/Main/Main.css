@@ -286,29 +286,11 @@ body:has(.Main) {
     margin-top: 0.85rem;
 }
 
-.Message_Attachment_Image,
-.Message_Attachment_Video {
+.Message_Attachment_Image {
     width: 100%;
     max-width: 22rem;
     border-radius: 0.9rem;
     object-fit: cover;
-}
-
-.Message_Video_Wrapper {
-    overflow: hidden;
-    width: 100%;
-    max-width: 22rem;
-    padding: 0.35rem;
-    border: 1px solid rgba(148, 163, 184, 0.16);
-    border-radius: 1rem;
-    background: linear-gradient(180deg, rgba(30, 41, 59, 0.96) 0%, rgba(15, 23, 42, 0.98) 100%);
-    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.24);
-}
-
-.Message_Attachment_Video {
-    display: block;
-    max-height: 28rem;
-    background: #020617;
 }
 
 .Message_Attachment_File {
@@ -320,12 +302,6 @@ body:has(.Main) {
 
 .Message_Item__own .Message_Attachment_File {
     color: #eff6ff;
-}
-
-.Message_Item__own .Message_Video_Wrapper {
-    border-color: rgba(219, 234, 254, 0.22);
-    background: linear-gradient(180deg, rgba(8, 47, 73, 0.42) 0%, rgba(30, 64, 175, 0.3) 100%);
-    box-shadow: 0 16px 34px rgba(30, 64, 175, 0.2);
 }
 
 .Message_Reply_Preview {
