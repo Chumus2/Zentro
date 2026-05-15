@@ -1,11 +1,10 @@
 from django.db import models
-from django.conf import settings
-
+from Users.models import User
 
 
 class Message(models.Model):
     chat = models.ForeignKey("Chat", on_delete=models.CASCADE, related_name="messages")
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_messages", null=True, blank=True)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_messages", null=True, blank=True)
     text = models.TextField()
     reply_to = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, related_name="replies")
     if_system = models.BooleanField(default=False)
@@ -21,21 +20,13 @@ class MessageAttachment(models.Model):
     attachment_type = models.CharField(max_length=20)
 
 
-class Poll(models.Model):
-    message = models.OneToOneField(Message, on_delete=models.CASCADE, related_name="poll")
-    title = models.CharField(max_length=50)
-    question = models.CharField(max_length=100)
-    is_multiple_choice = models.BooleanField(default=False)
-    is_closed = models.BooleanField(default=False)
-    
-
 class Chat(models.Model):
     icon = models.ImageField(upload_to="chat_icons/", blank=True, null=True)
     title = models.CharField(max_length=50, default="Chat")
     description = models.TextField(max_length=255 ,blank=True, null=True)
-    participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="chats")
-    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="admin_chats")
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="created_chats")
+    participants = models.ManyToManyField(User, related_name="chats")
+    admins = models.ManyToManyField(User, related_name="admin_chats")
+    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="created_chats")
     pinned_messages = models.ManyToManyField(Message, blank=True, related_name="pinned_in_chat")
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -55,3 +46,25 @@ class Chat(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class Poll(models.Model):
+    message = models.OneToOneField(Message, on_delete=models.CASCADE, related_name="poll")
+    title = models.CharField(max_length=50)
+    question = models.CharField(max_length=255)
+    is_closed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class PollOption(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="options")
+    text = models.CharField(max_length=100)
+
+
+class PollVote(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="votes")
+    option = models.ForeignKey(PollOption, on_delete=models.CASCADE, related_name="votes")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="poll_votes")
+
+    class Meta:
+        unique_together = ("option", "user")
