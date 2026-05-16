@@ -131,9 +131,9 @@
 
                                         <div class="Message_Poll_Options">
                                             {% for option in message.poll.options.all %}
-                                                <div class="Message_Poll_Option">
+                                                <a href="{% url 'Vote' option.id %}" target="_self" class="Message_Poll_Option">
                                                     <span>{{ option.text }}</span>
-                                                </div>
+                                                </a>
                                             {% endfor %}
                                         </div>
                                     </div>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from Main.models import Message, Chat, MessageAttachment, Poll, PollOption
+from Main.models import Message, Chat, MessageAttachment, Poll, PollOption, PollVote
 
 
 @login_required(login_url="HomePage")
@@ -147,12 +147,15 @@ def send_file(request, chat_id):
                 attachment_type=attachment_type
             )
         
-    return redirect("ChatDetail", chat.id)
+    return redirect("ChatDetail", chat_id=chat.id)
 
 
 @login_required(login_url="HomePage")
 def create_poll(request, chat_id):
     chat = get_object_or_404(Chat, id=chat_id)
+
+    if not chat.participants.filter(id=request.user.id).exists():
+        return redirect("Main")
 
     if request.method == "POST":
         title = request.POST.get("poll_title", "").strip()
@@ -190,4 +193,23 @@ def create_poll(request, chat_id):
                 text=option
             )
 
-    return redirect("ChatDetail", chat.id)
+    return redirect("ChatDetail", chat_id=chat.id)
+
+
+@login_required(login_url="HomePage")
+def vote(request, option_id):
+    option = get_object_or_404(PollOption, id=option_id)
+    poll = option.poll
+    chat = poll.message.chat
+
+    if not chat.participants.filter(id=request.user.id).exists():
+        return redirect("Main")
+
+    if not PollVote.objects.filter(poll=poll, user=request.user).exists():
+        PollVote.objects.create(
+            poll=poll,
+            option=option,
+            user=request.user
+        )
+
+    return redirect("ChatDetail", chat_id=chat.id)

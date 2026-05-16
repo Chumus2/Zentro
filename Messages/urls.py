@@ -9,5 +9,6 @@ urlpatterns = [
     path("edit_message/<int:message_id>/", views.edit_message, name="EditMessage"),
     path("reply_to_message/<int:chat_id>/", views.reply_to_message, name="ReplyToMessage"),
     path("send_file/<int:chat_id>/", views.send_file, name="SendFile"),
-    path("create_poll/<int:chat_id>/", views.create_poll, name="CreatePoll")
+    path("create_poll/<int:chat_id>/", views.create_poll, name="CreatePoll"),
+    path("vote/<int:option_id>/", views.vote, name="Vote")
 ]
