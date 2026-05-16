@@ -131,7 +131,15 @@
 
                                         <div class="Message_Poll_Options">
                                             {% for option in message.poll.options.all %}
-                                                <a href="{% url 'Vote' option.id %}" target="_self" class="Message_Poll_Option">
+                                                <a
+                                                    href="{% url 'Vote' option.id %}"
+                                                    target="_self"
+                                                    class="Message_Poll_Option{% if option.user_votes %} Message_Poll_Option__selected{% endif %}"
+                                                >
+
+                                                {% if option.user_votes %}
+                                                    <img src="{% static 'images/VoteIcon.png' %}" loading="lazy" class="Message_Poll_Option_Icon">
+                                                {% endif %}
                                                     <span>{{ option.text }}</span>
                                                 </a>
                                             {% endfor %}

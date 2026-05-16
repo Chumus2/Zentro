@@ -78,6 +78,11 @@ class ChatDetailView(LoginRequiredMixin, View):
             Prefetch(
                 "poll__options",
                 queryset=PollOption.objects.order_by("id")
+            ),
+            Prefetch(
+                "poll__options__votes",
+                queryset=PollVote.objects.filter(user=request.user),
+                to_attr="user_votes"
             )
         ).order_by("created_at")
 
