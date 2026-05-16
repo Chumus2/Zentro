@@ -91,8 +91,24 @@ class ChatDetailView(LoginRequiredMixin, View):
             "sender",
             "sender__profile",
             "poll",
-        ).order_by("created_at")
+        ).prefetch_related(
+            Prefetch(
+                "attachments",
+                queryset=MessageAttachment.objects.order_by("id"),
+                to_attr="prefetched_attachments"
+            )
+        ).order_by("-created_at")
         pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
+
+        for pinned_message in pinned_messages:
+            poll = getattr(pinned_message, "poll", None)
+            attachment = pinned_message.prefetched_attachments[0] if pinned_message.prefetched_attachments else None
+
+            pinned_message.pinned_text = (
+                pinned_message.text
+                or (poll.title if poll else "")
+                or (attachment.file.name.split("/")[-1] if attachment else "")
+            )
 
         for message in chat_messages:
             if hasattr(message, "poll"):

@@ -136,7 +136,7 @@
                                                 <a
                                                     href="{% url 'Vote' option.id %}"
                                                     target="_self"
-                                                    class="Message_Poll_Option{% if option.user_votes and not message.poll.is_closed %} Message_Poll_Option__selected{% endif %}{% if option.is_leading and message.poll.is_closed %} Message_Poll_Option__leading{% endif %}"
+                                                    class="Message_Poll_Option{% if option.user_votes %} Message_Poll_Option__selected{% endif %}"
                                                 >
                                                     {% if option.user_votes and not message.poll.is_closed %}
                                                         <img src="{% static 'images/VoteIcon.png' %}" loading="lazy" class="Message_Poll_Option_Icon">

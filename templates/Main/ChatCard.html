@@ -45,7 +45,7 @@
                                 System
                             {% endif %}
                         </p>
-                        <h3 class="Pinned_Message_Text">{{ pinned_message.text|default:pinned_message.poll.title|default:pinned_message.poll.question }}</h3>
+                        <h3 class="Pinned_Message_Text">{{ pinned_message.pinned_text }}</h3>
                         <small class="Pinned_Message_Time">{{ pinned_message.created_at|timesince }} ago</small>
                     </div>
                 </div>

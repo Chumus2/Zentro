@@ -37,7 +37,12 @@ def pin_message(request, message_id):
     chat.pinned_messages.add(message)
 
     poll = getattr(message, "poll", None)
-    pinned_text = message.text or poll.title
+    attachment = message.attachments.first()
+    pinned_text = (
+        message.text 
+        or (poll.title if poll else "")
+        or (attachment.file.name if attachment else "")
+    )
 
     Message.objects.create(
         chat=chat,
@@ -60,8 +65,14 @@ def unpin_message(request, message_id):
         return redirect("ChatDetail", chat_id=chat.id)
     
     chat.pinned_messages.remove(message)
+
     poll = getattr(message, "poll", None)
-    pinned_text = message.text or poll.title
+    attachment = message.attachments.first()
+    pinned_text = (
+        message.text 
+        or (poll.title if poll else "")
+        or (attachment.file.name if attachment else "")
+    )
 
     Message.objects.create(
         chat=chat,
