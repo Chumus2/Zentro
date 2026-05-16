@@ -94,6 +94,26 @@ class ChatDetailView(LoginRequiredMixin, View):
         ).order_by("created_at")
         pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
 
+        for message in chat_messages:
+            if hasattr(message, "poll"):
+                options = list(message.poll.options.all())
+                total_votes = message.poll.votes.count()
+                max_percent = 0
+
+                for option in options:
+                    option_votes = option.votes.count()
+                    option.percent = (option_votes / total_votes) * 100 if total_votes > 0 else 0
+
+                    if option.percent > max_percent:
+                        max_percent = option.percent
+
+                leaders_count = sum(1 for option in options if option.percent == max_percent and max_percent > 0)
+
+                for option in options:
+                    option.is_leading = leaders_count == 1 and option.percent == max_percent
+
+                message.poll_options = options
+
         context = {
             "chats": chats,
             "active_chat": active_chat,

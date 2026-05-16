@@ -244,11 +244,31 @@ def vote(request, option_id):
     if not chat.participants.filter(id=request.user.id).exists():
         return redirect("Main")
 
-    if not PollVote.objects.filter(poll=poll, user=request.user).exists():
+    if (
+        not PollVote.objects.filter(poll=poll, user=request.user).exists() 
+        and not poll.is_closed
+        and poll.creator != request.user
+    ):
         PollVote.objects.create(
             poll=poll,
             option=option,
             user=request.user
         )
+
+    return redirect("ChatDetail", chat_id=chat.id)
+
+
+@login_required(login_url="HomePage")
+def close_poll(request, poll_id):
+    poll = get_object_or_404(Poll, id=poll_id)
+    chat = poll.message.chat
+
+    if not chat.participants.filter(id=request.user.id).exists():
+        return redirect("Main")
+    
+    if request.method == "POST":
+        if poll.creator == request.user:
+            poll.is_closed = True
+            poll.save()
 
     return redirect("ChatDetail", chat_id=chat.id)

@@ -13,12 +13,23 @@
             </button>
         </div>
 
-        {% if message.sender == request.user and not message.poll %}
+        {% if message.sender == request.user %}
             <div>
-                <button type="button" class="Message_Dropdown_Button Message_Edit_Button">
-                    <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit">
-                    Edit
-                </button>
+                {% if message.poll and not message.poll.is_closed %}
+                    <form action="{% url 'ClosePoll' message.poll.id %}" method="post">
+                        {% csrf_token %}
+
+                        <button type="submit" class="Message_Dropdown_Button">
+                            <img src="{% static 'images/CancelIcon.png' %}" loading="lazy" alt="Close poll">
+                            Close poll
+                        </button>
+                    </form>
+                {% elif message.text %}
+                    <button type="button" class="Message_Dropdown_Button Message_Edit_Button">
+                        <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit">
+                        Edit
+                    </button>
+                {% endif %}
             </div>
         {% endif %}
 
@@ -35,16 +46,20 @@
 
         <div>
 
-            {% if message.id in pinned_message_ids %}
-                <a href="{% url 'UnpinMessage' message.id %}" target="_self">
-                    <img src="{% static 'images/PinIcon.png' %}" loading="lazy">
-                    Unpin
-                </a>
-            {% else %}
-                <a href="{% url 'PinMessage' message.id %}" target="_self">
-                    <img src="{% static 'images/PinIcon.png' %}" loading="lazy">
-                    Pin
-                </a>
+            {% if is_admin %}
+
+                {% if message.id in pinned_message_ids %}
+                    <a href="{% url 'UnpinMessage' message.id %}" target="_self">
+                        <img src="{% static 'images/PinIcon.png' %}" loading="lazy">
+                        Unpin
+                    </a>
+                {% else %}
+                    <a href="{% url 'PinMessage' message.id %}" target="_self">
+                        <img src="{% static 'images/PinIcon.png' %}" loading="lazy">
+                        Pin
+                    </a>
+                {% endif %}
+
             {% endif %}
 
         </div>

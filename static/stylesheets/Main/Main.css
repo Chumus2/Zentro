@@ -662,6 +662,47 @@ body:has(.Main) {
     white-space: nowrap;
 }
 
+.Message_Poll_Option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.Message_Poll_Option span {
+    flex: 1;
+}
+
+.Message_Poll_Option_Percent {
+    margin-left: auto;
+    color: #bfdbfe;
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.Message_Poll_Option__selected .Message_Poll_Option_Percent {
+    color: #f8fbff;
+}
+
+.Message_Poll_Option__leading {
+    border-color: rgba(250, 204, 21, 0.52);
+    background: linear-gradient(135deg, rgba(161, 98, 7, 0.34) 0%, rgba(234, 179, 8, 0.18) 100%);
+    box-shadow: inset 0 1px 0 rgba(254, 240, 138, 0.18), 0 0 0 2px rgba(250, 204, 21, 0.18), 0 16px 30px rgba(161, 98, 7, 0.18);
+}
+
+.Message_Poll_Option__leading span,
+.Message_Poll_Option__leading .Message_Poll_Option_Percent {
+    color: #fef3c7;
+    font-weight: 800;
+}
+
+.Message_Item__own .Message_Poll_Option__leading {
+    border-color: rgba(254, 240, 138, 0.56);
+    background: linear-gradient(135deg, rgba(120, 53, 15, 0.36) 0%, rgba(202, 138, 4, 0.2) 100%);
+    box-shadow: inset 0 1px 0 rgba(254, 240, 138, 0.22), 0 0 0 2px rgba(254, 240, 138, 0.18), 0 16px 30px rgba(120, 53, 15, 0.2);
+}
+
 
 @media (max-width: 980px) {
     html:has(.Main),
