@@ -36,10 +36,16 @@
                                 <h3>{{ chat.title }}</h3>
                                 
                                 {% with last_message=chat.user_messages|last %}
+
                                     {% if last_message.text %}
                                         <p>{{ last_message.text|truncatechars:30 }}</p>
+
                                     {% elif last_message.prefetched_attachments %}
-                                        <p>{{ last_message.prefetched_attachments.0.file.name|cut:"messages/file/"|truncatechars:30 }}</p>
+                                        <p>{{ last_message.prefetched_attachments.0.file.name|cut:"messages/file/"|truncatechars:30 }} (File)</p>
+                                    
+                                    {% elif last_message.poll %}
+                                        <p>{{ last_message.poll.title|truncatechars:30 }} (Poll)</p>
+                                    
                                     {% endif %}
                                 {% endwith %}
 
