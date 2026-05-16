@@ -183,6 +183,7 @@ def create_poll(request, chat_id):
 
         poll = Poll.objects.create(
             message=message,
+            creator=request.user,
             title=title,
             question=question
         )

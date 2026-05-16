@@ -56,10 +56,16 @@ class Poll(models.Model):
     is_closed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.question} - {self.creator}"
+
 
 class PollOption(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="options")
     text = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.text} ({self.poll.question})"
 
 
 class PollVote(models.Model):
@@ -69,3 +75,6 @@ class PollVote(models.Model):
 
     class Meta:
         unique_together = ("option", "user")
+
+    def __str__(self):
+        return f"{self.option} - {self.poll.question}"
