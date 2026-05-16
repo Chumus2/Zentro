@@ -450,3 +450,5 @@ if (pollOptions && addPollOptionButton) {
         }
     });
 }
+
+syncOverlayState();

@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.views import View
-from django.db.models import Prefetch
+from django.db.models import Count, Prefetch
 from Users.models import User
 from .models import *
 
@@ -15,6 +15,7 @@ def get_chats_with_user_messages(user):
             queryset=(
                 Message.objects
                 .filter(if_system=False)
+                .select_related("poll")
                 .prefetch_related(
                     Prefetch(
                         "attachments",
@@ -56,7 +57,7 @@ class ChatDetailView(LoginRequiredMixin, View):
     def get(self, request, chat_id):
         chats = get_chats_with_user_messages(request.user).distinct()
         active_chat = get_object_or_404(
-            Chat.objects.prefetch_related("messages"),
+            Chat.objects.annotate(participant_count=Count("participants", distinct=True)),
             id=chat_id,
             participants=request.user
         )
@@ -86,7 +87,11 @@ class ChatDetailView(LoginRequiredMixin, View):
             )
         ).order_by("created_at")
 
-        pinned_messages = active_chat.pinned_messages.all().order_by("created_at")
+        pinned_messages = active_chat.pinned_messages.select_related(
+            "sender",
+            "sender__profile",
+            "poll",
+        ).order_by("created_at")
         pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
 
         context = {
@@ -94,6 +99,7 @@ class ChatDetailView(LoginRequiredMixin, View):
             "active_chat": active_chat,
             "chat_messages": chat_messages,
             "is_admin": is_admin,
+            "participant_count": active_chat.participant_count,
             "pinned_messages": pinned_messages,
             "pinned_message_ids": pinned_message_ids,
         }

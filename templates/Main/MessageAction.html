@@ -13,7 +13,7 @@
             </button>
         </div>
 
-        {% if message.sender == request.user %}
+        {% if message.sender == request.user and not message.poll %}
             <div>
                 <button type="button" class="Message_Dropdown_Button Message_Edit_Button">
                     <img src="{% static 'images/EditIcon.png' %}" loading="lazy" alt="Edit">

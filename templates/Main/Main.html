@@ -113,7 +113,9 @@
                                                 System
                                             {% endif %}
                                         </strong>
-                                        <p class="Message_Reply_Text">{{ message.reply_to.text|truncatechars:60 }}</p>
+                                        <p class="Message_Reply_Text">
+                                            {{ message.reply_to.text|default:message.reply_to.poll.title|default:message.reply_to.poll.question|truncatechars:60 }}
+                                        </p>                                        
                                     </div>
                                 {% endif %}
 

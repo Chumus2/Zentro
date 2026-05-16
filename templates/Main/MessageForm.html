@@ -18,7 +18,7 @@
     </form>
 </div>
 
-<div class="Polls_Dropdown Polls_Dropdown__hidden" id="polls-dropdown">
+<div class="Polls_Dropdown {% if open_poll_form %}Polls_Dropdown__open{% else %}Polls_Dropdown__hidden{% endif %}" id="polls-dropdown">
     <form action="{% url 'CreatePoll' active_chat.id %}" method="post" class="Polls_Dropdown_Content">
         {% csrf_token %}
 

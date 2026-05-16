@@ -13,7 +13,7 @@
 
             <span class="ChatCard_Copy">
                 <h2>{{ active_chat.title }}</h2>
-                <p>{{ active_chat.participants.count }} participants</p>
+                <p>{{ participant_count }} participants</p>
             </span>
         </button>
 
@@ -27,7 +27,7 @@
         <h3 class="Pinned_Messages_Title">Pinned messages</h3>
 
         <div class="Pinned_Messages_List">
-            {% for pinned_message in active_chat.pinned_messages.all %}
+            {% for pinned_message in pinned_messages %}
                 <div class="Pinned_Message_Row" data-message-id="{{ pinned_message.id }}">
                     <div class="Pinned_Message_Avatar">
                         {% if pinned_message.sender and pinned_message.sender.profile.icon %}
@@ -45,7 +45,7 @@
                                 System
                             {% endif %}
                         </p>
-                        <h3 class="Pinned_Message_Text">{{ pinned_message.text }}</h3>
+                        <h3 class="Pinned_Message_Text">{{ pinned_message.text|default:pinned_message.poll.title|default:pinned_message.poll.question }}</h3>
                         <small class="Pinned_Message_Time">{{ pinned_message.created_at|timesince }} ago</small>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
         <h2 class="ChatCard_Dropdown_Title">{{ active_chat.title }}</h2>
 
         <a href="{% url 'Participants' active_chat.id %}" class="ChatCard_Dropdown_Participants">
-            {{ active_chat.participants.count }} participants
+            {{ participant_count }} participants
         </a>
 
         <p class="ChatCard_Dropdown_Description">{{ active_chat.description|default:"No description yet." }}</p>

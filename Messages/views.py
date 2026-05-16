@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Prefetch
+from Main.views import get_chats_with_user_messages
 from Main.models import Message, Chat, MessageAttachment, Poll, PollOption, PollVote
 
 
@@ -34,10 +36,13 @@ def pin_message(request, message_id):
     
     chat.pinned_messages.add(message)
 
+    poll = getattr(message, "poll", None)
+    pinned_text = message.text or poll.title
+
     Message.objects.create(
         chat=chat,
         sender=None,
-        text=f"Message ({message.text}) have been pinned",
+        text=f"Message ({pinned_text}) have been pinned",
         if_system=True
     )
 
@@ -55,11 +60,13 @@ def unpin_message(request, message_id):
         return redirect("ChatDetail", chat_id=chat.id)
     
     chat.pinned_messages.remove(message)
+    poll = getattr(message, "poll", None)
+    pinned_text = message.text or poll.title
 
     Message.objects.create(
         chat=chat,
         sender=None,
-        text=f"Message ({message.text}) have been unpinned",
+        text=f"Message ({pinned_text}) have been unpinned",
         if_system=True
     )
 
@@ -161,11 +168,42 @@ def create_poll(request, chat_id):
         title = request.POST.get("poll_title", "").strip()
         question = request.POST.get("poll_question", "").strip()
         options = [option.strip() for option in request.POST.getlist("poll_options")]
-        chat_messages = chat.messages.order_by("created_at")
+        
+        chat_messages = chat.messages.select_related(
+            "sender", "sender__profile", "reply_to", "reply_to__sender",
+            "reply_to__sender__profile", "poll",
+        ).prefetch_related(
+            Prefetch(
+                "attachments",
+                queryset=MessageAttachment.objects.order_by("id"),
+                to_attr="prefetched_attachments"
+            ),
+            Prefetch(
+                "poll__options",
+                queryset=PollOption.objects.order_by("id")
+            ),
+            Prefetch(
+                "poll__options__votes",
+                queryset=PollVote.objects.filter(user=request.user),
+                to_attr="user_votes"
+            )
+        ).order_by("created_at")
+        chats = get_chats_with_user_messages(request.user).distinct()
+        is_admin = chat.admins.filter(id=request.user.id).exists()
+        pinned_messages = chat.pinned_messages.select_related(
+            "sender", "sender__profile", "poll"
+        ).order_by("created_at")
+        pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
 
         context = {
+            "chats": chats,
             "active_chat": chat,
-            "chat_messages": chat_messages
+            "chat_messages": chat_messages,
+            "is_admin": is_admin,
+            "pinned_messages": pinned_messages,
+            "pinned_message_ids": pinned_message_ids,
+            "participant_count": chat.participants.count(),
+            "open_poll_form": True,
         }
     
         if not title or not question or any(not option for option in options):
