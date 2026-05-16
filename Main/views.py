@@ -69,10 +69,16 @@ class ChatDetailView(LoginRequiredMixin, View):
             "reply_to",
             "reply_to__sender",
             "reply_to__sender__profile",
+            "reply_to__poll",
             "poll",
         ).prefetch_related(
             Prefetch(
                 "attachments",
+                queryset=MessageAttachment.objects.order_by("id"),
+                to_attr="prefetched_attachments"
+            ),
+            Prefetch(
+                "reply_to__attachments",
                 queryset=MessageAttachment.objects.order_by("id"),
                 to_attr="prefetched_attachments"
             ),
@@ -129,6 +135,17 @@ class ChatDetailView(LoginRequiredMixin, View):
                     option.is_leading = leaders_count == 1 and option.percent == max_percent
 
                 message.poll_options = options
+
+            if message.reply_to:
+                reply_poll = getattr(message.reply_to, "poll", None)
+                reply_attachment = message.reply_to.prefetched_attachments[0] if getattr(message.reply_to, "prefetched_attachments", None) else None
+
+                message.reply_preview_text = (
+                    message.reply_to.text
+                    or (reply_poll.title if reply_poll and reply_poll.title else "")
+                    or (reply_poll.question if reply_poll else "")
+                    or (reply_attachment.file.name.split("/")[-1] if reply_attachment else "")
+                )
 
         context = {
             "chats": chats,

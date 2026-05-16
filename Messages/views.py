@@ -127,11 +127,101 @@ def reply_to_message(request, chat_id):
             )
 
             return redirect("ChatDetail", chat_id=chat.id)
-        
-    chat_messages = chat.messages.order_by("created_at")
+
+    chat_messages = chat.messages.select_related(
+        "sender",
+        "sender__profile",
+        "reply_to",
+        "reply_to__sender",
+        "reply_to__sender__profile",
+        "reply_to__poll",
+        "poll",
+    ).prefetch_related(
+        Prefetch(
+            "attachments",
+            queryset=MessageAttachment.objects.order_by("id"),
+            to_attr="prefetched_attachments"
+        ),
+        Prefetch(
+            "reply_to__attachments",
+            queryset=MessageAttachment.objects.order_by("id"),
+            to_attr="prefetched_attachments"
+        ),
+        Prefetch(
+            "poll__options",
+            queryset=PollOption.objects.order_by("id")
+        ),
+        Prefetch(
+            "poll__options__votes",
+            queryset=PollVote.objects.filter(user=request.user),
+            to_attr="user_votes"
+        )
+    ).order_by("created_at")
+
+    for message in chat_messages:
+        if hasattr(message, "poll"):
+            options = list(message.poll.options.all())
+            total_votes = message.poll.votes.count()
+            max_percent = 0
+
+            for option in options:
+                option_votes = option.votes.count()
+                option.percent = (option_votes / total_votes) * 100 if total_votes > 0 else 0
+
+                if option.percent > max_percent:
+                    max_percent = option.percent
+
+            leaders_count = sum(1 for option in options if option.percent == max_percent and max_percent > 0)
+
+            for option in options:
+                option.is_leading = leaders_count == 1 and option.percent == max_percent
+
+            message.poll_options = options
+
+        if message.reply_to:
+            reply_poll = getattr(message.reply_to, "poll", None)
+            reply_attachment = message.reply_to.prefetched_attachments[0] if getattr(message.reply_to, "prefetched_attachments", None) else None
+
+            message.reply_preview_text = (
+                message.reply_to.text
+                or (reply_poll.title if reply_poll and reply_poll.title else "")
+                or (reply_poll.question if reply_poll else "")
+                or (reply_attachment.file.name.split("/")[-1] if reply_attachment else "")
+            )
+
+    chats = get_chats_with_user_messages(request.user).distinct()
+    is_admin = chat.admins.filter(id=request.user.id).exists()
+    pinned_messages = chat.pinned_messages.select_related(
+        "sender",
+        "sender__profile",
+        "poll"
+    ).prefetch_related(
+        Prefetch(
+            "attachments",
+            queryset=MessageAttachment.objects.order_by("id"),
+            to_attr="prefetched_attachments"
+        )
+    ).order_by("created_at")
+    pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
+
+    for pinned_message in pinned_messages:
+        poll = getattr(pinned_message, "poll", None)
+        attachment = pinned_message.prefetched_attachments[0] if pinned_message.prefetched_attachments else None
+
+        pinned_message.pinned_text = (
+            pinned_message.text
+            or (poll.title if poll else "")
+            or (attachment.file.name if attachment else "")
+        )
+
     context = {
+        "chats": chats,
         "active_chat": chat,
-        "chat_messages": chat_messages
+        "chat_messages": chat_messages,
+        "is_admin": is_admin,
+        "pinned_messages": pinned_messages,
+        "pinned_message_ids": pinned_message_ids,
+        "participant_count": chat.participants.count(),
     }
 
     return render(request, "Main/Main.html", context)
@@ -181,11 +271,21 @@ def create_poll(request, chat_id):
         options = [option.strip() for option in request.POST.getlist("poll_options")]
         
         chat_messages = chat.messages.select_related(
-            "sender", "sender__profile", "reply_to", "reply_to__sender",
-            "reply_to__sender__profile", "poll",
+            "sender",
+            "sender__profile",
+            "reply_to",
+            "reply_to__sender",
+            "reply_to__sender__profile",
+            "reply_to__poll",
+            "poll",
         ).prefetch_related(
             Prefetch(
                 "attachments",
+                queryset=MessageAttachment.objects.order_by("id"),
+                to_attr="prefetched_attachments"
+            ),
+            Prefetch(
+                "reply_to__attachments",
                 queryset=MessageAttachment.objects.order_by("id"),
                 to_attr="prefetched_attachments"
             ),
@@ -199,12 +299,61 @@ def create_poll(request, chat_id):
                 to_attr="user_votes"
             )
         ).order_by("created_at")
+        for message in chat_messages:
+            if hasattr(message, "poll"):
+                poll_options = list(message.poll.options.all())
+                total_votes = message.poll.votes.count()
+                max_percent = 0
+
+                for option in poll_options:
+                    option_votes = option.votes.count()
+                    option.percent = (option_votes / total_votes) * 100 if total_votes > 0 else 0
+
+                    if option.percent > max_percent:
+                        max_percent = option.percent
+
+                leaders_count = sum(1 for option in poll_options if option.percent == max_percent and max_percent > 0)
+
+                for option in poll_options:
+                    option.is_leading = leaders_count == 1 and option.percent == max_percent
+
+                message.poll_options = poll_options
+
+            if message.reply_to:
+                reply_poll = getattr(message.reply_to, "poll", None)
+                reply_attachment = message.reply_to.prefetched_attachments[0] if getattr(message.reply_to, "prefetched_attachments", None) else None
+
+                message.reply_preview_text = (
+                    message.reply_to.text
+                    or (reply_poll.title if reply_poll and reply_poll.title else "")
+                    or (reply_poll.question if reply_poll else "")
+                    or (reply_attachment.file.name.split("/")[-1] if reply_attachment else "")
+                )
+
         chats = get_chats_with_user_messages(request.user).distinct()
         is_admin = chat.admins.filter(id=request.user.id).exists()
         pinned_messages = chat.pinned_messages.select_related(
-            "sender", "sender__profile", "poll"
+            "sender",
+            "sender__profile",
+            "poll"
+        ).prefetch_related(
+            Prefetch(
+                "attachments",
+                queryset=MessageAttachment.objects.order_by("id"),
+                to_attr="prefetched_attachments"
+            )
         ).order_by("created_at")
         pinned_message_ids = set(pinned_messages.values_list("id", flat=True))
+
+        for pinned_message in pinned_messages:
+            poll = getattr(pinned_message, "poll", None)
+            attachment = pinned_message.prefetched_attachments[0] if pinned_message.prefetched_attachments else None
+
+            pinned_message.pinned_text = (
+                pinned_message.text
+                or (poll.title if poll else "")
+                or (attachment.file.name.split("/")[-1] if attachment else "")
+            )
 
         context = {
             "chats": chats,
